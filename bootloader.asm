@@ -40,14 +40,30 @@ bsFileSystem: 	        DB "FAT12   "
 ;**************************************
 msg db "Welcome to MattOS", 0
 
-loader:
-	xor bx, bx	; bx has to be set to 0
-	mov ah, 0x0e	; enter tty mode by setting ah to 0x0e
-	mov al, 'A'	; mov the letter 'A' into al
-	int 0x10	; perform the interrupt to display the text onto the screen
+print_msg:
+	lodsb
+	or	al, al
+	jz	print_msg_done
+	mov	ah, 0xe
+	int	0x10
+	jmp	print_msg
 
-	cli	; disable interrupts
-	hlt	; halt the system
+print_msg_done:
+	ret
+
+
+loader:
+	; Print character example:
+	; xor	bx, bx		; bx has to be set to 0
+	; mov	ah, 0x0e	; enter tty mode by setting ah to 0x0e
+	; mov	al, 'A'		; mov the letter 'A' into al
+	; int	0x10		; perform the interrupt to display the text onto the screen
+
+	mov	si, msg		; our message to print
+	call	print_msg	; call our print function
+
+	cli			; disable interrupts
+	hlt			; halt the system
 	
 
 times 510 - ($-$$) db 0 ; We have 512 bytes in the MBR. Write 0 to the rest
