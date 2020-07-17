@@ -1,0 +1,24 @@
+Interrupt notes:
+0x10: VGA stuff:
+	- Print a character:
+		- set ah to 0x0e
+		- set al to the character
+		- set bx to 0x0
+		
+0x13: DISK I/O:
+	- Reset disk (set head to sector 0):
+		- set ah to 0x0
+		- set dl to the drive number. in this case, 0
+		- return: status code stored in ah
+		- return: if carry flag is clear, it was a success. otherwise, it errored
+        - Read from disk:
+                - set ah to 0x02
+                - set al to the number of sectors to read
+                - set ch to the low 8 bits of the cylinder number
+                - set cl to the sector number (bits 0-5). bits 6-7 are for hard disks only
+                - set dh to the head number
+                - set dl to the drive number
+                - set es:bx to the buffer to read sectors to
+                - return: status code stored in ah
+                - return: number of sectors read stored in al
+                - return: set if failure. cleared if success

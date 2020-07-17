@@ -38,7 +38,7 @@ bsFileSystem: 	        DB "FAT12   "
 ;**************************************
 ; Bootloader Entry Point
 ;**************************************
-msg db "Welcome to MattOS", 0
+msg	db "Welcome to MattOS", 0
 
 print_msg:
 	lodsb
@@ -51,6 +51,27 @@ print_msg:
 print_msg_done:
 	ret
 
+reset_disk:
+	mov	ah, 0		; reset floppy disk function
+	mov	dl, 0		; dl is the drive number
+	int	0x13		; trigger the interrupt
+	jc	reset		; triggering the interrupt will return two things:
+				; status code, which is stored in ah
+				; if it failed, which is represented by the carry flag.
+				; if the carry flag is clear, it was a success.
+				; if the carry flag was set, there was an error
+
+read_disk:
+	mov	ah, 0x02	; read from disk function
+	mov	al, 1		; specify that we want to read only 1 sector
+	mov	ch, 1		; say we are reading from track 1
+	mov	cl, 2		; we want to read the second sector
+	mov	dh, 0		; the first head
+	mov	dl, 0		; the drive number: 0
+	int	0x13		; trigger the interrupt
+	jc	read_disk	; try again if error
+
+	jmp	0x1000:0x0	; jump to execute the sector
 
 loader:
 	; Print character example:
