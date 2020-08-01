@@ -16,6 +16,13 @@ bits 16	   ; We are in 16-bit real mode
 mov	bp, 0x7FFF
 mov	sp, bp
 
+; Define pages here
+pml4 equ 0x1000
+pml3 equ 0x2000
+pml2 equ 0x3000
+hh_pml2 equ 0x4000
+hh_pml3 equ 0x5000
+
 ; Boot from here
 boot:
 	; Do a silly interrupt
@@ -107,7 +114,7 @@ check_long_mode:
 ;************************************************
 ; 64-bit: Enter into long mode
 ;************************************************
-; How to get into long mode
+; How to setup paging
 ;	1.  Get the address of the P4 table from the CR3 register
 ;	2.  Use bits 39-47 (9 bits) as an index into P4 (2^9 = 512 = number of entries)
 ;	3.  Use the following 9 bits as an index into P3
@@ -117,7 +124,7 @@ check_long_mode:
 enter_long_mode:
 	push bp
 	mov bp, sp
-	
+
 	call setup_page_tables
 
 	mov sp, bp
@@ -125,50 +132,6 @@ enter_long_mode:
 	ret
 
 setup_page_tables:
-	push bp
-	mov bp, sp
-	
-	; Initialize the page tables
-	push 0x8000
-	call alloc_page
-	pop dx
-
-	mov	ah, 0x0e
-	mov	al, 'A'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-
-	push 0x9000
-	call alloc_page
-	pop dx
-
-	mov	ah, 0x0e
-	mov	al, 'A'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-
-	push 0x10000
-	call alloc_page
-	pop dx
-
-	mov	ah, 0x0e
-	mov	al, 'A'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-
-	push 0x11000
-	call alloc_page
-	pop dx
-
-	mov	ah, 0x0e
-	mov	al, 'A'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-
 	; Now load the page tables and enable paging
 	; and add a gdt
 	call enable_paging
@@ -189,43 +152,12 @@ setup_page_tables:
 	pop bp
 	ret
 
-alloc_page:
-	push bp
-	mov bp, sp
-
-	mov si, sp
-	mov ax, word [si+0x4]
-	mov bx, 4096
-	add bx, ax
-	call alloc_page_start_loop
-
-	mov sp, bp
-	pop bp
-	ret
-
-alloc_page_start_loop:
-	mov si, ax
-	mov byte [si], 0x0
-	inc ax
-	cmp ax, bx
-	jmp alloc_page_start_loop
-	
-	; Now, print 'Z' to make sure you
-	; called the function
-	mov	ah, 0x0e
-	mov	al, 'B'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-	ret
-
 enable_paging:
 	push bp
 	mov bp, sp
 	
 	; load P4 into the cr3 register (cpu uses this to access the P4 table)
-	mov si, sp
-	mov ax, word [si+0x4]
+	mov ax, pml4
 	mov cr3, eax
 
 	; enable PAE-flag in cr4 (Physical Address Extension)
