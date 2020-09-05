@@ -1,202 +1,110 @@
-;**************************************
-; bootloader.asm
-;	- A really simple bootloader
-;
-; Date: 07/16/20
-; By: Matt
-;**************************************
+[org 0x7c00]
+[bits 16]
+jmp switch_to_protected_mode
 
-org 0x7c00 ; We are loaded by BIOS at 0x7c00
-bits 16	   ; We are in 16-bit real mode
+; GDT
+gdt_start:
 
-;**********************************************
-; Boot setup functions
-;**********************************************
-; Setup the stack here
-mov	bp, 0x7FFF
-mov	sp, bp
+gdt_null:
+    dd 0x0
+    dd 0x0
 
-; Define pages here
-pml4 equ 0x1000
-pml3 equ 0x2000
-pml2 equ 0x3000
-hh_pml2 equ 0x4000
-hh_pml3 equ 0x5000
+gdt_code:
+    ; base = 0x0, limit=0xfffff
+    ; 1st  flags: (present )1 (privilege )00 (descriptor  type)1 -> 1001b
+    ; type  flags: (code)1 (conforming )0 (readable )1 (accessed )0 -> 1010b
+    ; 2nd  flags: (granularity )1 (32-bit  default )1 (64-bit  seg)0 (AVL)0 -> 1100b
+    dw 0xffff   ; Limit (bits 0-15)
+    dw 0x0      ; Base (bits 0-15)
+    db 0x0      ; Base (bits 16-23)
+    db  10011010b ; 1st flags , type  flags
+    db  11001111b ; 2nd flags , Limit (bits  16-19)
+    db 0x0         ; Base (bits  24 -31)
 
-; Boot from here
-boot:
-	; Do a silly interrupt
-	mov	ah, 0x0e
-	mov	al, '!'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-	
-	; Check for long mode
-	call	check_long_mode
-	
-	; If we can enter long mode, print
-	; 'Y' and call enter_long_mode
-	mov	ah, 0x0e
-	mov	al, 'Y'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-	call	enter_long_mode
-	
-	; Now, halt the system because I feel like it
-	cli
-	hlt
-	jmp	$
+gdt_data: ;the  data  segment  descriptor
+    ; Same as code  segment  except  for  the  type  flags
+    ; type  flags: (code)0 (expand  down)0 (writable )1 (accessed )0 -> 0010b
+    dw 0xffff     ; Limit (bits  0-15)
+    dw 0x0         ; Base (bits  0-15)
+    db 0x0         ; Base (bits  16 -23)
+    db  10010010b ; 1st flags , type  flags
+    db  11001111b ; 2nd flags , Limit (bits  16-19)
+    db 0x0         ; Base (bits  24 -31)
 
-; Bootloader error handler
-error:
-	mov dword [0xb8000], 0x4f524f45
-	mov dword [0xb8004], 0x4f3a4f52
-	mov dword [0xb8008], 0x4f204f20
-	mov byte  [0xb800a], al
-	hlt
+gdt_end:         ; The  reason  for  putting a label  at the  end of the
+                 ; GDT is so we can  have  the  assembler  calculate
+                 ; the  size of the  GDT  for  the GDT  decriptor (below)
 
-; Check if we can use long mode
-check_cpuid:
-	; Check if CPUID is supported by attempting to flip the ID bit (bit 21)
-	; in the FLAGS register. If we can flip it, CPUID is available.
+; GDT descriptor
+gdt_descriptor:
+    dw  gdt_end  - gdt_start  - 1
+    dd  gdt_start
 
-	; Copy FLAGS in to EAX via stack
-	pushfd
-	pop eax
+; Define  some  handy  constants  for  the  GDT  segment  descriptor  offsets , which
+; are  what  segment  registers  must  contain  when in  protected  mode.  For  example ,
+; when we set DS = 0x10 in PM , the  CPU  knows  that we mean it to use  the
+; segment  described  at  offset 0x10 (i.e. 16  bytes) in our GDT , which in our
+; case is the  DATA  segment  (0x0 -> NULL; 0x08  -> CODE; 0x10  -> DATA)
+CODE_SEG  equ  gdt_code  - gdt_start
+DATA_SEG  equ  gdt_data  - gdt_start
 
-	; Copy to ECX as well for comparing later on
-	mov ecx, eax
+switch_to_protected_mode:
+    cli     ; Disable interrutps rn
 
-	; Flip the ID bit
-	xor eax, 1 << 21
+    ; Tell the CPU about the GDT we just prepared
+    lgdt [gdt_descriptor]
 
-	; Copy EAX to FLAGS via the stack
-	push eax
-	popfd
+    ; Set cr0's first bit
+    mov eax, cr0
+    or eax, 0x1
+    mov cr0, eax
 
-	; Copy FLAGS back to EAX (with the flipped bit if CPUID is supported)
-	pushfd
-	pop eax
+    ; Far jump
+    jmp CODE_SEG:init_pm
 
-	; Restore FLAGS from the old version stored in ECX (i.e. flipping the
-	; ID bit back if it was ever flipped).
-	push ecx
-	popfd
+[bits 32]
+init_pm:
+    mov ax, DATA_SEG
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
-	; Compare EAX and ECX. If they are equal then that means the bit
-	; wasn't flipped, and CPUID isn't supported.
-	cmp eax, ecx
-	je .no_cpuid
-	ret
-.no_cpuid:
-	mov al, "1"
-	jmp error
-check_long_mode:
-	; test if extended processor info in available
-	mov eax, 0x80000000    ; implicit argument for cpuid
-	cpuid                  ; get highest supported argument
-	cmp eax, 0x80000001    ; it needs to be at least 0x80000001
-	jb .no_long_mode       ; if it's less, the CPU is too old for long mode
+    mov ebp, 0x90000
+    mov esp, ebp
 
-	; use extended info to test if long mode is available
-	mov eax, 0x80000001    ; argument for extended processor info
-	cpuid                  ; returns various feature bits in ecx and edx
-	test edx, 1 << 29      ; test if the LM-bit is set in the D-register
-	jz .no_long_mode       ; If it's not set, there is no long mode
-	ret
-.no_long_mode:
-	mov al, "2"
-	jmp error
+    call BEGIN_PM
 
+print_string_pm:
+    mov ebx, 0xb8000
 
-;************************************************
-; 64-bit: Enter into long mode
-;************************************************
-; How to setup paging
-;	1.  Get the address of the P4 table from the CR3 register
-;	2.  Use bits 39-47 (9 bits) as an index into P4 (2^9 = 512 = number of entries)
-;	3.  Use the following 9 bits as an index into P3
-;	4.  Use the following 9 bits as an index into P2
-;	5.  Use the following 9 bits as an index into P1
-;	6.  Use the last 12 bits as page offset (2^12 = 4096 = page size)
-enter_long_mode:
-	push bp
-	mov bp, sp
+print_string_pm_loop_start:
+    cmp ebx, 0xB8FA0
+    jg print_string_pm_loop_end
+    cmp ebx, 0xB87D0
+    je print_string_pm_h
+    jmp print_string_pm_empty
 
-	call setup_page_tables
+print_string_pm_empty:
+    mov [ebx], word (0x1F << 8) | '.'
+    jmp print_string_pm_loop_inc
 
-	mov sp, bp
-	pop bp
-	ret
+print_string_pm_h:
+    mov [ebx], word (0x1F << 8) | 'h'
+    jmp print_string_pm_loop_inc
 
-setup_page_tables:
-	; Now load the page tables and enable paging
-	; and add a gdt
-	call enable_paging
-	lgdt [gdt64.pointer]
+print_string_pm_loop_inc:
+    times 2 inc ebx
+    jmp print_string_pm_loop_start
 
-	; Now, in order to truly enter long mode, we need
-	; to load cs by far jumping
-	; Now, print 'A' as a debugging thing
-	; before you officially switch to long mode
-	mov	ah, 0x0e
-	mov	al, 'A'
-	mov	bh, 0x0
-	mov	bl, 0x07
-	int	0x10
-	jmp gdt64.code:long_mode_start
+print_string_pm_loop_end:
+    ret
 
-	mov sp, bp
-	pop bp
-	ret
+BEGIN_PM:
+    call print_string_pm    ; Use our 32-bit print routine.
+    jmp $                   ; Hang
 
-enable_paging:
-	push bp
-	mov bp, sp
-	
-	; load P4 into the cr3 register (cpu uses this to access the P4 table)
-	mov ax, pml4
-	mov cr3, eax
+times 510-($-$$) db 0
 
-	; enable PAE-flag in cr4 (Physical Address Extension)
-	mov eax, cr4
-	or eax, 1 << 5
-	mov cr4, eax
-
-	; set the long mode bit in the EFR MSR (model specific register)
-	mov ecx, 0xC0000080
-	rdmsr
-	or eax, 1 << 8
-	wrmsr
-
-	mov sp, bp
-	pop bp
-	ret
-
-gdt64:
-	dq 0 ; zero entry
-	.code:
-		dq (1<<43) | (1<<44) | (1<<47) | (1<<53) ; code segment
-.pointer:
-	dw $ - gdt64 - 1
-	dq gdt64
-
-global long_mode_start
-section .text
-bits 64
-long_mode_start:
-	; print 'OKAY' to screen
-	mov rax, 0x2f592f412f4b2f4f
-	mov qword [0xb8000], rax
-	cli
-	hlt
-
-;***********************************************
-; Write the rest of the bytes and the boot
-; signature
-;***********************************************
-times 510 - ($-$$) db 0 ; We have 512 bytes in the MBR. Write 0 to the rest
-
-dw 0xaa55 ; Write the boot signature
+dw 0xaa55
