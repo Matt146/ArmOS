@@ -4,7 +4,7 @@
 KERNEL_OFFSET equ 0x1000
 
 mov bp, 0x9000  ; Setup the stack
-mov sp, 0x7c00
+mov sp, bp
 ; Load the kernel using BIOS functions
 call load_kernel
 ; Now, we go to protected mode
@@ -136,8 +136,8 @@ print_string_pm_loop_end:
     ret
 
 BEGIN_PM:
-    call print_string_pm    ; Use our 32-bit print routine.
-    ; call kmain              ; Call our kernel's main function
+    ; call print_string_pm    ; Use our 32-bit print routine
+    call KERNEL_OFFSET
     jmp $                   ; Hang
 
 times 510-($-$$) db 0
