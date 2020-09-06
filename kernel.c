@@ -1,5 +1,3 @@
-void kmain() {
-    while (1) {
-        asm("pause");
-    }
+int kmain() {
+    return 0xbaba;
 }

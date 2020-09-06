@@ -1,6 +1,39 @@
 [org 0x7c00]
 [bits 16]
+; Global vars
+KERNEL_OFFSET equ 0x1000
+
+mov bp, 0x9000  ; Setup the stack
+mov sp, 0x7c00
+; Load the kernel using BIOS functions
+call load_kernel
+; Now, we go to protected mode
 jmp switch_to_protected_mode
+
+load_kernel:
+    call disk_load
+    ret
+
+disk_load:
+    mov ah, 0x42
+    mov si, DAP
+    int 0x13
+    jc disk_error
+    ret
+
+DAP:
+    db 0x10
+    db 0x0
+    dw 15
+    dd KERNEL_OFFSET
+    dq 1
+
+disk_error:
+    jmp $
+    mov ah, 0x0e
+    mov al,'F'
+    int 0x10
+    jmp $
 
 ; GDT
 gdt_start:
@@ -63,6 +96,7 @@ switch_to_protected_mode:
     jmp CODE_SEG:init_pm
 
 [bits 32]
+[extern kmain]
 init_pm:
     mov ax, DATA_SEG
     mov ds, ax
@@ -103,8 +137,11 @@ print_string_pm_loop_end:
 
 BEGIN_PM:
     call print_string_pm    ; Use our 32-bit print routine.
+    ; call kmain              ; Call our kernel's main function
     jmp $                   ; Hang
 
 times 510-($-$$) db 0
 
 dw 0xaa55
+
+times 0x8000-($-$$) db 0
