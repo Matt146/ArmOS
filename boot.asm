@@ -29,7 +29,6 @@ DAP:
     dq 1
 
 disk_error:
-    jmp $
     mov ah, 0x0e
     mov al,'F'
     int 0x10
