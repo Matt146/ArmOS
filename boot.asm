@@ -1,7 +1,7 @@
 [org 0x7c00]
 [bits 16]
 ; Global vars
-KERNEL_OFFSET equ 0x1000
+KERNEL_OFFSET equ 0x8c00
 
 mov bp, 0x9000  ; Setup the stack
 mov sp, 0x7c00
@@ -138,10 +138,11 @@ print_string_pm_loop_end:
 BEGIN_PM:
     call print_string_pm    ; Use our 32-bit print routine.
     ; call kmain              ; Call our kernel's main function
-    jmp $                   ; Hang
+    mov eax, KERNEL_OFFSET
+    jmp eax
+    ; jmp KERNEL_OFFSET  ; jump to the kernel
+    ; jmp $                   ; Hang
 
 times 510-($-$$) db 0
 
 dw 0xaa55
-
-times 0x8000-($-$$) db 0
