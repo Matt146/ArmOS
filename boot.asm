@@ -1,12 +1,26 @@
+; NASM directives:
+; org  - tells where the program is supposed to be loaded in memory
+;	 in this case, 0x7c00 is where the BIOS leaves us
+; bits - encodes instructions for 16 bits
 [org 0x7c00]
 [bits 16]
+
+; Set up segment registers
+mov ax, 0x000
+mov ds, ax
+mov es, ax
+mov fs, ax
+mov gs, ax
+
 ; Global vars
 KERNEL_OFFSET equ 0x8c00
 
-mov bp, 0x9000  ; Setup the stack
+; Set up the stack
 mov sp, 0x7c00
+
 ; Load the kernel using BIOS functions
 call load_kernel
+
 ; Now, we go to protected mode
 jmp switch_to_protected_mode
 
@@ -69,8 +83,8 @@ gdt_end:         ; The  reason  for  putting a label  at the  end of the
 
 ; GDT descriptor
 gdt_descriptor:
-    dw  gdt_end  - gdt_start  - 1
-    dd  gdt_start
+    dw  gdt_end  - gdt_start  - 1	; 16 bits for size of GDT
+    dd  gdt_start			; 32 bits for where the GDT starts
 
 ; Define  some  handy  constants  for  the  GDT  segment  descriptor  offsets , which
 ; are  what  segment  registers  must  contain  when in  protected  mode.  For  example ,
@@ -91,22 +105,26 @@ switch_to_protected_mode:
     or eax, 0x1
     mov cr0, eax
 
-    ; Far jump
+    ; Far jump to set CS
     jmp CODE_SEG:init_pm
 
 [bits 32]
-[extern kmain]
 init_pm:
-    mov ax, DATA_SEG
-    mov ds, ax
-    mov ss, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
+    ; For flat memory model
+    mov ax, DATA_SEG	; put the offset of the data segment descriptor in the GDT into ax
+    mov ds, ax		; now put ax into ds - can't set ds directly
+    mov ss, ax		; set stack segment to ax
+    mov es, ax		; set extra segment to ax
+    mov fs, ax		; set fs to ax
+    mov gs, ax		; set gs to ax
 
+    ; now set the base pointer and the stack pointer
+    ; to set up the stack
     mov ebp, 0x90000
     mov esp, ebp
 
+    ; as of now, we have completely set up protected mode
+    ; call this function to jump to kernel
     call BEGIN_PM
 
 print_string_pm:
@@ -137,9 +155,10 @@ print_string_pm_loop_end:
 BEGIN_PM:
     call print_string_pm    ; Use our 32-bit print routine.
     ; call kmain              ; Call our kernel's main function
-    mov eax, KERNEL_OFFSET
-    jmp eax
-    ; jmp KERNEL_OFFSET  ; jump to the kernel
+    ; DEBUG: mov ebx, 0xb8000
+    ; DEBUG: mov [ebx], word (0x1F << 8) | 'N'
+    
+    jmp KERNEL_OFFSET  ; jump to the kernel
     ; jmp $                   ; Hang
 
 times 510-($-$$) db 0
