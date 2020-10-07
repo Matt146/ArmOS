@@ -122,6 +122,8 @@ init_pm:
     mov ebp, 0x90000
     mov esp, ebp
 
+    sti ; re-enable interrupts
+
     ; as of now, we have completely set up protected mode
     ; call this function to jump to kernel
     call BEGIN_PM
@@ -156,10 +158,7 @@ BEGIN_PM:
     ; call kmain              ; Call our kernel's main function
     ; DEBUG: mov ebx, 0xb8000
     ; DEBUG: mov [ebx], word (0x1F << 8) | 'N'
-    
     jmp KERNEL_OFFSET  ; jump to the kernel
-    ; jmp $                   ; Hang
 
 times 510-($-$$) db 0
-
 dw 0xaa55
