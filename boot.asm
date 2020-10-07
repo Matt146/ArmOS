@@ -6,17 +6,16 @@
 [bits 16]
 
 ; Set up segment registers
-mov ax, 0x000
+mov ax, 0x0000
 mov ds, ax
 mov es, ax
-mov fs, ax
-mov gs, ax
+mov ss, ax
 
 ; Global vars
 KERNEL_OFFSET equ 0x8c00
 
 ; Set up the stack
-mov sp, 0x7c00
+mov sp, 0xAAAA
 
 ; Load the kernel using BIOS functions
 call load_kernel
@@ -153,7 +152,7 @@ print_string_pm_loop_end:
     ret
 
 BEGIN_PM:
-    call print_string_pm    ; Use our 32-bit print routine.
+    ; call print_string_pm    ; Use our 32-bit print routine.
     ; call kmain              ; Call our kernel's main function
     ; DEBUG: mov ebx, 0xb8000
     ; DEBUG: mov [ebx], word (0x1F << 8) | 'N'
