@@ -128,36 +128,7 @@ init_pm:
     ; call this function to jump to kernel
     call BEGIN_PM
 
-print_string_pm:
-    mov ebx, 0xb8000
-
-print_string_pm_loop_start:
-    cmp ebx, 0xB8FA0
-    jg print_string_pm_loop_end
-    cmp ebx, 0xB87D0
-    je print_string_pm_h
-    jmp print_string_pm_empty
-
-print_string_pm_empty:
-    mov [ebx], word (0x1F << 8) | '.'
-    jmp print_string_pm_loop_inc
-
-print_string_pm_h:
-    mov [ebx], word (0x1F << 8) | 'h'
-    jmp print_string_pm_loop_inc
-
-print_string_pm_loop_inc:
-    times 2 inc ebx
-    jmp print_string_pm_loop_start
-
-print_string_pm_loop_end:
-    ret
-
 BEGIN_PM:
-    ; call print_string_pm    ; Use our 32-bit print routine.
-    ; call kmain              ; Call our kernel's main function
-    ; DEBUG: mov ebx, 0xb8000
-    ; DEBUG: mov [ebx], word (0x1F << 8) | 'N'
     jmp KERNEL_OFFSET  ; jump to the kernel
 
 times 510-($-$$) db 0
