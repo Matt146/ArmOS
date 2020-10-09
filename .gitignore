@@ -114,10 +114,3 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,linux,assembler,c,c++
 
-# disk image stuff
-img.iso
-boot
-kernel_entry
-qemu.log
-MEMDUMP
-MEMDUMP-P
