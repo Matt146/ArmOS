@@ -125,11 +125,108 @@ init_pm:
     sti ; re-enable interrupts
 
     ; as of now, we have completely set up protected mode
-    ; call this function to jump to kernel
-    call BEGIN_PM
+    ; jump to prepare our switch to long mode
+    jmp prep_switch_to_long_mode
 
-BEGIN_PM:
-    jmp KERNEL_OFFSET  ; jump to the kernel
+
+; Page tables for hierarchical paging
+PML4T	equ 0x10000	; Page-map level-4 table
+PDPT	equ 0x11000	; Page-directory pointer table
+PDT	equ 0x12000	; Page-directory table
+PT	equ 0x13000	; Page table
+
+prep_switch_to_long_mode:
+	; Enable paging
+	mov eax, cr0                                   ; Set the A-register to control register 0.
+	and eax, 01111111111111111111111111111111b     ; Clear the PG-bit, which is bit 31.
+	mov cr0, eax
+
+	; Clear page tables
+	mov edi, PML4T	; load PML4T in edi
+	mov cr3, edi	; set cr3 to point to PML4T
+	xor eax, eax	; clear eax
+	mov ecx, 4096	; set ecx to 4096
+	rep stosd	; clear memory
+	mov edi, cr3	; set di to cr3
+
+	; Make page tables point to each other
+	mov dword[edi], 0x11003
+	add edi, 0x1000
+	mov dword [edi], 0x12003
+	add edi, 0x1000
+	mov dword [edi], 0x13003
+	add edi, 0x1000
+
+	; Identity map the first two mb
+	mov ebx, 0x00000003
+	mov ecx, 512
+
+.set_entry:
+	mov dword [edi], ebx
+	add ebx, 0x1000
+	add edi, 8
+	loop .set_entry
+
+switch_to_long_mode:
+	; set the LM bit
+	mov ecx, 0xC0000080
+	rdmsr
+	or eax, 1 << 8
+	wrmsr
+
+	; enable paging
+	mov eax, cr0
+	or eax, 1 << 31
+	mov cr0, eax
+
+	; Now in compatibility mode. We need to get into 64-bit mode
+	jmp switch_to_64_bit_submode
+
+
+GDT64:                           ; Global Descriptor Table (64-bit).
+	.Null: equ $ - GDT64         ; The null descriptor.
+	dw 0xFFFF                    ; Limit (low).
+	dw 0                         ; Base (low).
+	db 0                         ; Base (middle)
+	db 0                         ; Access.
+	db 1                         ; Granularity.
+	db 0                         ; Base (high).
+	.Code: equ $ - GDT64         ; The code descriptor.
+	dw 0                         ; Limit (low).
+	dw 0                         ; Base (low).
+	db 0                         ; Base (middle)
+	db 10011010b                 ; Access (exec/read).
+	db 10101111b                 ; Granularity, 64 bits flag, limit19:16.
+	db 0                         ; Base (high).
+	.Data: equ $ - GDT64         ; The data descriptor.
+	dw 0                         ; Limit (low).
+	dw 0                         ; Base (low).
+	db 0                         ; Base (middle)
+	db 10010010b                 ; Access (read/write).
+	db 00000000b                 ; Granularity.
+	db 0                         ; Base (high).
+	.Pointer:                    ; The GDT-pointer.
+	dw $ - GDT64 - 1             ; Limit.
+	dq GDT64                     ; Base.
+
+switch_to_64_bit_submode:
+	lgdt [GDT64.Pointer]
+	jmp GDT64.Code:Realm64
+
+[bits 64]
+Realm64:
+	cli                           ; Clear the interrupt flag.
+	mov ax, GDT64.Data            ; Set the A-register to the data descriptor.
+	mov ds, ax                    ; Set the data segment to the A-register.
+	mov es, ax                    ; Set the extra segment to the A-register.
+	mov fs, ax                    ; Set the F-segment to the A-register.
+	mov gs, ax                    ; Set the G-segment to the A-register.
+	mov ss, ax                    ; Set the stack segment to the A-register.
+	mov edi, 0xB8000              ; Set the destination index to 0xB8000.
+	mov rax, 0x1F201F201F201F20   ; Set the A-register to 0x1F201F201F201F20.
+	mov ecx, 500                  ; Set the C-register to 500.
+	rep stosq                     ; Clear the screen.
+	hlt                           ; Halt the processor.
 
 times 510-($-$$) db 0
 dw 0xaa55
