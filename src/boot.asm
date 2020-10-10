@@ -130,10 +130,13 @@ init_pm:
 
 
 ; Page tables for hierarchical paging
-PML4T	equ 0x10000	; Page-map level-4 table
-PDPT	equ 0x11000	; Page-directory pointer table
-PDT	equ 0x12000	; Page-directory table
-PT	equ 0x13000	; Page table
+; We're not gonna use this bc we're gonna use huge pages
+; of 2 MiB each. We need to identity map the first gigabyte
+; of our kernel with 512 2 MiB pages
+P4	equ 0x10000	; Page-map level-4 table (PML4T)
+P3	equ 0x11000	; Page-directory pointer table (PDPT)
+P2	equ 0x12000	; Page-directory table (PDT)
+; P1	equ 0x13000	; Page table (PT)
 
 prep_switch_to_long_mode:
 	; Enable paging
@@ -141,92 +144,53 @@ prep_switch_to_long_mode:
 	and eax, 01111111111111111111111111111111b     ; Clear the PG-bit, which is bit 31.
 	mov cr0, eax
 
-	; Clear page tables
-	mov edi, PML4T	; load PML4T in edi
-	mov cr3, edi	; set cr3 to point to PML4T
-	xor eax, eax	; clear eax
-	mov ecx, 4096	; set ecx to 4096
-	rep stosd	; clear memory
-	mov edi, cr3	; set di to cr3
+	; Map first P4 entry to P3 table
+	mov eax, P3
+	or eax, 0b11	; present + writable
+	mov [P4], eax
 
-	; Make page tables point to each other
-	mov dword[edi], 0x11003
-	add edi, 0x1000
-	mov dword [edi], 0x12003
-	add edi, 0x1000
-	mov dword [edi], 0x13003
-	add edi, 0x1000
+	; Map first P3 entry to P2 table
+	mov eax, P2
+	or eax, 0b11	; present + writable
+	mov [P3], eax
+	mov ecx, 0
 
-	; Identity map the first two mb
-	mov ebx, 0x00000003
-	mov ecx, 512
+map_P2_table:
+	; map ecx-th P2 entry to a huge page that starts at address 2 MiB*ecx
+	mov eax, 0x200000
+	mul ecx
+	or eax, 0b10000011
+	mov [P2 + ecx * 8], eax ; map ecx-th entry
 
-.set_entry:
-	mov dword [edi], ebx
-	add ebx, 0x1000
-	add edi, 8
-	loop .set_entry
+	inc ecx
+	cmp ecx, 512
+	jne map_P2_table
 
-switch_to_long_mode:
-	; set the LM bit
+load_page_tables:
+	; load top-level page table to cr3, so the CPU can see it
+	mov eax, P4
+	mov cr3, eax
+
+	; enable PAE-flag in cr4 (physical address extension)
+	mov eax, cr4
+	or eax, 1 << 5
+	mov cr4, eax
+
+	; set the long mode bit in the EFER MSR (model specific register)
 	mov ecx, 0xC0000080
 	rdmsr
 	or eax, 1 << 8
 	wrmsr
 
-	; enable paging
+	; enable paging in the cr0 register
 	mov eax, cr0
 	or eax, 1 << 31
 	mov cr0, eax
 
-	; Now in compatibility mode. We need to get into 64-bit mode
-	jmp switch_to_64_bit_submode
+in_compatibility_mode:
+	mov dword [0xb0000], 0x2f4b2f4f
+	hlt
 
-
-GDT64:                           ; Global Descriptor Table (64-bit).
-	.Null: equ $ - GDT64         ; The null descriptor.
-	dw 0xFFFF                    ; Limit (low).
-	dw 0                         ; Base (low).
-	db 0                         ; Base (middle)
-	db 0                         ; Access.
-	db 1                         ; Granularity.
-	db 0                         ; Base (high).
-	.Code: equ $ - GDT64         ; The code descriptor.
-	dw 0                         ; Limit (low).
-	dw 0                         ; Base (low).
-	db 0                         ; Base (middle)
-	db 10011010b                 ; Access (exec/read).
-	db 10101111b                 ; Granularity, 64 bits flag, limit19:16.
-	db 0                         ; Base (high).
-	.Data: equ $ - GDT64         ; The data descriptor.
-	dw 0                         ; Limit (low).
-	dw 0                         ; Base (low).
-	db 0                         ; Base (middle)
-	db 10010010b                 ; Access (read/write).
-	db 00000000b                 ; Granularity.
-	db 0                         ; Base (high).
-	.Pointer:                    ; The GDT-pointer.
-	dw $ - GDT64 - 1             ; Limit.
-	dq GDT64                     ; Base.
-
-switch_to_64_bit_submode:
-	lgdt [GDT64.Pointer]
-	jmp GDT64.Code:Realm64
-
-[bits 64]
-Realm64:
-	cli                           ; Clear the interrupt flag.
-	mov ax, GDT64.Data            ; Set the A-register to the data descriptor.
-	mov ds, ax                    ; Set the data segment to the A-register.
-	mov es, ax                    ; Set the extra segment to the A-register.
-	mov fs, ax                    ; Set the F-segment to the A-register.
-	mov gs, ax                    ; Set the G-segment to the A-register.
-	mov ss, ax                    ; Set the stack segment to the A-register.
-	mov edi, 0xB8000              ; Set the destination index to 0xB8000.
-	mov rax, 0x1F201F201F201F20   ; Set the A-register to 0x1F201F201F201F20.
-	mov ecx, 500                  ; Set the C-register to 500.
-	rep stosq                     ; Clear the screen.
-	hlt                           ; Halt the processor.
 
 times 510-($-$$) db 0
 dw 0xaa55
