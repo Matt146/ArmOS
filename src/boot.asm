@@ -192,7 +192,12 @@ map_P2_table:
 ; 11. Enable PAE by setting the PAE bit in cr4
 ; 12. Set the long mode bit in the EFER MSR
 ; =========LONG MODE (COMPATIBILITY)=== 
-; 
+; 13. Setup a 64-bit GDT 
+; 14. Load the 64-bit GDT
+; 15. Far jump
+; 16. Set segment registers
+; =========LONG MODE (64-BIT)==========
+; 17. Jump to kernel
 load_page_tables:
 	; load top-level page table to cr3, so the CPU can see it
 	; CR3 is the register that contains the top-level page table
