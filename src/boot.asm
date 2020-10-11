@@ -5,7 +5,8 @@
 [org 0x7c00]
 [bits 16]
 
-; Set up segment registers
+; Set up segment registers by setting all of them, 
+; except for cs, to 0
 mov ax, 0x0000
 mov ds, ax
 mov es, ax
@@ -133,17 +134,25 @@ init_pm:
 ; We're not gonna use this bc we're gonna use huge pages
 ; of 2 MiB each. We need to identity map the first gigabyte
 ; of our kernel with 512 2 MiB pages
-P4	equ 0x10000	; Page-map level-4 table (PML4T)
-P3	equ 0x11000	; Page-directory pointer table (PDPT)
-P2	equ 0x12000	; Page-directory table (PDT)
-; P1	equ 0x13000	; Page table (PT)
+; https://os.phil-opp.com/entering-longmode/
+P4	equ 0x15000	; Page-map level-4 table (PML4T)
+P3	equ 0x16000	; Page-directory pointer table (PDPT)
+P2	equ 0x17000	; Page-directory table (PDT)
+; P1	equ 0x18000	; Page table (PT)
 
 prep_switch_to_long_mode:
-	; Enable paging
-	mov eax, cr0                                   ; Set the A-register to control register 0.
-	and eax, 01111111111111111111111111111111b     ; Clear the PG-bit, which is bit 31.
-	mov cr0, eax
+	; zero eax
+	xor eax, eax
+	mov ecx, 0x17000
 
+zero_tables:
+	mov [ecx], dword 0	; write zero
+	dec ecx
+	cmp ecx, 0x15000
+	jne zero_tables
+	jmp map_P4_P3_tables
+
+map_P4_P3_tables:
 	; Map first P4 entry to P3 table
 	mov eax, P3
 	or eax, 0b11	; present + writable
@@ -153,6 +162,7 @@ prep_switch_to_long_mode:
 	mov eax, P2
 	or eax, 0b11	; present + writable
 	mov [P3], eax
+
 	mov ecx, 0
 
 map_P2_table:
@@ -166,21 +176,42 @@ map_P2_table:
 	cmp ecx, 512
 	jne map_P2_table
 
+; So here's how we get from real > protected > long mode
+; =========REAL MODE==================
+; 1. Disable interrupts
+; 2. Make a GDT
+; 3. Load the GDT using lgdt
+; 4. Set CR0's first bit
+; 5. Far jump to set CS:EIP
+; 6. Set your segment registers to the correct value (offsets into the GDT)
+; 7. Set your stack up properly (ebp and esp)
+; 8. Re-enable interrupts
+; =========PROTECTED MODE==============
+; 9. Setup page tables
+; 10. Load top page table to CR3 register
+; 11. Enable PAE by setting the PAE bit in cr4
+; 12. Set the long mode bit in the EFER MSR
+; =========LONG MODE (COMPATIBILITY)=== 
+; 
 load_page_tables:
 	; load top-level page table to cr3, so the CPU can see it
+	; CR3 is the register that contains the top-level page table
+	; address
 	mov eax, P4
 	mov cr3, eax
 
 	; enable PAE-flag in cr4 (physical address extension)
+	; Allows for 36-bit protected mode addresses
 	mov eax, cr4
 	or eax, 1 << 5
 	mov cr4, eax
 
 	; set the long mode bit in the EFER MSR (model specific register)
-	mov ecx, 0xC0000080
-	rdmsr
-	or eax, 1 << 8
-	wrmsr
+	; This allows us to switch to long mode
+	mov ecx, 0xC0000080	; the MSR we are reading/writing to
+	rdmsr			; put the value of the MSR specified by ecx into edx:eax
+	or eax, 1 << 8		; set the long mode bit
+	wrmsr			; write it back to the MSR
 
 	; enable paging in the cr0 register
 	mov eax, cr0
@@ -189,7 +220,45 @@ load_page_tables:
 
 in_compatibility_mode:
 	mov dword [0xb0000], 0x2f4b2f4f
-	hlt
+	jmp get_into_64_bit_mode
+
+gdt64_start:
+
+gdt64_null:
+	dq 0
+
+gdt64_code:
+	dq (1<<43) | (1<<44) | (1<<47) | (1<<53)
+
+gdt64_end:
+
+gdt64_descriptor:
+	dw $ - gdt64_start - 1	; 2 bytes for size
+	dq gdt64_start		; 8 bytes for starting address
+
+; gdt_64 constants
+GDT64_CODE_SEG  equ  gdt64_code  - gdt64_start
+
+get_into_64_bit_mode:
+	; load the 64-bit GDT
+	lgdt [gdt64_descriptor]
+
+	; Far jump to set cs:rip
+	jmp GDT64_CODE_SEG:LONG_MODE_START
+
+[bits 64]
+LONG_MODE_START:
+	; YAY! We're in 64-bit submode now	
+	; Time to load 0 into all data segment registers
+	mov ax, 0
+	mov ss, ax
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+	; Jump to kernel
+	jmp KERNEL_OFFSET
 
 
 times 510-($-$$) db 0
