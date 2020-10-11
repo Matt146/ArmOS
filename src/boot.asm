@@ -82,7 +82,7 @@ enable_a20_main:
     ; If none of these, work just halt and print "B"
     jmp enable_a20_main_fail
 
-enable_a20_main_end
+enable_a20_main_end:
     mov sp, bp
     pop bp
     ret
