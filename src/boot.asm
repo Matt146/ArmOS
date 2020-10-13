@@ -411,7 +411,9 @@ LONG_MODE_START:
 	mov gs, ax
 
 	; Jump to kernel
-	jmp KERNEL_OFFSET
+	call KERNEL_OFFSET
+
+	jmp $	; HANG
 
 
 times 510-($-$$) db 0
