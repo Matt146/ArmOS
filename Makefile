@@ -15,8 +15,8 @@ all:
 	# Link the kernel
 	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
 	# Compile the bootloader
-	nasm -f bin src/boot.asm -o build/boot
-	cat build/boot build/kernel.bin > build/img.iso
+	nasm -f bin src/boot.asm -o build/boot.bin
+	cat build/boot.bin build/kernel.bin > build/img.iso
 	# Pad the ISO to 32 KB
 	dd if=/dev/zero bs=1 count=32768 >> build/img.iso
 	# Boot the OS in QEMU
@@ -27,5 +27,5 @@ clean:
 	find . -type f -name '.*.un~' -delete
 	find . -type f -name '*~' -delete
 	# Clean up bootloader and kernel obj file now, so everything left should just be an object file
-	rm build/kernel.bin
-	rm build/boot
+	find build -type f -name '*.bin' -delete
+	find build -type f -name '*.o' -delete
