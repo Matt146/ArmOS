@@ -1,0 +1,41 @@
+# Kernel source file variables
+kernel_sources_c = src/kernel.c
+kernel_sources_asm = src/idt.asm
+kernel_bin = build/kernel.bin
+
+# Kernel object files
+kernel_obj_c = build/kernel.o
+kernel_obj_asm = build/idt.o
+
+all:
+	# Compile the kernel C sources
+	gcc -ffreestanding -c $(kernel_sources_c) -o $(kernel_obj_c)
+	# Compile the kernel asm sources
+	nasm -f bin $(kernel_sources_asm) -o $(kernel_obj_asm)
+	# Link the kernel
+	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
+	# Compile the bootloader
+	nasm -f bin src/boot.asm -o build/boot
+	cat build/boot build/kernel.bin > build/img.iso
+	# Pad the ISO to 32 KB
+	dd if=/dev/zero bs=1 count=32768 >> build/img.iso
+	# Boot the OS in QEMU
+	qemu-system-x86_64 build/img.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown
+
+clean:
+	# Clean up vim save/undo files
+	rm -r .*.un~
+	rm -r *~
+	
+	# Clean up bootloader and kernel obj file now, so everything left should just be an object file
+	rm build/kernel.bin
+	rm build/boot
+
+
+clean-all:
+	# Clean up vim save/undo files
+	rm -r .*.un~
+	rm -r *~
+
+	# Clean up build files
+	rm -r build/*
