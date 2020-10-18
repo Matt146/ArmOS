@@ -23,10 +23,7 @@ all:
 	qemu-system-x86_64 build/img.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown
 
 clean:
-	# Clean up vim save/undo files
-	find build -type f -name '*.o' -delete
-	find src -type f -name '.*.un~' -delete
-	find src -type f -name '*~' -delete
+	# Clean up vim save/undo files	
 	find . -type f -name '.*.un~' -delete
 	find . -type f -name '*~' -delete
 	# Clean up bootloader and kernel obj file now, so everything left should just be an object file
