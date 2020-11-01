@@ -1,6 +1,16 @@
 [bits 64]
 global isr_common_stub
 isr_common_stub:
+    ; Receiving interrupt in ISR
+    ;cli
+    ;pusha
+    ;push ds
+
+    ; Sending interrupt
+    ;pop ds
+    ;popa
+    ;sti
+    ;iretq
     iretq
 
 global isr_0

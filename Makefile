@@ -9,9 +9,9 @@ kernel_obj_asm = isr.o
 
 all:
 	# Compile the kernel C sources
-	gcc -ffreestanding -c $(kernel_sources_c)
+	gcc -c $(kernel_sources_c)
 	# Compile the kernel asm sources
-	nasm -f bin $(kernel_sources_asm) -o $(kernel_obj_asm)
+	nasm -f elf64 $(kernel_sources_asm) -o $(kernel_obj_asm)
 	# Link the kernel
 	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
 	# Compile the bootloader

@@ -18,8 +18,8 @@ void assign_isr(uint8_t vector_num,  uint64_t isr_offset, uint16_t cs_selector, 
 
 // load_idt - loads the IDT using the idtr
 void load_idt(struct IDTR idtr) {
-    idtr.size = sizeof(IDT);
-    idtr.start = &IDT;
+    idtr.size = 4096;
+    idtr.start = (uint64_t)&IDT;
     __asm__ __volatile__("lidt %0" : : "m"(idtr));
 }
 
