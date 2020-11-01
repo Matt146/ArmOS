@@ -12,10 +12,11 @@ int kmain() {
         
         // Initialize interrupts
         term_kprint("Initializing interrupts...\n", 0x1F);
+        init_idt();
 
         // Test interrupt
         term_kprint("Testing interrupts...\n", 0x1F);
-        __asm__("int $128\n");
+        __asm__("int $0x80\n");
         term_kprint("TEST SUCCESS!\n", 0x1F);
 
         __asm__("cli\nhlt\n");

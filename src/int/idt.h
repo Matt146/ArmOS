@@ -8,21 +8,26 @@
 struct IDT_Gate {
         uint16_t        offset_1;       // offset bits 0..15
         uint16_t        selector;       // the code segment selector in GDT or LDT
-        uint16_t        options;        // configure interrupt stuff; look up what each bit does
+        uint8_t         ist;            // bits 0..2 hold IST offset, rest of bits are zero
+        uint8_t         attributes;     // types of gate
         uint16_t        offset_2;       // offset bits 16..31
         uint32_t        offset_3;       // offset bits 32..63
         uint32_t        zero;           // reserved
 } __attribute__((packed));
 
 struct IDT_Gate IDT[256];
+struct IDTR idtr;               // btw, this isn't the actual IDTR register obviously
+                                // just the IDTR value here so there's no stack checking error
+                                // when doing lidt, but the value from here is copied into
+                                // the IDTR register
 
 struct IDTR {
         uint16_t size;          // size of the IDT (16 bits)
         uint64_t start;         // starting address of IDT (64 bits)
 } __attribute__((packed));
 
-void assign_isr(uint8_t vector_num,  uint64_t isr_offset,  uint16_t cs_selector, uint16_t options);
-void load_idt(struct IDTR idtr);
+void assign_isr(uint8_t vector_num, uint64_t isr_offset, uint16_t cs_selector, uint8_t ist, uint8_t attributes);
+void load_idt();
 
 void init_idt();                // Setups up IDT
 

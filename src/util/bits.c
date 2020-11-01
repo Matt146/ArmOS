@@ -9,7 +9,7 @@
 uint64_t create_bitmask(uint64_t a, uint64_t b) {
     uint64_t r = 0;
     for (uint64_t i = a; i <= b; i++) {
-        r |= 1 << i;
+        r |= (1 << i);
     }
 
     return r;

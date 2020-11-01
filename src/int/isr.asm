@@ -1,16 +1,35 @@
 [bits 64]
 global isr_common_stub
 isr_common_stub:
-    ; Receiving interrupt in ISR
-    ;cli
-    ;pusha
-    ;push ds
+    cli
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    push rbp
+    push rsi
+    push rdi
+    mov rax, 0
+    mov ds, rax
+    mov fs, rax
+    mov es, rax
+    mov gs, rax
 
-    ; Sending interrupt
-    ;pop ds
-    ;popa
-    ;sti
-    ;iretq
+    ; Do work here
+    mov rax, 0xdeadbeaf
+    jmp $
+    hlt
+
+    ; Returning from interrupt
+    ; iretq automatically re-enables IF flag and
+    ; returns processor state
+    pop rax
+    pop rbx
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+    sti
     iretq
 
 global isr_0
