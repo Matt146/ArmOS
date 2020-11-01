@@ -1,11 +1,11 @@
 # Kernel source file variables
-kernel_sources_c = src/kernel.c src/util/vga.c
-kernel_sources_asm = src/idt.asm
+kernel_sources_c = src/kernel.c src/driver/vga.c src/util/bits.c src/int/idt.c
+kernel_sources_asm = src/int/isr.asm
 kernel_bin = build/kernel.bin
 
 # Kernel object files
-kernel_obj_c = kernel.o vga.o
-kernel_obj_asm = idt.o
+kernel_obj_c = kernel.o vga.o bits.o idt.o
+kernel_obj_asm = isr.o
 
 all:
 	# Compile the kernel C sources
