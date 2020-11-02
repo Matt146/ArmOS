@@ -1,7 +1,7 @@
 [bits 64]
 global isr_common_stub
 isr_common_stub:
-    ; Save processor state of GRP's
+    ; Save processor state of GPR's
     ; Notice how we don't push rsp - that's bc
     ; that's pushed on automatically when an interrupt occurs.
     ; When an interrupt occurs, here's what's pushed onto stack
