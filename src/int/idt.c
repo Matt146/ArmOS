@@ -12,7 +12,7 @@ void assign_isr(uint8_t vector_num, uint64_t isr_offset, uint16_t cs_selector, u
     IDT[vector_num].zero = 0; 
 }
 
-// load_idt - loads the IDT into the IDTR register using the lidt instruction
+// load_idt - loads the IDT base and limit into the IDTR register using the lidt instruction
 void load_idt() {
     idtr.size = 4096;
     idtr.start = (uint64_t)&IDT;
