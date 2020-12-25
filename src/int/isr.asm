@@ -29,10 +29,6 @@ isr_common_stub:
     push r15
 
     ; Save processor state of segment registers
-    push ds
-    push fs
-    push es
-    push gs
 
     ; Reload data segments to kernel data segements.
     ; When an interrupt occurs, cs is already loaded
@@ -53,10 +49,6 @@ isr_common_stub:
     ; iretq pops off stuff pushed in before the ISR
     ; is called (Error code, rip, cs, etc.), but must be called
     ; last since these were pushed on first onto the stack
-    pop gs
-    pop es
-    pop fs
-    pop ds
     pop r15
     pop r14
     pop r13

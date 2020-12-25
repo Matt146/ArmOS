@@ -1,17 +1,18 @@
 # Kernel source file variables
-kernel_sources_c = src/kernel.c src/driver/vga.c src/util/bits.c src/int/idt.c
-kernel_sources_asm = src/int/isr.asm
+kernel_sources_c = src/kernel.c src/driver/vga.c src/util/bits.c src/int/idt.c src/mem/kmalloc.c
+kernel_sources_asm = src/int/isr.asm src/mem/kmalloc_asm.asm
 kernel_bin = build/kernel.bin
 
 # Kernel object files
-kernel_obj_c = kernel.o vga.o bits.o idt.o
-kernel_obj_asm = isr.o
+kernel_obj_c = kernel.o vga.o bits.o idt.o kmalloc.o
+kernel_obj_asm = isr.o kmalloc_asm.o
 
 all:
 	# Compile the kernel C sources
 	gcc -c $(kernel_sources_c)
 	# Compile the kernel asm sources
-	nasm -f elf64 $(kernel_sources_asm) -o $(kernel_obj_asm)
+	nasm -f elf64 src/int/isr.asm -o isr.o
+	nasm -f elf64 src/mem/kmalloc_asm.asm -o kmalloc_asm.o
 	# Link the kernel
 	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
 	# Compile the bootloader
