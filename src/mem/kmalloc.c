@@ -10,7 +10,7 @@ void identity_map_page(uint64_t vaddr, uint64_t flags) {
     // map pages
     *(pml4_ptr + cur_pml4_entry * 8) = (uint64_t)pdpt_ptr | 0x3;
     *(pdpt_ptr + cur_pdpt_entry * 8) = (uint64_t)pdt_ptr | 0x3;
-    *(pdt_ptr + cur_pdt_entry * 8) = (vaddr | flags) | 0b10000011;
+    *(pdt_ptr + cur_pdt_entry * 8) = (vaddr | flags) | 0b10000000;
     cur_pdt_entry += 1;
     term_kprint("3. \n", 0x1F);
 
@@ -31,7 +31,15 @@ void identity_map_page(uint64_t vaddr, uint64_t flags) {
     }
 
     if (cur_pml4_entry >= 512) {
-        term_kprint("Ran outta memory, faggot.", 0x1F);
+        term_kprint("Ran outta memory, retard.", 0x1F);
+    }
+    term_kprint("4. \n", 0x1F);
+}
+
+void zero_addr_range(uint64_t start, uint64_t bytes) {
+    for (start; start < start + bytes; start += 1) {
+        unsigned char* x = (unsigned char*)start;
+        *x = 0;
     }
 }
 

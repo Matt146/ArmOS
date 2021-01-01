@@ -17,7 +17,7 @@ int kmain() {
 
         // Kernel map some pages for the hell of it, ezzz
         term_kprint("Mapping pages...\n", 0x1F);
-        for (size_t i = 0; i < 2; i++) {
+        for (uint64_t i = 0; i < 2; i++) {
                 unsigned char* mem = (unsigned char*)kmalloc();
         }
         term_kprint("MAPPING WORKED!\n", 0x1F);
