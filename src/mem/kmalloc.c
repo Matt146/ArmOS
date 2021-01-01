@@ -1,39 +1,29 @@
 #include "kmalloc.h"
 
-void identity_map_page(uint64_t vaddr, uint64_t flags) {
-    term_kprint("1.\n", 0x1F);
-    uint64_t* pml4_ptr = PML4;
-    uint64_t* pdpt_ptr = PDPT;
-    uint64_t* pdt_ptr = PDT;
-    term_kprint("2. \n", 0x1F);
+void map_page(uint64_t vaddr, uint64_t paddr, uint64_t flags) {
+    // Get page struct offsets associated with virtual addresss
+    size_t pml4idx = (vaddr & ((uint64_t)0x1ff << 39)) >> 39;
+    size_t pml3idx = (vaddr & ((uint64_t)0x1ff << 30)) >> 30;
+    size_t pml2idx = (vaddr & ((uint64_t)0x1ff << 21)) >> 21;
 
-    // map pages
-    *(pml4_ptr + cur_pml4_entry * 8) = (uint64_t)pdpt_ptr | 0x3;
-    *(pdpt_ptr + cur_pdpt_entry * 8) = (uint64_t)pdt_ptr | 0x3;
-    *(pdt_ptr + cur_pdt_entry * 8) = (vaddr | flags) | 0b10000000;
-    cur_pdt_entry += 1;
-    term_kprint("3. \n", 0x1F);
-
-    if (cur_pdt_entry >= 512) {
-        cur_pdt_entry = 0;
-        PDT += 0x1000;
-        cur_pdpt_entry += 1;
-    }
-
-    if (cur_pdpt_entry >= 512) {
-        cur_pdpt_entry = 0;
-        if (PDPT == 0x16000) {
-            PDPT += 0x600000;
+    // Use offsets to obtain the addresses of the page structs associated with
+    // said virtual addresses
+    uint64_t* pml3 = (uint64_t*)(PML4[pml4idx] & ~0xfff);
+    if (pml3 == NULL) {
+        if ((uint64_t)PDPT == 0x16000) {
+            PDPT = 0x600000;
         } else {
             PDPT += 0x1000;
         }
-        cur_pml4_entry += 1;
+        PML4[pml4idx] = (uint64_t)PDPT | 0x3; // create a new page table structure
     }
-
-    if (cur_pml4_entry >= 512) {
-        term_kprint("Ran outta memory, retard.", 0x1F);
+    uint64_t* pml2 = (uint64_t*)(pml3[pml3idx] & ~0xfff);
+    if (pml2 == NULL) {
+        pml3[pml3idx] = (uint64_t)PDT | 0x3;
+        PDT += 0x1000;
     }
-    term_kprint("4. \n", 0x1F);
+    pml2[pml2idx] = (paddr | flags) | 0b10000000;
+    refresh_page_tables();
 }
 
 void zero_addr_range(uint64_t start, uint64_t bytes) {
@@ -44,9 +34,7 @@ void zero_addr_range(uint64_t start, uint64_t bytes) {
 }
 
 void* kmalloc() {
-    identity_map_page(cur_mem_addr, 0x3);
-    void* return_val = (void*)cur_mem_addr;
-    cur_mem_addr += 0x200000;
-    refresh_page_tables();
+    map_page(1677721600, 3355443200, 0x3);
+    void* return_val = (void*)0x60000000;
     return return_val;
 }
