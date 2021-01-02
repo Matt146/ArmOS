@@ -35,6 +35,7 @@ This is an OS that I'm writing myself totally from scratch.
 - GCC
 - GNU Linker
 - QEMU
+- GNU Make
 - dd
 ### Run:
 - Run with `make`
