@@ -14,7 +14,7 @@ KERNEL_OFFSET equ 0x8c00
 
 ; Set up segment registers by setting all of them, 
 ; except for cs, to 0
-mov ax, 0x0000	; Set ax to 0x0000 because that's what the value of our segment regs will be set to
+xor ax, ax  ; set ax to 0
 mov ds, ax	; Setup data segment
 mov es, ax	; Setup extra segment
 mov ss, ax	; Setup stack segment
@@ -25,7 +25,42 @@ mov bp, sp	; Setup base pointer to keep track of stack. If you're reading this, 
 
 call load_kernel	     ; Load the kernel using BIOS functions
 call enable_a20_main	     ; Enable the A20 line
+xor ebx, ebx                ; Clear ebx before you query the address map. Must be 0 on the first call, and contains the "continuation value" to get the next "run" of physical memory. This value is returned by a previous call to this routine.
+call query_memory_map      ; Query the system address map from BIOS int 0x15, ax=0x820
 jmp switch_to_protected_mode ; Now, we go to protected mode
+
+; ===========================================
+;       QUERY ADDRESS MAP OF SYSTEM
+; ===========================================
+MEMORY_MAP_LOCATION equ 0x1000:0x3000
+query_memory_map:
+    mov eax, 0xE820             ; int 0x15 function id
+    mov di, MEMORY_MAP_LOCATION ; int 0x15, ax=0xE820 will return the memory map in es:di
+    mov ecx, 0x100             ; max length of that "run" of memory map
+    mov edx, 0x534D4150         ; magic number
+    int 0x15
+
+    ; Return values:
+    ; CF - Carry Flag - Non-Carry indicates no error
+    ; EAX - Signature to verify correct BIOS revision
+    ; ES:DI - Buffer pointer - returned address range descriptor pointer. Same value as on input
+    ; ECX - Buffer size - Number of bytes returned by the BIOS in the address range descriptor
+    ; EBX - Continuation - "Continuation" value to get the next address descriptor. Must be zero on first call. Returns 0 if it's the last valid descriptor
+
+    ; Check for errors
+    jc query_memory_map_error
+
+    ; Check continuation value 
+    cmp ebx, 0 ; compare ebx to zero to check if it's the last valid descriptor
+    jne query_memory_map
+    ret
+
+query_memory_map_error:
+    mov ah, 0x0e
+    mov al,'S'
+    int 0x10
+    jmp $
+
 
 ; ===========================================
 ;	    KERNEL LOADING FUNCTIONS
@@ -54,133 +89,15 @@ disk_error:
     int 0x10
     jmp $
 
-; ===========================================
-;	FUNCTIONS TO ENABLE A20 GATE
-; ===========================================
+; ==========================================
+;       ENABLE A20 LINE
+; ==========================================
 enable_a20_main:
-    push bp
-    mov bp, sp
-
-    ; Try the keyboard controller method
-    call enable_a20_keyboard
-    call check_a20
-    cmp ax, 1
-    je enable_a20_main_end
-
-    ; Try the bios method
-    call enable_a20_bios
-    call check_a20
-    cmp ax, 1
-    je enable_a20_main_end
-
-    ; Try the fast a20 method
-    call enable_a20_fast
-    call check_a20
-    cmp ax, 1
-    je enable_a20_main_end
-
-    ; If none of these, work just halt and print "B"
-    jmp enable_a20_main_fail
-
-enable_a20_main_end:
-    mov sp, bp
-    pop bp
-    ret
-
-enable_a20_main_fail:
-   mov ah, 0x0e 
-   mov al, 'B'
-   int 0x10
-   cli
-   hlt
-   jmp $
-
-; The keybaord control method to enable 
-; the a20 gate
-enable_a20_keyboard:
-    push bp
-    mov bp, sp
-
-    mov al, 0xdd
-    out 0x64, al
-
-    mov sp, bp
-    pop bp
-    ret
-
-; The BIOS method to enable the a20 gate
-enable_a20_bios:
-    push bp
-    mov bp, sp
-
-    mov ax, 0x2401
-    int 0x15
-
-    mov sp, bp
-    pop bp
-    ret
-
-; Fast a20 method - fast, but dangerous ;)
-enable_a20_fast:
-    push bp
-    mov bp, sp
-    
+    ; Fast a20 method - I honestly don't care about having
+    ; the other methods. This will work on most CPU's.
     mov al, 2
     out 0x92, al
 
-    mov sp, bp
-    pop bp
-    ret
-
-
-; Ez way of checking a20. Really helpful
-check_a20:
-    pushf
-    push ds
-    push es
-    push di
-    push si
- 
-    cli
- 
-    xor ax, ax ; ax = 0
-    mov es, ax
- 
-    not ax ; ax = 0xFFFF
-    mov ds, ax
- 
-    mov di, 0x0500
-    mov si, 0x0510
- 
-    mov al, byte [es:di]
-    push ax
- 
-    mov al, byte [ds:si]
-    push ax
- 
-    mov byte [es:di], 0x00
-    mov byte [ds:si], 0xFF
- 
-    cmp byte [es:di], 0xFF
- 
-    pop ax
-    mov byte [ds:si], al
- 
-    pop ax
-    mov byte [es:di], al
- 
-    mov ax, 0
-    je check_a20__exit
- 
-    mov ax, 1
- 
-check_a20__exit:
-    pop si
-    pop di
-    pop es
-    pop ds
-    popf
- 
     ret
 
 ; ==========================================
@@ -299,13 +216,11 @@ zero_tables:
 
 map_P4_P3_tables:
 	; Map first P4 entry to P3 table
-	mov eax, P3
-	or eax, 0b11	; present + writable
+	mov eax, P3 | 0b11 ; present + writable
 	mov [P4], eax
 
 	; Map first P3 entry to P2 table
-	mov eax, P2
-	or eax, 0b11	; present + writable
+	mov eax, P2 | 0b11 ; present + writable	
 	mov [P3], eax
 
 	mov ecx, 0
@@ -403,7 +318,7 @@ get_into_64_bit_mode:
 LONG_MODE_START:
 	; YAY! We're in 64-bit submode now	
 	; Time to load 0 into all data segment registers
-	mov ax, 0
+	xor ax, ax
 	mov ss, ax
 	mov ds, ax
 	mov es, ax
