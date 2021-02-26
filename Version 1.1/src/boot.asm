@@ -26,17 +26,26 @@ mov bp, sp	; Setup base pointer to keep track of stack. If you're reading this, 
 call load_kernel	     ; Load the kernel using BIOS functions
 call enable_a20_main	     ; Enable the A20 line
 xor ebx, ebx                ; Clear ebx before you query the address map. Must be 0 on the first call, and contains the "continuation value" to get the next "run" of physical memory. This value is returned by a previous call to this routine.
+xor ecx, ecx                ; Clear ecx before you query the address map
+MEMORY_MAP_LOCATION_ES equ 0x1000
+MEMORY_MAP_LOCATION_DI equ 0x3000
+xor ax, ax
+mov ax, MEMORY_MAP_LOCATION_ES
+mov es, ax
+mov di, ax ; int 0x15, ax=0xE820 will return the memory map in es:di
 call query_memory_map      ; Query the system address map from BIOS int 0x15, ax=0x820
+xor eax, eax
+mov es, ax
+mov di, ax
 jmp switch_to_protected_mode ; Now, we go to protected mode
 
 ; ===========================================
 ;       QUERY ADDRESS MAP OF SYSTEM
 ; ===========================================
-MEMORY_MAP_LOCATION equ 0x1000:0x3000
 query_memory_map:
     mov eax, 0xE820             ; int 0x15 function id
-    mov di, MEMORY_MAP_LOCATION ; int 0x15, ax=0xE820 will return the memory map in es:di
-    mov ecx, 0x100             ; max length of that "run" of memory map
+    add edi, 0x18                ; 24 byte entries
+    mov ecx, 0x18             ; max length of that "run" of memory map
     mov edx, 0x534D4150         ; magic number
     int 0x15
 
@@ -53,6 +62,10 @@ query_memory_map:
     ; Check continuation value 
     cmp ebx, 0 ; compare ebx to zero to check if it's the last valid descriptor
     jne query_memory_map
+    
+query_memory_map_end:
+    add edi, 0x18
+    mov dword [edi], 0xdeadbeef
     ret
 
 query_memory_map_error:
