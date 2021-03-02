@@ -31,3 +31,17 @@
     - Worked on VGA Drvier
     - Found out kernel no workie and I think the error is possibly a page fault
     - RAX = CR2 = CR2=0x00000000800000ff
+
+02/25/2021:
+    - Got into kernel! - Error was that I used cat wrong to combine
+    both the compiled kernel and the bootloader.
+    - Worked more on VGA Drvier
+
+03/01/2021:
+    - Worked on VGA Driver: fixed bug on putc
+    - TODO:
+        - Take notes on IN/OUT instructions
+        - Take notes on VGA after completion
+        - Review calling conventions
+        - Take notes on paging
+        - Start interrupt handlers

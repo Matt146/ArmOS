@@ -1,8 +1,8 @@
 # Boot Source Files & Outputs
 boot_asm = src/boot/boot.asm
 # Kernel Source Files & Outputs
-kernel_sources_c = src/kernel.c src/driver/vga/vga.c
-kernel_obj_c = kernel.o vga.o
+kernel_sources_c = src/kernel.c src/driver/vga/vga.c src/int/isr.c
+kernel_obj_c = kernel.o vga.o isr.o
 kernel_sources_asm = src/driver/etc/io_asm.asm
 kernel_obj_asm = io_asm.o
 

@@ -4,12 +4,12 @@ ENTRY(kmain)
 
 SECTIONS
 {
-    /*. = 0x9000;*/
+    . = 0x9000;
 
-    .text 0x9000 : {
+    .text : {
         *(.text)
     }
-/*
+
     .data : ALIGN(0x1000)
     {
         *(.data)
@@ -25,5 +25,4 @@ SECTIONS
         *(COMMON)
         *(.bss)
     }
-    */
 }

@@ -31,6 +31,11 @@ setup_stack:
     mov sp, 0x7C00
     mov bp, sp
 
+set_video_mode:
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
+
 ; If this doesn't work, you need to jump out of the year 1990
 enable_a20:
     in al, 0x92
@@ -265,7 +270,7 @@ LONG_MODE_START:
     ; jmp $
 
 	; Jump to kernel
-	jmp KERNEL_OFFSET
+	call KERNEL_OFFSET
 
 	jmp $	; HANG
 
