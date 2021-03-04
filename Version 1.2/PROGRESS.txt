@@ -45,3 +45,20 @@
         - Review calling conventions
         - Take notes on paging
         - Start interrupt handlers
+
+03/02/2021:
+    - Took some notes on VGA text mode
+        - Differences between VGA, VBE, GOP, and VESA
+        - Text mode stuff
+    - TODO:
+        - Look into framebuffers later
+
+03/03/2021:
+    - Did research on interrupts: read osdev wiki, AMD manual, and intel manual
+    - Worked on IDT
+    - TODO:
+        - Implement interrupts
+        - Test IDT
+        - Take notes on interrupts
+        - Look into ACPI to parse MADT to configure APIC
+        - Look into configuring APIC later
