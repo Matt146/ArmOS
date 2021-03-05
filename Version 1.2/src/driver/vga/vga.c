@@ -27,6 +27,7 @@ void vga_print(char* str, size_t len, uint8_t color) {
     for (size_t i = 0; i < len; i++) {
         if (str[i] == '\n') {
             vga_csr_y += 1;
+            vga_csr_x = 0;
         } else if (str[i] == '\t') {
             vga_csr_x += VGA_TERM_TAB_WIDTH;
         } else {

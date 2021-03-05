@@ -1,8 +1,10 @@
 #include "driver/vga/vga.h"
 #include "driver/etc/io.h"
+#include "int/isr.h"
 
 __attribute__((section(".text")))
 int kmain() {
+    // Do some hello world print shit
     vga_cls(VGA_COLOR_RED);
     for (size_t i = 0; i < 2000; i++) {
         vga_putc('A' + (i % 42), VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
@@ -10,6 +12,16 @@ int kmain() {
     vga_cls(VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
     char* str = "\n\tHello, world!";
     vga_print(str, 15, VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
+
+    // Initialize interrupts
+    init_interrupts();
+    vga_print(str, 15, VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
+
+    // DEBUG
+    DEBUG();
+
+    vga_print(str, 15, VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
+    // Busy loop
     while (1 == 1) {
 
     }

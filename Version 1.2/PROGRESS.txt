@@ -62,3 +62,11 @@
         - Take notes on interrupts
         - Look into ACPI to parse MADT to configure APIC
         - Look into configuring APIC later
+
+03/04/2021:
+    - Crappy interrupt bug. 0xdeadbeef one
+    - You can call interrupts WITHOUT configuring APIC. You can use int, because the APIC
+    is responsible with dealing with hardware interrupts. The "int" instruction is a "software" interrupt.
+    Therefore, you need to configure APIC when dealing with external (hardware) interrupts, but you can test
+    the IDT with the "int" instruction and triggering software interrupts.
+    - Also, make sure to check for pointer decay. That was a crappy bug.

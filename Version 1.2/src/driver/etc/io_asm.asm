@@ -29,7 +29,7 @@ DEBUG:
     push rbp
     mov rbp, rsp
 
-    mov rax, 0xDEADBEEF
+    int 0xE
 
     mov rsp, rbp
     pop rbp
