@@ -16,7 +16,7 @@ link = linker.ld
 
 kernel:
 	# Compile the kernel C sources
-	gcc -c -m64 -mno-red-zone $(kernel_sources_c)
+	gcc -c -m64 -mno-red-zone -fno-pic $(kernel_sources_c)
 	# Compile the kernel asm sources
 	nasm -f elf64 src/driver/etc/io_asm.asm -o io_asm.o
 	nasm -f elf64 src/int/idt_asm.asm -o idt_asm.o

@@ -22,6 +22,4 @@ isr_common_stub:
     ; 6. Error code (optional)
     ; Do work here - INFINITE LOOP FOR DEBUG
     mov rax, 0xdeadbeef
-    add rsp, 8
-    jmp $
     iretq

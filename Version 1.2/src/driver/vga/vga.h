@@ -36,5 +36,8 @@ static const uint8_t VGA_COLOR_WHITE       = 0x0F;
 void vga_cls(uint8_t color);
 void vga_putc(char c, uint8_t color);
 void vga_print(char* str, size_t len, uint8_t color);
+void vga_puts(char* str, uint8_t color);
+char* long_to_str(long zahl);
+char* strfromlonglong(long long value);
 
 #endif // VGA_H

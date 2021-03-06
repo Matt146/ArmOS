@@ -247,7 +247,7 @@ LONG_MODE_START:
     xor rdx, rdx
     xor rsi, rsi
     xor rdi, rdi
-    mov rbp, 0x900000
+    mov rbp, 0x90000
     mov rsp, rbp
     xor r8, r8
     xor r9, r9

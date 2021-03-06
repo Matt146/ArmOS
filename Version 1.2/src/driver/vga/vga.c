@@ -35,3 +35,36 @@ void vga_print(char* str, size_t len, uint8_t color) {
         }
     }
 }
+
+void vga_puts(char* str, uint8_t color) {
+    size_t count = 0;
+    vga_csr_y += 1;
+    vga_csr_x = 0;
+    while (1 == 1) {
+        if (str[count] == '\0') {
+            break;
+        }
+        if (str[count] == '\n') {
+            vga_csr_y += 1;
+            vga_csr_x = 0;
+        } else if (str[count] == '\t') {
+            vga_csr_x += VGA_TERM_TAB_WIDTH;
+        } else {
+            vga_putc(str[count], color);
+        }
+        count += 1;
+    }
+}
+
+char* long_to_str(long zahl) {
+   static char text[20];   //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
+   int loc=19;
+   text[19] = 0; //NULL terminate the string
+   do  //While we have something left, lets add a character to the string
+   {
+       --loc;
+       text[loc] = (zahl%10)+'0';
+       zahl/=10;
+   } while (zahl);
+   return &text[loc];  //Start from where loc left off
+}

@@ -70,3 +70,12 @@
     Therefore, you need to configure APIC when dealing with external (hardware) interrupts, but you can test
     the IDT with the "int" instruction and triggering software interrupts.
     - Also, make sure to check for pointer decay. That was a crappy bug.
+
+03/05/2021:
+    - FIXED SHITTY INTERRUPT BUG
+    - I literally love you ethan. Thank you so much man
+    - TODO:
+        - Look into position-independent code
+        - Research gcc flags for osdev
+            - -ffreestanding -Wall -Wextra -fno-stack-protector -fno-exceptions -fno-pic -mno-sse -mno-sse2 -mno-mmx -mno-80387 -mno-red-zone -gdwarf -fno-omit-frame-pointer
+        - Work on memory manager
