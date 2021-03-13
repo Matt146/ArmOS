@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "vga.h": "c",
-        "isr.h": "c"
+        "isr.h": "c",
+        "vmm.h": "c"
     }
 }

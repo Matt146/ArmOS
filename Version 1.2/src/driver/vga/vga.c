@@ -2,8 +2,10 @@
 
 void vga_cls(uint8_t color) {
     for (size_t i = 0; i < VGA_TERM_COLUMNS * VGA_TERM_ROWS; i++) {
-        vga_putc(0x0, color);
+        vga_putc(' ', color);
     }
+    vga_csr_x = 0;
+    vga_csr_y = 0;
 }
 
 void vga_putc(char c, uint8_t color) {
@@ -26,6 +28,9 @@ void vga_putc(char c, uint8_t color) {
 void vga_print(char* str, size_t len, uint8_t color) {
     for (size_t i = 0; i < len; i++) {
         if (str[i] == '\n') {
+            for (size_t i = vga_csr_x; i < VGA_TERM_ROWS; i++) {
+                vga_putc(" ", color);
+            }
             vga_csr_y += 1;
             vga_csr_x = 0;
         } else if (str[i] == '\t') {
@@ -38,13 +43,16 @@ void vga_print(char* str, size_t len, uint8_t color) {
 
 void vga_puts(char* str, uint8_t color) {
     size_t count = 0;
-    vga_csr_y += 1;
-    vga_csr_x = 0;
+    // vga_csr_y += 1;
+    // vga_csr_x = 0;
     while (1 == 1) {
         if (str[count] == '\0') {
             break;
         }
         if (str[count] == '\n') {
+            for (size_t i = vga_csr_x; i < VGA_TERM_ROWS; i++) {
+                vga_putc(" ", color);
+            }
             vga_csr_y += 1;
             vga_csr_x = 0;
         } else if (str[count] == '\t') {
@@ -58,6 +66,19 @@ void vga_puts(char* str, uint8_t color) {
 
 char* long_to_str(long zahl) {
    static char text[20];   //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
+   int loc=19;
+   text[19] = 0; //NULL terminate the string
+   do  //While we have something left, lets add a character to the string
+   {
+       --loc;
+       text[loc] = (zahl%10)+'0';
+       zahl/=10;
+   } while (zahl);
+   return &text[loc];  //Start from where loc left off
+}
+
+char* unsigned_long_to_str(unsigned long zahl) {
+    static char text[20];   //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
    int loc=19;
    text[19] = 0; //NULL terminate the string
    do  //While we have something left, lets add a character to the string

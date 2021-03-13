@@ -6,8 +6,6 @@ static struct IDTR idtr;
 void init_interrupts() {
     struct IDT_Gate idt_default;
     uint64_t offset = (uint64_t)isr_common_stub;
-    char* x = long_to_str(offset);
-    vga_puts(x, VGA_COLOR_GREEN);
 
     // Set the values of the default IDT gate
     idt_default.offset0 = (uint16_t)offset;
@@ -22,13 +20,11 @@ void init_interrupts() {
     for (size_t i = 0; i < 256; i++) {
         set_idt_gate(idt_default, i);
     }
-    vga_print("A\n", 2,  VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
 
     // Load IDT
     idtr.limit = 256 * sizeof(struct IDT_Gate) - 1;
     idtr.base = (uint64_t)idt;
     load_idt(&idtr);
-    vga_print("A\n", 2, VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
 }
 
 void set_idt_gate(struct IDT_Gate value, int index) {

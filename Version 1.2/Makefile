@@ -1,10 +1,10 @@
 # Boot Source Files & Outputs
 boot_asm = src/boot/boot.asm
 # Kernel Source Files & Outputs
-kernel_sources_c = src/kernel.c src/driver/vga/vga.c src/int/isr.c
-kernel_obj_c = kernel.o vga.o isr.o
-kernel_sources_asm = src/driver/etc/io_asm.asm src/int/idt_asm.asm
-kernel_obj_asm = io_asm.o idt_asm.o
+kernel_sources_c = src/kernel.c src/driver/vga/vga.c src/int/isr.c src/mem/pmm.c src/mem/vmm.c
+kernel_obj_c = kernel.o vga.o isr.o pmm.o vmm.o
+kernel_sources_asm = src/driver/etc/io_asm.asm src/int/idt_asm.asm src/mem/mem_asm.asm
+kernel_obj_asm = io_asm.o idt_asm.o mem_asm.o
 
 # Disk Image
 boot_bin = boot.bin
@@ -20,6 +20,7 @@ kernel:
 	# Compile the kernel asm sources
 	nasm -f elf64 src/driver/etc/io_asm.asm -o io_asm.o
 	nasm -f elf64 src/int/idt_asm.asm -o idt_asm.o
+	nasm -f elf64 src/mem/mem_asm.asm -o mem_asm.o
 	# Link the kernel
 	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
 

@@ -79,3 +79,6 @@
         - Research gcc flags for osdev
             - -ffreestanding -Wall -Wextra -fno-stack-protector -fno-exceptions -fno-pic -mno-sse -mno-sse2 -mno-mmx -mno-80387 -mno-red-zone -gdwarf -fno-omit-frame-pointer
         - Work on memory manager
+
+03/13/2021:
+    - Read int 0x15, eax=0xe820 memory map and made pmm bitamp. Now, need to write pmm allocator and then start work on VMM.
