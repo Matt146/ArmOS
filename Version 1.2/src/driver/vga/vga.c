@@ -2,7 +2,7 @@
 
 void vga_cls(uint8_t color) {
     for (size_t i = 0; i < VGA_TERM_COLUMNS * VGA_TERM_ROWS; i++) {
-        vga_putc(' ', color);
+        vga_putc(0x0, color);
     }
     vga_csr_x = 0;
     vga_csr_y = 0;

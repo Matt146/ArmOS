@@ -18,7 +18,7 @@ int kmain() {
     init_interrupts();
     vga_puts("[+] Interrupts Initialized!\n", VGA_COLOR_LIGHTBLUE);
 
-    // Initialize BIOS memory map
+    // Initialize BIOS memory map and PMM Bitmap
     vga_puts("[+] Reading BIOS memory map...\n", VGA_COLOR_GREEN);
     pmm_read_bios_memory_map();
     vga_puts("[+] Read BIOS memory map!\n", VGA_COLOR_GREEN);
@@ -28,7 +28,25 @@ int kmain() {
         if (pmm_bitmap[i] > 0) {
             vga_puts(unsigned_long_to_str(pmm_bitmap[i]), VGA_COLOR_LIGHTMAGENTA);
         }
-    }
+    }    
+
+    // Busy loop and then clear the screen
+    /*
+    vga_cls(VGA_COLOR_MAGENTA);
+    vga_puts(unsigned_long_to_str(pmm_alloc(4)), VGA_COLOR_MAGENTA);
+    vga_puts("\n", VGA_COLOR_MAGENTA);
+    vga_puts(unsigned_long_to_str(pmm_alloc(4)), VGA_COLOR_MAGENTA);
+    vga_puts("\n", VGA_COLOR_MAGENTA);
+    */
+   vga_cls(VGA_COLOR_MAGENTA);
+   uint64_t alloc = pmm_alloc(10);
+   vga_puts(unsigned_long_to_str(alloc), VGA_COLOR_MAGENTA);
+   pmm_free(alloc, 10);
+
+   /*
+   vga_puts(unsigned_long_to_str(pmm_block_is_free(63)), VGA_COLOR_MAGENTA);
+   vga_puts("\n", VGA_COLOR_MAGENTA);
+   */
 
     // DEBUG
     // DEBUG();

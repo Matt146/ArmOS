@@ -14,12 +14,12 @@ This is an OS that I'm writing myself totally from scratch.
 - Booted into 64-bit submode of long mode
 - Setup basic exception handlers
 - Setup kernel memory mapping
+- Read BIOS memory map using int 0x15, eax=0xe820
+- PMM
 
 ## Future Features
 
-- Read BIOS memory map
-- Continue work on VMM
-- Work on PMM
+- VMM
 - ACPI
 - APIC
 - PCI Driver
