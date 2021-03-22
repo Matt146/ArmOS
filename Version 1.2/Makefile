@@ -15,8 +15,8 @@ img = bin/img.iso
 link = linker.ld
 
 CC = gcc
-#CFLAGS = -c -Wall -Wextra -fno-stack-protector -fno-exceptions -fno-pic -mno-sse -mno-sse2 -mno-mmx -mno-80387 -mno-red-zone -gdwarf -fno-omit-frame-pointer -m64
-CFLAGS = -c -m64 -ffreestanding -nostdlib -mno-red-zone -fno-pic
+CFLAGS = -c -Wall -Wextra -fno-stack-protector -fno-exceptions -fno-pic -mno-sse -mno-sse2 -mno-mmx -mno-80387 -mno-red-zone -gdwarf -fno-omit-frame-pointer -nostdlib -m64
+#CFLAGS = -c -m64 -ffreestanding -nostdlib -mno-red-zone -fno-pic
 
 ASM = nasm -f elf64
 
