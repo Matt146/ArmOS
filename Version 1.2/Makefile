@@ -38,7 +38,7 @@ pad:
 
 all: bootloader kernel patch pad
 	# Boot the OS in QEMU
-	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:CON
+	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:COM1.log
 
 clean:
 	rm -rf debug/*
