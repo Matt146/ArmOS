@@ -55,17 +55,16 @@ void pmm_init_bitmap() {
             // POSSIBLE BUG? - ALLOCATES 1 PAGE PAST THE BITMAP MEMORY SIZE
             for (uint64_t j = start_paddr; j < end_paddr; j+=BITMAP_MEMORY_SIZE) {
                 pmm_set_bitmap_block_free(pmm_paddr_to_block(j));
-                vga_puts(unsigned_long_to_str(j), VGA_COLOR_YELLOW);
-                vga_puts(" ", VGA_COLOR_YELLOW);
-                vga_puts(unsigned_long_to_str(pmm_paddr_to_block(j)), VGA_COLOR_LIGHTRED);
-                vga_puts(" ", VGA_COLOR_LIGHTRED);
+                serial_puts(unsigned_long_to_str(j), VGA_COLOR_YELLOW);
+                serial_puts(" ", VGA_COLOR_YELLOW);
+                serial_puts(unsigned_long_to_str(pmm_paddr_to_block(j)), VGA_COLOR_LIGHTRED);
+                serial_puts(" ", VGA_COLOR_LIGHTRED);
             }
         }
     }
-    vga_puts("[+] Bitmap initialized!\n", VGA_COLOR_YELLOW);
-    vga_puts("[+] Start of Bitmap Address:", VGA_COLOR_YELLOW);
-    vga_puts(unsigned_long_to_str(pmm_bitmap), VGA_COLOR_YELLOW);
-    vga_puts("\n", VGA_COLOR_YELLOW);
+    serial_puts("[+] Bitmap initialized!\n", VGA_COLOR_YELLOW);
+    serial_puts("[+] Start of Bitmap Address:", VGA_COLOR_YELLOW);
+    serial_puts(unsigned_long_to_str(pmm_bitmap), VGA_COLOR_YELLOW);
 }
 
 void pmm_read_bios_memory_map() {

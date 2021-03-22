@@ -14,13 +14,19 @@ img = bin/img.iso
 # Linker Script Stuff
 link = linker.ld
 
+CC = gcc
+#CFLAGS = -c -Wall -Wextra -fno-stack-protector -fno-exceptions -fno-pic -mno-sse -mno-sse2 -mno-mmx -mno-80387 -mno-red-zone -gdwarf -fno-omit-frame-pointer -m64
+CFLAGS = -c -m64 -ffreestanding -nostdlib -mno-red-zone -fno-pic
+
+ASM = nasm -f elf64
+
 kernel:
 	# Compile the kernel C sources
-	gcc -c -m64 -mno-red-zone -fno-pic $(kernel_sources_c)
+	$(CC) $(CFLAGS) $(kernel_sources_c)
 	# Compile the kernel asm sources
-	nasm -f elf64 src/driver/etc/io_asm.asm -o io_asm.o
-	nasm -f elf64 src/int/idt_asm.asm -o idt_asm.o
-	nasm -f elf64 src/mem/mem_asm.asm -o mem_asm.o
+	$(ASM) src/driver/etc/io_asm.asm -o io_asm.o
+	$(ASM) src/int/idt_asm.asm -o idt_asm.o
+	$(ASM) src/mem/mem_asm.asm -o mem_asm.o
 	# Link the kernel
 	ld -o $(kernel_bin) -T linker.ld  $(kernel_obj_c) $(kernel_obj_asm) --oformat binary
 
@@ -37,8 +43,11 @@ pad:
 	dd if=/dev/zero bs=1 count=32768 >> $(img)
 
 all: bootloader kernel patch pad
+	# Move everything into the bin folder
+	mv *.o bin/
+	mv *.bin bin/
 	# Boot the OS in QEMU
-	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:COM1.log
+	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log'
 
 clean:
 	rm -rf debug/*
