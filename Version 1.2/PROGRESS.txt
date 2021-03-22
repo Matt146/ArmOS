@@ -82,3 +82,7 @@
 
 03/13/2021:
     - Read int 0x15, eax=0xe820 memory map and made pmm bitamp. Now, need to write pmm allocator and then start work on VMM.
+    
+03/21/2021:
+    - Serial driver complete!
+    - Write notes on serial driver and work on VMM

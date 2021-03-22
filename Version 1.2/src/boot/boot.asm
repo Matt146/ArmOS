@@ -16,7 +16,7 @@ P2	equ 0x17000	; Page-directory table (PDT)
 DAP:
     db 0x10 ; DAP size (0x10) [1 byte]
     db 0x00 ; Unused (0x00) [1 byte]
-    dw 0x0F ; Number of sectors to be read [2 bytes] [Some BIOS's can only go up to 127]
+    dw 0x40 ; Number of sectors to be read [2 bytes] [Some BIOS's can only go up to 127]
     dd KERNEL_OFFSET ; Segment:offset pointer into where the data is loaded in memory [4 bytes]
     dq 0x01 ; LBA start address of the first sector to be read [8 bytes]
 

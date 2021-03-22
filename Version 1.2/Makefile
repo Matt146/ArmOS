@@ -1,8 +1,8 @@
 # Boot Source Files & Outputs
 boot_asm = src/boot/boot.asm
 # Kernel Source Files & Outputs
-kernel_sources_c = src/kernel.c src/driver/vga/vga.c src/int/isr.c src/mem/pmm.c src/mem/vmm.c
-kernel_obj_c = kernel.o vga.o isr.o pmm.o vmm.o
+kernel_sources_c = src/kernel.c src/driver/vga/vga.c src/int/isr.c src/mem/pmm.c src/mem/vmm.c src/driver/e9/e9.c src/driver/serial/serial.c
+kernel_obj_c = kernel.o vga.o isr.o pmm.o vmm.o e9.o  serial.o
 kernel_sources_asm = src/driver/etc/io_asm.asm src/int/idt_asm.asm src/mem/mem_asm.asm
 kernel_obj_asm = io_asm.o idt_asm.o mem_asm.o
 
@@ -38,7 +38,7 @@ pad:
 
 all: bootloader kernel patch pad
 	# Boot the OS in QEMU
-	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown
+	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:CON
 
 clean:
 	rm -rf debug/*
