@@ -2,7 +2,11 @@
 #define VMM_H
 
 #include <stdint.h>
+#include "pmm.h"
 #include "../driver/vga/vga.h"
+
+#define VMM_PAGE_TABLES_START 0x100000  // This is the start of the address space that we can use for paging structures
+#define VMM_PAGE_TABLES_END BITMAP_START_ADDR    // This is the end of the address space that we can use for paging structures
 
 /*
  *PML4 TABLE 2MB:

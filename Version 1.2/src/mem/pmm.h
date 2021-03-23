@@ -14,7 +14,8 @@
 #define MEMORY_MAP_LOCATION_END 0x8FFF
 #define MEMORY_MAP_ENTRY_SIZE 24
 #define MEMORY_MAP_ENTRIES_MAX ((MEMORY_MAP_LOCATION_END - MEMORY_MAP_LOCATION) / MEMORY_MAP_ENTRY_SIZE)
-#define BITMAP_START_ADDR 0x100000  // The memory address where the bitmap starts representing from.
+// #define BITMAP_START_ADDR 0x100000  // The memory address where the bitmap starts representing from.
+#define BITMAP_START_ADDR 0x500000
 #define BITMAP_ENTRIES 0x1000       // Number of single byte entries in a bitmap. Each byte entry has 8 bits, used to represent BITMAP_MEMORY_SIZE bytes each
 #define BITMAP_MEMORY_SIZE 0x200000 // The size of memory each bit in a bitmap byte entry points to - the size of each page basically, as each bit represents 1 page
 #define PMM_ALLOC_FAIL 0xFFFFFFFFFFFFFFFF // What is returned by PMM_ALLOC when it fails

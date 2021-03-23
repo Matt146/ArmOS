@@ -86,3 +86,8 @@
 03/21/2021:
     - Serial driver complete!
     - Write notes on serial driver and work on VMM
+    
+03/22/2021:
+    - Took notes on interrupts, IDT, a20, in/out instructions
+    - Started notes on privilege levels and serial
+    - Updated README.md
