@@ -4,25 +4,39 @@
 #include <stdint.h>
 #include "pmm.h"
 #include "../driver/vga/vga.h"
+#include "../driver/serial/serial.h"
 
-#define VMM_PAGE_TABLES_START 0x100000  // This is the start of the address space that we can use for paging structures
-#define VMM_PAGE_TABLES_END BITMAP_START_ADDR    // This is the end of the address space that we can use for paging structures
+#define VMM_PAGE_TABLES_START       0x100000  // This is the start of the address space that we can use for paging structures
+#define VMM_PAGE_TABLES_END         BITMAP_START_ADDR    // This is the end of the address space that we can use for paging structures
+#define VMM_CR3                     VMM_PAGE_TABLES_START
 
-/*
- *PML4 TABLE 2MB:
- *  - 63: NX: Set to 0 if code can be executed in this page. Set to 1 if you don't want code to be executed. NOTE: MUST SET EFER.NXE to 1
- * - 62..52: AVAILABLE
- * - 51..12: PDPT base
- * - 11..9: AVL
- * - 8..7: MBZ
- * - 6: IGN: Ignored. Set to 0
- * - 5: A: Set to 1 by the processor the first time the table or physical page is either read from or written to. Never cleared by the processor. Software must clear bit
- * - 4: PCD: Cleared means the table or physical page is cacheable. When set to 1, the table or physical page is NOT cacheable.
- * - 3: PWT: Indicates whether the page-translation table or physical page to which the entry points has a writeback o writethrough policy. Cleared means the table or physical page has a writeback caching policy. 1 means the table or physical page has a writethrough caching policy
- * - 2: U/S: When cleared, restricted to CPL 0, 1, and 2. Set to 1, ring 3 can access it too
- * - 1: R/W: set to 1 if both read and write access are allowed
- * - 0: P: set to 1 if table or physical page is loaded in physical memory
-*/
-void map_vaddr_to_paddr(uint64_t paddr, uint64_t vaddr, uint8_t attributes);
+#define VMM_PML4                    VMM_CR3
+
+#define VMM_PML3_INITIAL            0x16000
+#define VMM_PML3_START              VMM_PAGE_TABLES_START + 0x1000
+#define VMM_PML3_END                VMM_PAGE_TABLES_START + 0x1100000 + 0x1000
+
+#define VMM_PML2_INITIAL            0x17000
+#define VMM_PML2_START              VMM_PML3_END + 0x1000
+#define VMM_PML2_END                BITMAP_START_ADDR
+
+#define VMM_PAGE_SIZE               BITMAP_MEMORY_SIZE
+
+static uint64_t* P4 = VMM_CR3;
+static uint64_t* P3 = VMM_PML3_START;
+static uint64_t* P2 = VMM_PML2_START;  // the PDT we use for the bootloader is at 0x17000 (we identity map the first 1 gib)
+
+static uint64_t* P3_start = VMM_PML3_START;
+static uint64_t* P2_start = VMM_PML2_START;
+
+void vmm_init();
+uint64_t vmm_map_vaddr_to_paddr(uint64_t paddr, uint64_t vaddr, uint8_t flags);
+void map_page(uint64_t vaddr, uint64_t paddr, uint64_t flags);   // DEPRACATED
+uint64_t vmm_align_2m(uint64_t paddr);
+uint64_t vmm_align_4k(uint64_t paddr);
+
+extern void set_cr3(uint64_t addr);
+
+void* vmm_alloc_one_page();
 
 #endif // VMM_H

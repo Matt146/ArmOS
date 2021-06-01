@@ -35,5 +35,7 @@ void init_interrupts();
 void set_idt_gate(struct IDT_Gate value, int index);
 extern void load_idt(struct IDTR* idtr);
 extern void isr_common_stub(void);
+extern void APIC_TIMER_STUB(void);
+extern uint64_t VIEW_RFLAGS(void);
 
 #endif // ISR_H

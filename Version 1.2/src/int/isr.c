@@ -21,6 +21,20 @@ void init_interrupts() {
         set_idt_gate(idt_default, i);
     }
 
+    struct IDT_Gate idt_default1;
+    uint64_t offset1 = (uint64_t)APIC_TIMER_STUB;
+
+    // Set the values of the default IDT gate
+    idt_default.offset0 = (uint16_t)offset1;
+    idt_default.cs = 0x8;
+    idt_default.zero0 = 0x0;
+    idt_default.type = 0x8E;
+    idt_default.offset1 = (uint16_t)(offset1 >> 16);
+    idt_default.offset2 =  (uint32_t)(offset1 >> 32);
+    idt_default.zero1 = 0x0;
+
+    set_idt_gate(idt_default1, 0x69);
+
     // Load IDT
     idtr.limit = 256 * sizeof(struct IDT_Gate) - 1;
     idtr.base = (uint64_t)idt;

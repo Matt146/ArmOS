@@ -29,7 +29,7 @@ void vga_print(char* str, size_t len, uint8_t color) {
     for (size_t i = 0; i < len; i++) {
         if (str[i] == '\n') {
             for (size_t i = vga_csr_x; i < VGA_TERM_ROWS; i++) {
-                vga_putc(" ", color);
+                vga_putc(0x0, color);
             }
             vga_csr_y += 1;
             vga_csr_x = 0;
@@ -51,7 +51,7 @@ void vga_puts(char* str, uint8_t color) {
         }
         if (str[count] == '\n') {
             for (size_t i = vga_csr_x; i < VGA_TERM_ROWS; i++) {
-                vga_putc(" ", color);
+                vga_putc(0x0, color);
             }
             vga_csr_y += 1;
             vga_csr_x = 0;
@@ -77,8 +77,12 @@ char* long_to_str(long zahl) {
    return &text[loc];  //Start from where loc left off
 }
 
+char* ___text_buff_unsigned_long_to_str = 0x10;
 char* unsigned_long_to_str(unsigned long zahl) {
-    static char text[20];   //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
+    for (size_t i = 0; i < 20; i++) {
+        ___text_buff_unsigned_long_to_str[i] = '\0';
+    }
+    char* text =  ___text_buff_unsigned_long_to_str;  //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
    int loc=19;
    text[19] = 0; //NULL terminate the string
    do  //While we have something left, lets add a character to the string

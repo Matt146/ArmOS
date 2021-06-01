@@ -2,6 +2,7 @@
     "files.associations": {
         "vga.h": "c",
         "isr.h": "c",
-        "vmm.h": "c"
+        "vmm.h": "c",
+        "serial.h": "c"
     }
 }

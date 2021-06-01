@@ -23,3 +23,22 @@ isr_common_stub:
     ; Do work here - INFINITE LOOP FOR DEBUG
     mov rax, 0xdeadbeef
     iretq
+
+global APIC_TIMER_STUB
+APIC_TIMER_STUB:
+    mov rax, 0x12345678
+    jmp $
+    hlt
+    iretq
+
+global VIEW_RFLAGS
+VIEW_RFLAGS:
+    push rbp
+    mov rbp, rsp
+
+    pushfq
+    pop rax
+
+    mov rsp, rbp
+    pop rbp
+    ret

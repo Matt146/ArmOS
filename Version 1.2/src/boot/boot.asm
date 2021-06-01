@@ -208,6 +208,7 @@ switch_to_compatibility_mode:
 	; enable paging in the cr0 register
 	mov eax, cr0
 	or eax, 1 << 31
+    or eax, 1 << 16
 	mov cr0, eax
 
     ; Jump over the gdt64 to the get into 64-bit mode subroutine
@@ -242,12 +243,13 @@ LONG_MODE_START:
 	; YAY! We're in 64-bit submode now	
 	; Time to load 0 into all data segment registers
 	xor rax, rax
+    mov cr8, rax    ;;;;;;;;;;;;;;;; IIIIIIIIISSSSSSSS THIS CORRECT IDK!?!??!??!?!
     xor rbx, rbx
     xor rcx, rcx
     xor rdx, rdx
     xor rsi, rsi
     xor rdi, rdi
-    mov rbp, 0x90000
+    mov rbp, 0x40000000
     mov rsp, rbp
     xor r8, r8
     xor r9, r9
