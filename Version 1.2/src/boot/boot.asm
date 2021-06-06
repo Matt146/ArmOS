@@ -265,13 +265,13 @@ LONG_MODE_START:
 	mov fs, ax
 	mov gs, ax
 
-    ; Disable the PIC, so we can use the APIC
-    mov al, 0xff
-    out 0xa1, al
-    out 0x21, al
-
     ; jmp $
     sti
+
+    ; Disable the PIC, so we can use the APIC
+    ;mov al, 0xff
+    ;out 0xa1, al
+    ;out 0x21, al
 
 	; Jump to kernel
 	call KERNEL_OFFSET

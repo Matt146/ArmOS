@@ -21,7 +21,7 @@ isr_common_stub:
     ; 5. RIP
     ; 6. Error code (optional)
     ; Do work here - INFINITE LOOP FOR DEBUG
-    mov rax, 0xdeadbeef
+    ;mov rax, 0xdeadbeef
     iretq
 
 global APIC_TIMER_STUB

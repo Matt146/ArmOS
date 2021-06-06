@@ -7,6 +7,7 @@
 static uint64_t LAPIC_BASE;
 
 void lapic_init_default();
+uint32_t lapic_get_base_addr();      // reads the LAPIC base address
 void lapic_remap(uint32_t paddr);   // remap LAPIC registers to a base address
 
 void lapic_enable();

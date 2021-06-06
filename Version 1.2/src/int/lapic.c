@@ -1,8 +1,16 @@
 #include "lapic.h"
 
 void lapic_init_default() {
-    LAPIC_BASE = 0xFEC00000;
+    LAPIC_BASE = lapic_get_base_addr();
+    serial_puts("\n[+] LAPIC BASE ADDRESS VALUE: ");
+    serial_puts(unsigned_long_to_str(LAPIC_BASE));
 }
+
+uint32_t lapic_get_base_addr() {
+    uint32_t apic_base_msr_value = rdmsr(0x1B);
+    return apic_base_msr_value & 0xfffff000;
+}
+
 void lapic_remap(uint32_t paddr) {
     wrmsr(0x1B, ((paddr) & 0xfffff0000) | 0x800);
     LAPIC_BASE = (uint64_t)((paddr) & 0xfffff0000);
@@ -11,7 +19,7 @@ void lapic_remap(uint32_t paddr) {
 void lapic_enable() {
     serial_puts("\n[+] LAPIC SPURIOUS INTERRUPT VEC VALUE: ");
     volatile uint32_t* spurious_interrupt_vector_register = (volatile uint32_t*)(LAPIC_BASE + 0x0F0);
-    *spurious_interrupt_vector_register |= 0b100000000;
+    *spurious_interrupt_vector_register |= 0b111111111;
     serial_puts(unsigned_long_to_str(*spurious_interrupt_vector_register));
 }
 

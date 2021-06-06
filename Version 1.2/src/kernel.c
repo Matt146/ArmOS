@@ -20,7 +20,7 @@ int kmain() {
     vga_puts("[+] Initializing Interrupts...\n", VGA_COLOR_LIGHTBLUE);
     init_interrupts();
     vga_puts("[+] Interrupts Initialized!\n", VGA_COLOR_LIGHTBLUE);
-    
+
     // Initialize serial
     init_serial();
     serial_puts("Hello, world! - TESTING SERIAL\n"); 
@@ -38,7 +38,6 @@ int kmain() {
     }
 
     vmm_init();
-    vmm_map_vaddr_to_paddr(0x100000000, 0x100000000, 0x3);
     // Busy loop and then clear the screen
     /*
     vga_cls(VGA_COLOR_MAGENTA);
@@ -64,12 +63,9 @@ int kmain() {
 
     // vga_print(str, 15, VGA_COLOR_WHITE << 4 | VGA_COLOR_BLUE);
     // Busy loop
-    uint64_t lapic_base = pmm_alloc(1);
-    serial_puts("\n[+]LAPIC BASE ADDRESS: ");
-    serial_puts(unsigned_long_to_str(lapic_base));
-    lapic_remap((uint32_t)lapic_base);
-    serial_puts("\n[+]LAPIC remapped!");
+    lapic_init_default();
     lapic_enable();
+    uint64_t lapic_base = lapic_get_base_addr();
     serial_puts("\n[+]LAPIC enabled!");
     serial_puts("\n[+]Value of IA32_APIC_BASE MSR: ");
     serial_puts(unsigned_long_to_str(rdmsr(0x1B)));

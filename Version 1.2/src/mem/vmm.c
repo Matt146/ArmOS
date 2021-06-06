@@ -1,15 +1,23 @@
 #include "vmm.h"
 
+void set_cr3(uint64_t addr) {
+    asm volatile("movq %0,%%cr3": :"r" (addr));
+}
+
 void vmm_init() {
-    size_t start = VMM_PAGE_TABLES_START;
-    for (start; start < VMM_PAGE_TABLES_END; start += 1) {
-        unsigned char* x = (unsigned char*)start;
-        *x = 0;
+    serial_puts("\n\n11111HERE??!??!??!");
+    for (unsigned char* i = VMM_PAGE_TABLES_START; i < VMM_PAGE_TABLES_END; i++) {
+        //serial_puts(unsigned_long_to_str(i));
+        //serial_puts("\n");
+        *i = 0;
     }
-    for (size_t i = 0; i < 1073741824; i+=0x200000) {
+    serial_puts("\n\n2222HERE??!??!??!");
+    for (size_t i = 0; i < 0x200000000; i+=0x200000) {
         vmm_map_vaddr_to_paddr(i, i, 0x3);
     }
+    serial_puts("\n\n333333333333333333HERE??!??!??!\n");
     set_cr3(VMM_CR3);
+    serial_puts("\n\n44444444444444444444444HERE??!??!??!");
 }
 
 /*
@@ -78,11 +86,44 @@ uint64_t vmm_map_vaddr_to_paddr(uint64_t paddr, uint64_t vaddr, uint8_t flags) {
     size_t pml3idx = (vaddr & ((uint64_t)0x1ff << 30)) >> 30;
     size_t pml2idx = (vaddr & ((uint64_t)0x1ff << 21)) >> 21;
 
-    P4[pml4idx] = (VMM_PML3_START + 0x200 * pml4idx) | 0x3;
-    P3[pml3idx + 0x200 * pml4idx] = (VMM_PML2_START + 0x200 * pml3idx) | 0x3;
-    P2[pml2idx + 0x200 * pml4idx + 0x200 * pml3idx] = (vaddr | flags) | 0b10000000;
+    serial_puts("\n[+]Mapping page...");
+    serial_puts("\n- Vaddr: ");
+    serial_puts(unsigned_long_to_str(vaddr));
+    serial_puts("\n - P4 index: ");
+    serial_puts(unsigned_long_to_str(pml4idx));
+    serial_puts("\n - P3 index: ");
+    serial_puts(unsigned_long_to_str(pml3idx));
+    serial_puts("\n - P2 index: ");
+    serial_puts(unsigned_long_to_str(pml2idx));
 
-    return vaddr;
+    uint64_t p4_index_into = pml4idx;
+    uint64_t p4_address = (VMM_PML3_START + 0x200 * pml4idx);
+    uint64_t p4_value = p4_address | 0x3;
+    P4[p4_index_into] = p4_value;
+    serial_puts("\n - Indexing into P4 through: ");
+    serial_puts(unsigned_long_to_str(p4_index_into));
+    serial_puts("\n - P4 Points To: ");
+    serial_puts(unsigned_long_to_str(p4_value));
+
+    uint64_t p3_index_into = pml3idx + 0x200 * pml4idx;
+    uint64_t p3_address = (VMM_PML2_START + (0x200 * pml3idx) + (0x200 * 0x200 * pml4idx));
+    uint64_t p3_value = p3_address | 0x3;
+    P3[p3_index_into] = p3_value;
+    serial_puts("\n - Indexing into P3 through: ");
+    serial_puts(unsigned_long_to_str(p3_index_into));
+    serial_puts("\n - P3 Points To: ");
+    serial_puts(unsigned_long_to_str(p3_address));
+
+    uint64_t p2_index_into = pml2idx + (0x200 * 0x200 * pml4idx) + (0x200 * pml3idx);
+    uint64_t p2_address = paddr;
+    uint64_t p2_value = (p2_address | flags) | 0b10000000;
+    P2[p2_index_into] = p2_value;
+    serial_puts("\n - Indexing into P2 through: ");
+    serial_puts(unsigned_long_to_str(p2_index_into));
+    serial_puts("\n - P2 Points To: ");
+    serial_puts(unsigned_long_to_str(p2_address));
+
+    return paddr;
 }
 
 uint64_t vmm_align_2m(uint64_t paddr) {

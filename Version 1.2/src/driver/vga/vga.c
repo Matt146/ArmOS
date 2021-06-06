@@ -93,3 +93,22 @@ char* unsigned_long_to_str(unsigned long zahl) {
    } while (zahl);
    return &text[loc];  //Start from where loc left off
 }
+/*
+char* unsigned_long_to_str(unsigned long zahl) {
+    char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    for (size_t i = 0; i < 18; i++) {
+        ___text_buff_unsigned_long_to_str[i] = '\0';
+    }
+    char* text =  ___text_buff_unsigned_long_to_str;  //Make me static, otherwise it's on the stack and will screw up soon, if it's static, it's allocated always, but is not safe for multi-tasking/threading.
+    int loc=16;
+    text[16] = 0; //NULL terminate the string
+    do  //While we have something left, lets add a character to the string
+    {
+        *--text = digits[zahl % 16];
+        zahl/=16;
+    } while (zahl);
+    text[loc-1] = 'x';
+    text[loc-2] = '0';
+    return &text[loc-2];  //Start from where loc left off
+}
+*/

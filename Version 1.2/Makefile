@@ -47,7 +47,7 @@ all: bootloader kernel patch pad
 	mv *.o bin/
 	mv *.bin bin/
 	# Boot the OS in QEMU
-	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 4
+	qemu-system-x86_64 $(img) -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 4G -smp 4
 
 clean:
 	rm -rf debug/*
