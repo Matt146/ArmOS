@@ -47,13 +47,12 @@ void _start(struct stivale_struct *stivale_struct) {
     // Initialize serial
     serial_init();
 
-    // Initialize the PMM
+    // Initialize the PMM and perform a test alloc
     pmm_init(stivale_struct);
     uint64_t alloc = pmm_alloc(25);
+    serial_puts("\n[LOG] ALLOC BLOCK: ");
+    serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
     pmm_free(alloc, 25);
-    for (;;) {
-        asm ("hlt");
-    }
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;

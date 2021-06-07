@@ -15,7 +15,7 @@
 [PMM] MMAP Entry Length: 1048576
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 2097152
-[PMM] MMAP Entry Length: 11808
+[PMM] MMAP Entry Length: 12064
 [PMM] MMAP Entry Type: 10
 [PMM] MMAP Entry Base: 2109440
 [PMM] MMAP Entry Length: 3218518016
@@ -35,33 +35,7 @@
 [PMM] MMAP Entry Base: 4294967296
 [PMM] MMAP Entry Length: 5368709120
 [PMM] MMAP Entry Type: 1
-[PMM] Total available memory:8593007136
+[PMM] Total available memory:8593007392
 [PMM] Bitmap address: 159744
 [PMM] Bitmap end: 421981
-[PMM] Bitmap memset to 0.[+] Found possible free block...
-[-]104
-[-]105
-[-]106
-[-]107
-[-]108
-[-]109
-[-]110
-[-]111
-[-]112
-[-]113
-[-]114
-[-]115
-[-]116
-[-]117
-[-]118
-[-]119
-[-]120
-[-]121
-[-]122
-[-]123
-[-]124
-[-]125
-[-]126
-[-]127
-[-]128
---------------------
+[PMM] Bitmap memset to 0.
