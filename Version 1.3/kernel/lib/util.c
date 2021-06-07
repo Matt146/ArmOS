@@ -1,7 +1,6 @@
 #include "util.h"
 
 char* unsigned_long_to_str(unsigned long zahl) {
-    static char __text_buff_unsigned_long_to_str[20];
     for (size_t i = 0; i < 20; i++) {
         __text_buff_unsigned_long_to_str[i] = '\0';
     }
@@ -15,4 +14,9 @@ char* unsigned_long_to_str(unsigned long zahl) {
        zahl/=10;
    } while (zahl);
    return &text[loc];  //Start from where loc left off
+}
+
+void memsetb(uint8_t* src, uint8_t data, size_t count) {
+    for(size_t i = 0; i < count; i++)
+        *src++ = data;
 }

@@ -19,6 +19,7 @@ INTERNALCFLAGS  :=       \
 	-ffreestanding       \
 	-fno-stack-protector \
 	-fno-pic -fpie       \
+	-fno-builtin		 \
 	-mno-80387           \
 	-mno-mmx             \
 	-mno-3dnow           \
@@ -28,7 +29,7 @@ INTERNALCFLAGS  :=       \
 
 INTERNALASMFLAGS := -f elf64
 
-CFILES := $(shell find ./ -type f -name '*.c')
+CFILES := $(shell find ./ -type f -name '*.c' ! -name 'limine-install.c')
 ASMFILE := kernel/lib/asm_common.asm
 OBJ    := $(CFILES:.c=.o)
 ASMOBJ := kernel/lib/asm_common.o
@@ -47,8 +48,10 @@ stivale.h:
 %.o: %.c stivale.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
-image.iso: stivale.h $(KERNEL)
+limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
+
+image.iso: stivale.h $(KERNEL) limine
 	make -C limine
 	mkdir -p iso_root
 	cp -v stivale.elf limine.cfg limine/limine.sys \
@@ -62,4 +65,5 @@ image.iso: stivale.h $(KERNEL)
 	qemu-system-x86_64 image.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 4
 
 clean:
-	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ)
+	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) debug/qemu.log
+	touch debug/qemu.log

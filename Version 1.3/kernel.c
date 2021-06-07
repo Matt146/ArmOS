@@ -39,6 +39,8 @@ static struct stivale_header stivale_hdr = {
 
 // The following will be our kernel's entry point.
 void _start(struct stivale_struct *stivale_struct) {
+    serial_puts("[LOG] Starting kernel...");
+
     // Initialize the IDT
     idt_init();
 
@@ -47,6 +49,11 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the PMM
     pmm_init(stivale_struct);
+    uint64_t alloc = pmm_alloc(25);
+    pmm_free(alloc, 25);
+    for (;;) {
+        asm ("hlt");
+    }
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
@@ -57,7 +64,7 @@ void _start(struct stivale_struct *stivale_struct) {
         fb_addr[i] = 0xff;
     }
 
-    serial_puts("[LOG] Done execution. Halting...\n");
+    serial_puts("\n[LOG] Done execution. Halting...\n");
 
     // We're done, just hang...
     for (;;) {
