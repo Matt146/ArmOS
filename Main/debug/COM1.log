@@ -15,13 +15,13 @@
 [PMM] MMAP Entry Length: 1048576
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 2097152
-[PMM] MMAP Entry Length: 12704
+[PMM] MMAP Entry Length: 16032
 [PMM] MMAP Entry Type: 10
 [PMM] MMAP Entry Base: 2113536
-[PMM] MMAP Entry Length: 3218513920
+[PMM] MMAP Entry Length: 3218509824
 [PMM] MMAP Entry Type: 1
-[PMM] MMAP Entry Base: 3220627456
-[PMM] MMAP Entry Length: 462848
+[PMM] MMAP Entry Base: 3220623360
+[PMM] MMAP Entry Length: 466944
 [PMM] MMAP Entry Type: 4096
 [PMM] MMAP Entry Base: 3221090304
 [PMM] MMAP Entry Length: 135168
@@ -35,7 +35,7 @@
 [PMM] MMAP Entry Base: 4294967296
 [PMM] MMAP Entry Length: 5368709120
 [PMM] MMAP Entry Type: 1
-[PMM] Total available memory:8593003936
+[PMM] Total available memory:8593007264
 [PMM] Bitmap address: 159744
 [PMM] Bitmap end: 421981
 [PMM] Bitmap memset to 0.
@@ -69,4 +69,5 @@
  - [-]127
  - [-]128
 --------------------425984
-[LOG] Done execution. Halting...
+[GDT] Loading new GDT with address 18446744071564174912 and limit 319
+ - GDT loaded... initializing segment registers...

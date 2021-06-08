@@ -4,6 +4,7 @@
 #include "kernel/driver/serial/serial.h"
 #include "kernel/int/idt.h"
 #include "kernel/mm/pmm.h"
+#include "kernel/mm/gdt.h"
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
@@ -56,6 +57,9 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the VMM
     vmm_init();
+
+    // Initialize the new GDT
+    gdt_init();
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;

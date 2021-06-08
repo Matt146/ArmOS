@@ -3,6 +3,8 @@
         "vga.h": "c",
         "isr.h": "c",
         "vmm.h": "c",
-        "serial.h": "c"
+        "serial.h": "c",
+        "pmm.h": "c",
+        "idt.h": "c"
     }
 }
