@@ -54,6 +54,9 @@ void _start(struct stivale_struct *stivale_struct) {
     serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
     pmm_free(alloc, 25);
 
+    // Initialize the VMM
+    vmm_init();
+
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
 

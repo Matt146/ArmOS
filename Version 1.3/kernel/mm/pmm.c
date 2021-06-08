@@ -51,16 +51,16 @@ static bool pmm_block_is_free(struct bitmap* _bitmap, uint64_t block) {
 
 uint64_t pmm_alloc(uint64_t blocks) {
     bool valid_block = false;
-    serial_puts("\n[PMM] Allocating blocks...");
-    serial_puts("\n - [-] Number of blocks being allocated: ");
-    serial_puts(unsigned_long_to_str(blocks));
+    //serial_puts("\n[PMM] Allocating blocks...");
+    //serial_puts("\n - [-] Number of blocks being allocated: ");
+    //serial_puts(unsigned_long_to_str(blocks));
     for (size_t i = 0; i < __PMM_BITMAP_SIZE * 8; i++) {
         if (pmm_block_is_free(&pmm_bitmap, i)) {
-            serial_puts("\n - [-] Found possible free block...");
+            //serial_puts("\n - [-] Found possible free block...");
             for (size_t j = 0; j < blocks; j++) {
                 if (pmm_block_is_free(&pmm_bitmap, i + j)) {
-                    serial_puts("\n - [-]");
-                    serial_puts(unsigned_long_to_str(i + j));
+                    //serial_puts("\n - [-]");
+                    //serial_puts(unsigned_long_to_str(i + j));
                     valid_block = true;
                 } else {
                     valid_block = false;
@@ -71,7 +71,7 @@ uint64_t pmm_alloc(uint64_t blocks) {
                 for (size_t z = 0; z < blocks; z++) {
                     pmm_set_bitmap_block_used(&pmm_bitmap, i + z);
                 }
-                serial_puts("\n--------------------");
+                //serial_puts("\n--------------------");
                 return pmm_block_to_paddr(i);
             }
         }
@@ -109,6 +109,7 @@ static uint64_t pmm_how_much_memory(struct stivale_struct *stivale_struct) {
     }
     serial_puts("\n[PMM] Total available memory:");
     serial_puts(unsigned_long_to_str(total_available_memory));
+    total_memory = total_available_memory;
     return total_available_memory;
 }
 
@@ -158,7 +159,7 @@ static void pmm_init_bitmap(struct stivale_struct *stivale_struct, struct bitmap
             uint64_t start_paddr = memory_map_start[i].base;
             uint64_t end_paddr = memory_map_start[i].base + memory_map_start[i].length;
             // POSSIBLE BUG? - ALLOCATES 1 PAGE PAST THE BITMAP MEMORY SIZE
-            for (uint64_t j = start_paddr; j < end_paddr; j+=PMM_PAGE_SIZE) {
+            for (uint64_t j = start_paddr; j < end_paddr - PMM_PAGE_SIZE; j+=PMM_PAGE_SIZE) {
                 pmm_set_bitmap_block_free(_bitmap, pmm_paddr_to_block(j));
             }
         }

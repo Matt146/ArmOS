@@ -7,7 +7,8 @@
 #include "../lib/util.h"
 #include "../lib/panic.h"
 
-#define HIGH_VMA 0xffffffff80000000
+#define KERNEL_HIGH_VMA 0xffffffff80000000
+#define HIGH_VMA 0xffff800000000000
 #define PMM_MMAP_MAX_ENTRIES 256
 #define PMM_PAGE_SIZE 0x1000
 
@@ -21,15 +22,16 @@ struct bitmap {
     uint64_t end;       // ending address
 };
 
-static struct bitmap pmm_bitmap;
+uint64_t total_memory;              // Internal state - stores total memory
+static struct bitmap pmm_bitmap;    // Internal state - stores bitmap struct
 
 // Exported functions
 void pmm_init(struct stivale_struct *stivale_struct);       // Initialize the PMM - Run this before any other PMM exported function
 uint64_t pmm_align_paddr(uint64_t paddr);                   // Aligns a physical address by PMM_PAGE_SIZE
 uint64_t pmm_paddr_to_block(uint64_t paddr);                // Convert a physical address to a PMM block
 uint64_t pmm_block_to_paddr(uint64_t block);                // Convert a PMM block to a physical address
-uint64_t pmm_alloc(uint64_t blocks);
-void pmm_free(uint64_t paddr_start, uint64_t blocks);
+uint64_t pmm_alloc(uint64_t blocks);                        // Returns the physical address of some location in memory that is free with enough memory as specified
+void pmm_free(uint64_t paddr_start, uint64_t blocks);       // Marks all blocks from paddr_start (the physical address) to blocks as free
 
 
 // Internal state functions
