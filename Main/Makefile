@@ -5,13 +5,15 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
-INTERNALLDFLAGS := \
+#INTERNALLDFLAGS := \
 	-fno-pic -fpie \
 	-Wl,-static,-pie,--no-dynamic-linker,-ztext \
 	-static-pie    \
 	-nostdlib      \
 	-Tlinker.ld    \
 	-z max-page-size=0x1000
+
+INTERNALLDFLAGS := -no-pie -nostdlib -nodefaultlibs -nostartfiles -n -T linker.ld -z max-page-size=0x1000
 
 INTERNALCFLAGS  :=       \
 	-I.                  \

@@ -48,6 +48,8 @@ void _start(struct stivale_struct *stivale_struct) {
     // Initialize serial
     serial_init();
 
+    asm volatile ("sti");
+
     // Initialize the PMM and perform a test alloc
     pmm_init(stivale_struct);
     uint64_t alloc = pmm_alloc(25);
