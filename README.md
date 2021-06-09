@@ -9,11 +9,11 @@ This is an OS that I'm writing myself totally from scratch.
 - Serial COM1
 - PMM
 - VMM
+- GDT
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- Reloading GDT
 - LAPIC
 - ACPI
 
