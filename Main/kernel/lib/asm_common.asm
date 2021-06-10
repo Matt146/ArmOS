@@ -1,6 +1,7 @@
 [bits 64]
 global isr_common_stub
 isr_common_stub:
+    hlt
     iretq   ; fuck off
 
 global __lgdt

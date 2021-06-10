@@ -5,6 +5,7 @@
         "vmm.h": "c",
         "serial.h": "c",
         "pmm.h": "c",
-        "idt.h": "c"
+        "idt.h": "c",
+        "lapic.h": "c"
     }
 }

@@ -1,4 +1,4 @@
-# MattOS
+# ArmOS
 
 This is an OS that I'm writing myself totally from scratch.
 
@@ -10,11 +10,12 @@ This is an OS that I'm writing myself totally from scratch.
 - PMM
 - VMM
 - GDT
+- LAPIC Timer
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- LAPIC
+- LAPIC IPI's
 - ACPI
 
 ## Future Features

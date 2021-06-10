@@ -67,7 +67,12 @@ void _start(struct stivale_struct *stivale_struct) {
     // Initialize the lapic
     lapic_init();
     lapic_init_timer();
-    lapic_set_timer(0x100);
+    //lapic_set_timer(0x100);
+    struct ICR icr;
+    icr.vector = 0x69;
+    icr.send_options = 0xC00;
+    icr.destination = lapic_get_current_id();
+    lapic_send_ipi(&icr);
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
