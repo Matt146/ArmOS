@@ -1,43 +1,26 @@
 #include "lapic.h"
 
-void lapic_init_default() {
-    LAPIC_BASE = lapic_get_base_addr();
-    serial_puts("\n[+] LAPIC BASE ADDRESS VALUE: ");
+void lapic_init() {
+    // Establish the LAPIC base from the MSR
+    uint64_t lapic_base_addr = rdmsr(0x1B);
+    LAPIC_BASE = ((lapic_base_addr >> 12) & 0xffffff) << 12;
+    serial_puts("\n[LAPIC] LAPIC IA32_APIC_BASE MSR value: ");
     serial_puts(unsigned_long_to_str(LAPIC_BASE));
+
+    // Enable the LAPIC
+    uint32_t* lapic_spurious_interrupt_vec_ptr = (uint32_t*)(LAPIC_BASE + LAPIC_SPURIOUS_INTERRUPT_VECTOR);
+    serial_puts("\n[LAPIC] LAPIC Spurious Interrupt Vector Ptr: ");
+    serial_puts(unsigned_long_to_str(lapic_spurious_interrupt_vec_ptr));
+    *lapic_spurious_interrupt_vec_ptr |= 0x1ff;
 }
 
-uint32_t lapic_get_base_addr() {
-    uint32_t apic_base_msr_value = rdmsr(0x1B);
-    return apic_base_msr_value & 0xfffff000;
+void lapic_init_timer() {
+    // Set timer to periodic mode and the interrupt vector to 0x69
+    uint32_t* lapic_timer = (uint32_t*)(LAPIC_BASE + LAPIC_LVT_TIMER);
+    *lapic_timer |= (LAPIC_TIMER_INTERRUPT_VECTOR | (0b01 << 17));
 }
 
-void lapic_remap(uint32_t paddr) {
-    wrmsr(0x1B, ((paddr) & 0xfffff0000) | 0x800);
-    LAPIC_BASE = (uint64_t)((paddr) & 0xfffff0000);
-}
-
-void lapic_enable() {
-    serial_puts("\n[+] LAPIC SPURIOUS INTERRUPT VEC VALUE: ");
-    volatile uint32_t* spurious_interrupt_vector_register = (volatile uint32_t*)(LAPIC_BASE + 0x0F0);
-    *spurious_interrupt_vector_register |= 0b111111111;
-    serial_puts(unsigned_long_to_str(*spurious_interrupt_vector_register));
-}
-
-void lapic_disable() {
-    volatile uint32_t* spurious_interrupt_vector_register = (volatile uint32_t*)(LAPIC_BASE + 0x0F0);
-    *spurious_interrupt_vector_register = (*spurious_interrupt_vector_register | 0b100000000) ^ (1 << 8);
-}
-
-void lapic_lvt_init_timer() {
-    volatile uint32_t* lapic_divide_register = (volatile uint32_t*)(LAPIC_BASE + 0x3E0);
-    *lapic_divide_register = 0x1;
-    serial_puts("\n[+] LAPIC LVT TIMER REGISTER VALUE: ");
-    volatile uint32_t* lvt_timer_register = (volatile uint32_t*)(LAPIC_BASE + 0x320);
-    *lvt_timer_register = 0x69 | 0x20000;
-    serial_puts(unsigned_long_to_str(*lvt_timer_register));
-}
-
-void lapic_timer_set(uint32_t count) {
-    volatile uint32_t* lapic_timer_initial_count = (volatile uint32_t*)(LAPIC_BASE + 0x380);
-    *lapic_timer_initial_count = count;
+void lapic_set_timer(uint32_t value) {
+    uint32_t* lapic_initial_count = (uint32_t*)(LAPIC_BASE + LAPIC_INITIAL_COUNT);
+    *lapic_initial_count = value;
 }

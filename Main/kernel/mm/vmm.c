@@ -18,7 +18,7 @@ void vmm_init() {
     memsetb(p4, 0, 0x1000);
 
     // Map new page tables with the old limine mappings
-    for (uint64_t i = 0; i < 0x40000000; i+=0x1000) {
+    for (uint64_t i = 0; i < 0x100000000; i+=0x1000) {
         vmm_map_page(i, i, 0x3);
     }
 

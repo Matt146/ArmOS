@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stivale.h>
 #include "kernel/driver/serial/serial.h"
+#include "kernel/int/lapic.h"
 #include "kernel/int/idt.h"
 #include "kernel/mm/pmm.h"
 #include "kernel/mm/gdt.h"
@@ -62,6 +63,11 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the new GDT
     gdt_init();
+
+    // Initialize the lapic
+    lapic_init();
+    lapic_init_timer();
+    lapic_set_timer(0x100);
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;
