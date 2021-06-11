@@ -20,3 +20,17 @@ void memsetb(uint8_t* src, uint8_t data, size_t count) {
     for(size_t i = 0; i < count; i++)
         *src++ = data;
 }
+
+// From: https://stackoverflow.com/questions/32560167/strncmp-implementation
+int strncmp( const char * s1, const char * s2, size_t n ) {
+    while ( n && *s1 && ( *s1 == *s2 ) ) {
+        ++s1;
+        ++s2;
+        --n;
+    }
+    if ( n == 0 ) {
+        return 0;
+    } else {
+        return ( *(unsigned char *)s1 - *(unsigned char *)s2 );
+    }
+}

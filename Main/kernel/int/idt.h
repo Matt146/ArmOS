@@ -12,7 +12,7 @@ typedef struct IDT_Gate {
     uint16_t offset1;   // offset bits 16..31
     uint32_t offset2;   // offset bits 32..63
     uint32_t zero1;     // reserved
-};
+} __attribute__((packed));
 
 struct IDT_Gate IDT[256];
 

@@ -4,6 +4,7 @@ void acpi_init(struct stivale_struct* stivale_struct) {
     // Detect ACPI version
     serial_puts("\n[ACPI] Initializing ACPI");
     struct RSDP_Descriptor* rsdp_descriptor_ptr = (struct RSDP_Descriptor*)(stivale_struct->rsdp);
+
     if (rsdp_descriptor_ptr->revision == 0) {
         // ACPI version 1.0 - fucking trash
         serial_puts("\n - ACPI Version 1.0 detected");
@@ -39,7 +40,7 @@ uint64_t acpi_find_table(char* table_signature) {
         for (size_t i = 0; i < total_rsdt_entries; i++) {
             uint32_t ptr = (uint32_t)(rsdt->table_ptrs)[i];
             struct ACPI_SDT_Descriptor_Header* table_ptr = (struct ACPI_SDT_Descriptor_Header*)ptr;
-            if (strncmp(table_ptr->signature, table_signature, 4)) {
+            if (strncmp(table_ptr->signature, table_signature, 4) == 0) {
                 return (uint64_t)table_ptr;
             }
         }
@@ -48,7 +49,7 @@ uint64_t acpi_find_table(char* table_signature) {
         for (size_t i = 0; i < total_xsdt_entries; i++) {
             uint64_t ptr = xsdt->table_ptrs[i];
             struct ACPI_SDT_Descriptor_Header* table_ptr = (struct ACPI_SDT_Descriptor_Header*)ptr;
-            if (strncmp(table_ptr->signature, table_signature, 4)) {
+            if (strncmp(table_ptr->signature, table_signature, 4) == 0) {
                 return (uint64_t)table_ptr;
             }
         }
