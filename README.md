@@ -11,19 +11,19 @@ This is an OS that I'm writing myself totally from scratch.
 - VMM
 - GDT
 - LAPIC Timer
+- LAPIC IPI's
+- ACPI: RDSP, RSDT, XSDT
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- LAPIC IPI's
-- ACPI
+- ACPI MADT
 
 ## Future Features
 
-- ACPI
-- APIC
-- PCI Driver
 - Booting AP's
+- IOAPIC
+- PCI Driver
 - Scheduler
 - Disk driver
 
