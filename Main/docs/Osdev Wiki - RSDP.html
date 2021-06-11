@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<title>RSDP - OSDev Wiki</title>
+<meta charset="UTF-8" />
+<meta name="generator" content="MediaWiki 1.18.0" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="OSDev Wiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.osdev.org/api.php?action=rsd" />
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cskins.vector&amp;only=styles&amp;skin=vector&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=vector&amp;*" />
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: wikidb:resourceloader:filter:minify-css:4:c88e2bcd56513749bec09a7e29cb3ffa */
+</style>
+<script src="/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=vector&amp;*"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "RSDP", "wgTitle": "RSDP", "wgCurRevisionId": 25599, "wgArticleId": 1440, "wgIsArticle": true, "wgAction": "view", "wgUserName": null, "wgUserGroups": ["*"], "wgCategories": ["ACPI"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script>
+<style type="text/css">/*<![CDATA[*/
+.source-c {line-height: normal;}
+.source-c li, .source-c pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for c
+ * CSS class: source-c, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.c.source-c .de1, .c.source-c .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.c.source-c  {font-family:monospace;}
+.c.source-c .imp {font-weight: bold; color: red;}
+.c.source-c li, .c.source-c .li1 {font-weight: normal; vertical-align:top;}
+.c.source-c .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.c.source-c .li2 {font-weight: bold; vertical-align:top;}
+.c.source-c .kw1 {color: #b1b100;}
+.c.source-c .kw2 {color: #000000; font-weight: bold;}
+.c.source-c .kw3 {color: #000066;}
+.c.source-c .kw4 {color: #993333;}
+.c.source-c .co1 {color: #666666; font-style: italic;}
+.c.source-c .co2 {color: #339933;}
+.c.source-c .coMULTI {color: #808080; font-style: italic;}
+.c.source-c .es0 {color: #000099; font-weight: bold;}
+.c.source-c .es1 {color: #000099; font-weight: bold;}
+.c.source-c .es2 {color: #660099; font-weight: bold;}
+.c.source-c .es3 {color: #660099; font-weight: bold;}
+.c.source-c .es4 {color: #660099; font-weight: bold;}
+.c.source-c .es5 {color: #006699; font-weight: bold;}
+.c.source-c .br0 {color: #009900;}
+.c.source-c .sy0 {color: #339933;}
+.c.source-c .st0 {color: #ff0000;}
+.c.source-c .nu0 {color: #0000dd;}
+.c.source-c .nu6 {color: #208080;}
+.c.source-c .nu8 {color: #208080;}
+.c.source-c .nu12 {color: #208080;}
+.c.source-c .nu16 {color:#800080;}
+.c.source-c .nu17 {color:#800080;}
+.c.source-c .nu18 {color:#800080;}
+.c.source-c .nu19 {color:#800080;}
+.c.source-c .me1 {color: #202020;}
+.c.source-c .me2 {color: #202020;}
+.c.source-c .ln-xtra, .c.source-c li.ln-xtra, .c.source-c div.ln-xtra {background-color: #ffc;}
+.c.source-c span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+/*]]>*/
+</style><!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-RSDP action-view skin-vector">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;"></div>
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">RSDP</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">From OSDev Wiki</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					Jump to: <a href="#mw-head">navigation</a>,
+					<a href="#p-search">search</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="en" dir="ltr" class="mw-content-ltr"><p><b>RSDP</b> (Root System Description Pointer) is a data structure used in the <a href="/ACPI" title="ACPI">ACPI</a> programming interface.
+</p><p>In ACPI Version 1.0 it has this structure:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">struct</span> RSDPDescriptor <span class="br0">&#123;</span>
+ <span class="kw4">char</span> Signature<span class="br0">&#91;</span><span class="nu0">8</span><span class="br0">&#93;</span><span class="sy0">;</span>
+ <span class="kw4">uint8_t</span> Checksum<span class="sy0">;</span>
+ <span class="kw4">char</span> OEMID<span class="br0">&#91;</span><span class="nu0">6</span><span class="br0">&#93;</span><span class="sy0">;</span>
+ <span class="kw4">uint8_t</span> Revision<span class="sy0">;</span>
+ <span class="kw4">uint32_t</span> RsdtAddress<span class="sy0">;</span>
+<span class="br0">&#125;</span> __attribute__ <span class="br0">&#40;</span><span class="br0">&#40;</span>packed<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre></div></div>
+<p>since Version 2.0 it has been extended, and the following new fields have been added:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="c source-c"><pre class="de1"><span class="kw4">struct</span> RSDPDescriptor20 <span class="br0">&#123;</span>
+ RSDPDescriptor firstPart<span class="sy0">;</span>
+&#160;
+ <span class="kw4">uint32_t</span> Length<span class="sy0">;</span>
+ <span class="kw4">uint64_t</span> XsdtAddress<span class="sy0">;</span>
+ <span class="kw4">uint8_t</span> ExtendedChecksum<span class="sy0">;</span>
+ <span class="kw4">uint8_t</span> reserved<span class="br0">&#91;</span><span class="nu0">3</span><span class="br0">&#93;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span> __attribute__ <span class="br0">&#40;</span><span class="br0">&#40;</span>packed<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre></div></div>
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Detecting_the_RSDP"><span class="tocnumber">1</span> <span class="toctext">Detecting the RSDP</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Validating_the_RSDP"><span class="tocnumber">2</span> <span class="toctext">Validating the RSDP</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Detecting_ACPI_Version"><span class="tocnumber">2.1</span> <span class="toctext">Detecting ACPI Version</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Checksum_validation"><span class="tocnumber">2.2</span> <span class="toctext">Checksum validation</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-5"><a href="#Explaining_the_fields"><span class="tocnumber">3</span> <span class="toctext">Explaining the fields</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="#Always_present"><span class="tocnumber">3.1</span> <span class="toctext">Always present</span></a>
+<ul>
+<li class="toclevel-3 tocsection-7"><a href="#Signature"><span class="tocnumber">3.1.1</span> <span class="toctext">Signature</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#Checksum"><span class="tocnumber">3.1.2</span> <span class="toctext">Checksum</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#OEMID"><span class="tocnumber">3.1.3</span> <span class="toctext">OEMID</span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="#Revision"><span class="tocnumber">3.1.4</span> <span class="toctext">Revision</span></a></li>
+<li class="toclevel-3 tocsection-11"><a href="#Rsdt_Address"><span class="tocnumber">3.1.5</span> <span class="toctext">Rsdt Address</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-12"><a href="#Since_Version_2.0"><span class="tocnumber">3.2</span> <span class="toctext">Since Version 2.0</span></a>
+<ul>
+<li class="toclevel-3 tocsection-13"><a href="#Length"><span class="tocnumber">3.2.1</span> <span class="toctext">Length</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="#Xsdt_Address"><span class="tocnumber">3.2.2</span> <span class="toctext">Xsdt Address</span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="#Extended_Checksum"><span class="tocnumber">3.2.3</span> <span class="toctext">Extended Checksum</span></a></li>
+<li class="toclevel-3 tocsection-16"><a href="#Reserved"><span class="tocnumber">3.2.4</span> <span class="toctext">Reserved</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-17"><a href="#What.27s_next.3F"><span class="tocnumber">4</span> <span class="toctext">What's next?</span></a></li>
+</ul>
+</td></tr></table>
+<h2> <span class="mw-headline" id="Detecting_the_RSDP">Detecting the RSDP</span></h2>
+<p>The RSDP is either located within the first 1 KB of the <a href="/EBDA" title="EBDA" class="mw-redirect">EBDA</a> (Extended BIOS Data Area) (a 2 byte real mode segment pointer to it is located at 0x40E), or in the memory region from 0x000E0000 to 0x000FFFFF (the main <a href="/BIOS" title="BIOS">BIOS</a> area below 1 MB). To find the table, the Operating System has to find the "RSD PTR " string (notice the last space character) in one of the two areas. This signature is always on a 16 byte boundary.
+</p><p>If you're using UEFI, you can find it somewhere in EFI_SYSTEM_TABLE. Thus, there's no need for searching the RAM.
+</p><p><b>Note</b>: The standard methods to find the RSDP may not work on UEFI systems. Because of that, finding it inside EFI_SYSTEM_TABLE is the correct and reliable method (see ACPI 6.2 section 5.2.5.2 'Finding the RSDP on UEFI Enabled Systems').
+</p><p>When booting with a multiboot2 compliant loader, a copy of the RSDP is contained in the ACPI new RSDP or ACPI old RSDP tag respectively.
+</p>
+<h2> <span class="mw-headline" id="Validating_the_RSDP">Validating the RSDP</span></h2>
+<p>Once you have found the RSDP Table you have to see what version of ACPI the BIOS is using, then you must check that the checksum is valid.
+</p>
+<h3> <span class="mw-headline" id="Detecting_ACPI_Version">Detecting ACPI Version</span></h3>
+<p>The ACPI Version can be detected using the Revision field in the RSDP. If this field contains 0, then ACPI Version 1.0 is used. For subsequent versions (ACPI version 2.0 to 6.1), the value 2 is used <a rel="nofollow" class="external autonumber" href="http://www.uefi.org/sites/default/files/resources/ACPI_6_1.pdf">[1]</a>. The exact version of ACPI can be deduced via the <a href="/FADT" title="FADT">FADT</a> table.
+</p>
+<h3> <span class="mw-headline" id="Checksum_validation">Checksum validation</span></h3>
+<p>Before the RSDP is relied upon you should check that the checksum is valid.
+For ACPI 1.0 (the first structure) you add up every byte in the structure and make sure the lowest byte of the result is equal to zero. For ACPI 2.0 and later you'd do exactly the same thing for the original (ACPI 1.0) part of the second structure, and then do it again for the fields that are part of the ACPI 2.0 extension.
+</p>
+<h2> <span class="mw-headline" id="Explaining_the_fields"> Explaining the fields </span></h2>
+<h3> <span class="mw-headline" id="Always_present"> Always present </span></h3>
+<h4> <span class="mw-headline" id="Signature"> Signature </span></h4>
+<p>This 8-byte string (not null terminated!) must contain "RSD PTR ". It stands on a 16-byte boundary.
+</p>
+<h4> <span class="mw-headline" id="Checksum"> Checksum </span></h4>
+<p>The value to add to all the other bytes (of the Version 1.0 table) to calculate the Checksum of the table. If this value added to all the others and casted to byte isn't equal to 0, the table must be ignored.
+</p>
+<h4> <span class="mw-headline" id="OEMID"> OEMID </span></h4>
+<p>The specification says: "An OEM-supplied string that identifies the OEM".
+</p>
+<h4> <span class="mw-headline" id="Revision"> Revision </span></h4>
+<p>The revision of the ACPI. Larger revision numbers are backward compatible to lower revision numbers. See <a href="#Detecting_ACPI_Version">Detecting ACPI Version</a> for further information.
+</p>
+<h4> <span class="mw-headline" id="Rsdt_Address"> Rsdt Address </span></h4>
+<p>32-bit physical (I repeat: physical) address of the <a href="/RSDT" title="RSDT">RSDT</a> table.
+</p>
+<hr />
+<h3> <span class="mw-headline" id="Since_Version_2.0"> Since Version 2.0 </span></h3>
+<h4> <span class="mw-headline" id="Length"> Length </span></h4>
+<p>The size of the entire table since offset 0 to the end.
+</p>
+<h4> <span class="mw-headline" id="Xsdt_Address"> Xsdt Address </span></h4>
+<p>64-bit physical address of the <a href="/XSDT" title="XSDT">XSDT</a> table. If you detect ACPI Version 2.0 you should use this table instead of RSDT even on x86, casting the address to uint32_t.
+</p>
+<h4> <span class="mw-headline" id="Extended_Checksum"> Extended Checksum </span></h4>
+<p>This field is used to calculate the checksum of the entire table, including both checksum fields.
+</p>
+<h4> <span class="mw-headline" id="Reserved"> Reserved </span></h4>
+<p>3 bytes to be ignored in reading and that must not be written.
+</p>
+<h2> <span class="mw-headline" id="What.27s_next.3F"> What's next? </span></h2>
+<p>Well, you should now parse the <a href="/RSDT" title="RSDT">RSDT</a> (or XSDT).
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 117/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:1440-0!*!0!!en!*!* and timestamp 20210610214241 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				Retrieved from "<a href="https://wiki.osdev.org/index.php?title=RSDP&amp;oldid=25599">https://wiki.osdev.org/index.php?title=RSDP&amp;oldid=25599</a>"				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks"><a href="/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/Category:ACPI" title="Category:ACPI">ACPI</a></li></ul></div></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>Personal tools</h5>
+	<ul>
+		<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=RSDP" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>Namespaces</h5>
+	<ul>
+					<li  id="ca-nstab-main" class="selected"><span><a href="/RSDP"  title="View the content page [c]" accesskey="c">Page</a></span></li>
+					<li  id="ca-talk"><span><a href="/Talk:RSDP"  title="Discussion about the content page [t]" accesskey="t">Discussion</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>Variants</span><a href="#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-views" class="vectorTabs">
+	<h5>Views</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="/RSDP" >Read</a></span></li>
+					<li id="ca-viewsource"><span><a href="/index.php?title=RSDP&amp;action=edit"  title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="/index.php?title=RSDP&amp;action=history"  title="Past revisions of this page [h]" accesskey="h">View history</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>Actions</span><a href="#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-search">
+	<h5><label for="searchInput">Search</label></h5>
+	<form action="/index.php" id="searchform">
+		<input type='hidden' name="title" value="Special:Search"/>
+				<input type="search" name="search" title="Search OSDev Wiki [f]" accesskey="f" id="searchInput" />		<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />		<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />			</form>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(/skins/common/images/osdev.png);" href="/Main_Page"  title="Visit the main page"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal" id='p-navigation'>
+	<h5>Navigation</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main Page</a></li>
+			<li id="n-portal"><a href="http://forum.osdev.org/" rel="nofollow" title="About the project, what you can do, where to find things">Forums</a></li>
+			<li id="n-FAQ"><a href="/Category:FAQ">FAQ</a></li>
+			<li id="n-OS-Projects"><a href="/Projects">OS Projects</a></li>
+			<li id="n-randompage"><a href="/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- about -->
+<div class="portal" id='p-about'>
+	<h5>About</h5>
+	<div class="body">
+		<ul>
+			<li id="n-This-site"><a href="/OSDevWiki:About">This site</a></li>
+			<li id="n-Joining"><a href="/OSDevWiki:Joining">Joining</a></li>
+			<li id="n-Editing-help"><a href="/OSDevWiki:Editing">Editing help</a></li>
+			<li id="n-recentchanges"><a href="/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /about -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- TOOLBOX -->
+<div class="portal" id='p-tb'>
+	<h5>Toolbox</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/RSDP" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+			<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/RSDP" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+			<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+			<li><a href="/index.php?title=RSDP&amp;printable=yes" rel="alternate">Printable version</a></li>
+			<li id="t-permalink"><a href="/index.php?title=RSDP&amp;oldid=25599" title="Permanent link to this revision of the page">Permanent link</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- LANGUAGES -->
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 2 February 2021, at 09:12.</li>
+											<li id="footer-info-viewcount">This page has been accessed 76,619 times.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="/OSDev_Wiki:Privacy_policy" title="OSDev Wiki:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="/OSDev_Wiki:About" title="OSDev Wiki:About">About OSDev Wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="/OSDev_Wiki:General_disclaimer" title="OSDev Wiki:General disclaimer">Disclaimers</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+		<script src="/load.php?debug=false&amp;lang=en&amp;modules=skins.vector&amp;only=scripts&amp;skin=vector&amp;*"></script>
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+}
+</script>
+<script src="/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=vector&amp;*"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,
+	"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mw.user.tokens.set({"editToken":"+\\","watchToken":false});;mw.loader.state({"user.options":"ready","user.tokens":"ready"});
+	
+	/* cache key: wikidb:resourceloader:filter:minify-js:4:19a4b18a9ac79a6b8c60b24af4668814 */
+}
+</script><!-- Served in 0.044 secs. -->
+	</body>
+</html>

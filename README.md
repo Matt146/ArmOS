@@ -11,12 +11,12 @@ This is an OS that I'm writing myself totally from scratch.
 - VMM
 - GDT
 - LAPIC Timer
+- LAPIC IPI's
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- LAPIC IPI's
-- ACPI
+- ACPI RDSP and parsing MADT
 
 ## Future Features
 

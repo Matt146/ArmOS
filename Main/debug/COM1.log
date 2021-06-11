@@ -15,10 +15,10 @@
 [PMM] MMAP Entry Length: 1048576
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 2097152
-[PMM] MMAP Entry Length: 15584
+[PMM] MMAP Entry Length: 16480
 [PMM] MMAP Entry Type: 10
-[PMM] MMAP Entry Base: 2113536
-[PMM] MMAP Entry Length: 3218513920
+[PMM] MMAP Entry Base: 2117632
+[PMM] MMAP Entry Length: 3218509824
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 3220627456
 [PMM] MMAP Entry Length: 462848
@@ -35,7 +35,7 @@
 [PMM] MMAP Entry Base: 4294967296
 [PMM] MMAP Entry Length: 5368709120
 [PMM] MMAP Entry Type: 1
-[PMM] Total available memory:8593006816
+[PMM] Total available memory:8593003616
 [PMM] Bitmap address: 159744
 [PMM] Bitmap end: 421981
 [PMM] Bitmap memset to 0.
@@ -70,6 +70,10 @@
  - [-]128
 --------------------425984
  - GDT loaded... initializing segment registers...
+[ACPI] Initializing ACPI
+ - ACPI Version 1.0 detected
+ - ACPI RSDT Pointer: 3221099525
+[LOG] Found MADT: 3221099209
 [LAPIC] LAPIC IA32_APIC_BASE MSR value: 4276092928
 [LAPIC] LAPIC Spurious Interrupt Vector Ptr: 4276093168
 [LAPIC] Sending IPI...

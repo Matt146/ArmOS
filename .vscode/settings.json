@@ -6,6 +6,8 @@
         "serial.h": "c",
         "pmm.h": "c",
         "idt.h": "c",
-        "lapic.h": "c"
+        "lapic.h": "c",
+        "rsdp.h": "c",
+        "stivale.h": "c"
     }
 }
