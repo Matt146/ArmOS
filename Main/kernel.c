@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <stivale.h>
 #include "kernel/driver/serial/serial.h"
-#include "kernel/acpi/rsdp.h"
 #include "kernel/int/lapic.h"
 #include "kernel/int/idt.h"
 #include "kernel/mm/pmm.h"
@@ -64,12 +63,6 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the new GDT
     gdt_init();
-
-    // Initialize ACPI
-    acpi_init(stivale_struct);
-    uint64_t madt_addr = acpi_find_table(ACPI_MADT);
-    serial_puts("\n[LOG] Found MADT: ");
-    serial_puts(unsigned_long_to_str(madt_addr));
 
     // Initialize the lapic
     lapic_init();
