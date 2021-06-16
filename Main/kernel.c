@@ -62,6 +62,12 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the VMM
     vmm_init();
+    bool mapped = vmm_page_is_mapped(0xffff800000000000);
+    if (mapped) {
+        serial_puts("\n[LOG] Testing vmm - page mapped. CHECK!");
+    } else {
+        serial_puts("\n[LOG] Testing vmm - page unmapped. FAILED!");
+    }
 
     // Initialize the new GDT
     gdt_init();

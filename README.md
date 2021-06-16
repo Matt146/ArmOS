@@ -12,20 +12,26 @@ This is an OS that I'm writing myself totally from scratch.
 - GDT
 - LAPIC Timer
 - LAPIC IPI's
-- ACPI: RDSP, RSDT, XSDT
+- ACPI: RDSP, RSDT, XSDT, MADT
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- ACPI MADT
+- Booting Cores
 
 ## Future Features
 
-- Booting AP's
 - IOAPIC
 - PCI Driver
 - Scheduler
 - Disk driver
+
+## TODO (to learn):
+- Finish reviewing x86 protections and stack switching
+- Refresh sycall knowledge
+- Learn about booting cores, multiprocessing, task switching, multithreading, etc
+- Memorize LAPIC stuff
+- Memorize ACPI stuff
 
 ## Build
 
