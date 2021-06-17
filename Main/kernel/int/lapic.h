@@ -31,13 +31,6 @@
 #define LAPIC_ICR_HIGH 0x0310
 #define LAPIC_ICR_LOW 0x0300    // Writing to this portion of the ICR causes an interrupt to be sent
 
-struct ICR {
-    uint8_t vector;
-    uint16_t send_options;
-    uint32_t zero;
-    uint8_t destination;
-} __attribute__((packed));
-
 static uint64_t LAPIC_BASE;
 
 void lapic_init();
@@ -48,6 +41,6 @@ void lapic_init_timer();
 void lapic_set_timer(uint32_t value);
 
 // LAPIC IPI facilities
-void lapic_send_ipi(struct ICR* icr);
+void lapic_send_ipi(uint8_t lapic_id, uint32_t lower_icr_value);
 
 #endif //LAPIC_H

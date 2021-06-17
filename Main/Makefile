@@ -30,7 +30,7 @@ INTERNALCFLAGS  :=       \
 
 INTERNALASMFLAGS := -f elf64
 
-CFILES := $(shell find ./ -type f -name '*.c' ! -name 'limine-install.c')
+CFILES := $(shell find ./ -type f -name '*.c' ! -name 'limine-install.c' ! -name 'boot.asm')
 ASMFILE := kernel/lib/asm_common.asm
 OBJ    := $(CFILES:.c=.o)
 ASMOBJ := kernel/lib/asm_common.o
@@ -39,9 +39,13 @@ ASMOBJ := kernel/lib/asm_common.o
 
 all: $(KERNEL) image.iso
 
-$(KERNEL): $(OBJ)
+stub:
+	nasm -f bin kernel/sched/boot.asm -o kernel/sched/boot.bin
+
+$(KERNEL): $(OBJ) stub
 	$(ASM) $(ASMFILE) $(INTERNALASMFLAGS) -o $(ASMOBJ)
-	$(CC) $(INTERNALLDFLAGS) $(OBJ) $(ASMOBJ) -o $@
+	nasm -f elf64 kernel/sched/real.asm -o kernel/sched/real.o
+	$(CC) $(INTERNALLDFLAGS) $(OBJ) $(ASMOBJ) kernel/sched/real.o -o $@
 
 stivale.h:
 	wget https://github.com/stivale/stivale/raw/master/stivale.h
@@ -63,8 +67,8 @@ image.iso: stivale.h $(KERNEL) limine
         	-efi-boot-part --efi-boot-image --protective-msdos-label \
         	iso_root -o image.iso
 	./limine/limine-install image.iso
-	qemu-system-x86_64 image.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 4
+	qemu-system-x86_64 image.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8
 
 clean:
-	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) debug/qemu.log
+	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) kernel/sched/real.o kernel/sched/boot.bin debug/qemu.log
 	touch debug/qemu.log

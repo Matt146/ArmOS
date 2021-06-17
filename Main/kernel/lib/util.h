@@ -7,5 +7,7 @@
 static char __text_buff_unsigned_long_to_str[25];
 char* unsigned_long_to_str(unsigned long zahl);
 void memsetb(uint8_t* src, uint8_t data, size_t count);
+void* memcpy (void* dest, const void* src, size_t len);
+
 
 #endif // UTIL_H

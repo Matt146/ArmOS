@@ -30,30 +30,24 @@ void lapic_set_timer(uint32_t value) {
     *lapic_initial_count = value;
 }
 
-void lapic_send_ipi(struct ICR* icr) {
+void lapic_send_ipi(uint8_t lapic_id, uint32_t lower_icr_value) {
     volatile uint32_t* lapic_icr_upper_dword = (volatile uint32_t*)(LAPIC_BASE + LAPIC_ICR_HIGH);
     volatile uint32_t* lapic_icr_lower_dword = (volatile uint32_t)(LAPIC_BASE + LAPIC_ICR_LOW);
 
     // Write the destination field to the upper dword
-    *lapic_icr_upper_dword = (icr->destination << 56);
+    *lapic_icr_upper_dword = (uint32_t)lapic_id << (32 - 8);
 
-    // Prepare the value for the lower dword, as writing to it will cause the IPI to be sent
-    uint32_t lapic_icr_lower_dword_value = 0;
-    lapic_icr_lower_dword_value = icr->vector;                      // vector
-    lapic_icr_lower_dword_value |= (icr->send_options & 0x7) << 8;  // delivery mode
-    lapic_icr_lower_dword_value |= (icr->send_options & (1 << 6)) << 8;  // level
-    lapic_icr_lower_dword_value |= (icr->send_options & (1 << 7)) << 8;  // trigger mode
-    lapic_icr_lower_dword_value |= (icr->send_options & (0b11 << 10)) << 8; // destination shorthand
-
+    // Print some debug info
     serial_puts("\n[LAPIC] Sending IPI...");
     serial_puts("\n - ICR Upper value: ");
     serial_puts(unsigned_long_to_str(*lapic_icr_upper_dword));
     serial_puts("\n - ICR Lower value: ");
-    serial_puts(unsigned_long_to_str(lapic_icr_lower_dword_value));
+    serial_puts(unsigned_long_to_str(lower_icr_value));
 
-
+    // Wait for all previous IPI's to send by checking the status bit
+    // When it's done, send an IPI by writing to the lower DWORD
     while ((*lapic_icr_lower_dword & (1 << 11))) {
 
     }
-    *lapic_icr_lower_dword = lapic_icr_lower_dword_value;
+    *lapic_icr_lower_dword = lower_icr_value;
 }

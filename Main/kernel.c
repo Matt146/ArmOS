@@ -5,6 +5,7 @@
 #include "kernel/acpi/rsdp.h"
 #include "kernel/acpi/madt.h"
 #include "kernel/int/lapic.h"
+#include "kernel/sched/mp.h"
 #include "kernel/int/idt.h"
 #include "kernel/mm/pmm.h"
 #include "kernel/mm/gdt.h"
@@ -81,13 +82,13 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize the lapic
     lapic_init();
+
+    // Initialize MP
+    mp_init();
+
+    // Initialize the lapic timer
     lapic_init_timer();
     //lapic_set_timer(0x100);
-    struct ICR icr;
-    icr.vector = 0x69;
-    icr.send_options = 0xC00;
-    icr.destination = lapic_get_current_id();
-    lapic_send_ipi(&icr);
 
     // Let's get the address of the framebuffer.
     uint8_t *fb_addr = (uint8_t *)stivale_struct->framebuffer_addr;

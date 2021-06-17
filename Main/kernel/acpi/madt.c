@@ -22,6 +22,7 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
 
 
     size_t cur_lapic = 0;
+    acpi_detected_processors_count = 0;
     while (true) {
         // Check if we reach the end
         if ((uint64_t)cur_madt_ptr >= max_len + madt_addr) {
@@ -34,6 +35,7 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
             acpi_processors[cur_lapic] = madt_processor_lapic->lapic_id;
             cur_madt_ptr += sizeof(struct MADT_EntryType0);
             cur_lapic += 1;
+            acpi_detected_processors_count += 1;
             serial_puts("\n[ACPI - MADT] Detected Core: ");
             serial_puts(unsigned_long_to_str(madt_processor_lapic->lapic_id));
             continue;

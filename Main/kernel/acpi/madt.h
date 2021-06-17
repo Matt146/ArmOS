@@ -6,7 +6,8 @@
 #define ACPI_MAX_CORES 256
 
 // Contains the LAPIC ID's of a bunch of processors
-static uint8_t acpi_processors[ACPI_MAX_CORES];
+uint8_t acpi_processors[ACPI_MAX_CORES];
+uint8_t acpi_detected_processors_count;
 
 struct MADT_SpecialHeader {
     uint32_t lapic_addr;
