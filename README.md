@@ -13,17 +13,19 @@ This is an OS that I'm writing myself totally from scratch.
 - LAPIC Timer
 - LAPIC IPI's
 - ACPI: RDSP, RSDT, XSDT, MADT
+- Booting Cores
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- Booting Cores
+- Mutexes/Locking
+- VFS
+- Scheduler
 
 ## Future Features
 
 - IOAPIC
 - PCI Driver
-- Scheduler
 - Disk driver
 
 ## TODO (to learn):
