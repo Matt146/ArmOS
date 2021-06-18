@@ -131,3 +131,7 @@ bool vmm_page_is_mapped(uint64_t vaddr) {
 
     return true;
 }
+
+uint64_t vmm_get_cr3() {
+    return (uint64_t)p4;
+}

@@ -14,11 +14,12 @@ This is an OS that I'm writing myself totally from scratch.
 - LAPIC IPI's
 - ACPI: RDSP, RSDT, XSDT, MADT
 - Booting Cores
+- Mutexes/Locking
 
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- Mutexes/Locking
+- Fix SMP trampoline code
 - VFS
 - Scheduler
 
@@ -29,11 +30,8 @@ This is an OS that I'm writing myself totally from scratch.
 - Disk driver
 
 ## TODO (to learn):
-- Finish reviewing x86 protections and stack switching
-- Refresh sycall knowledge
-- Learn about booting cores, multiprocessing, task switching, multithreading, etc
-- Memorize LAPIC stuff
-- Memorize ACPI stuff
+- Look into scheduling algos + design scheduler
+- Look into VFS's
 
 ## Build
 

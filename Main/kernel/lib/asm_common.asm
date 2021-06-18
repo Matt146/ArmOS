@@ -31,3 +31,32 @@ seggs:
     mov rsp, rbp
     pop rbp
     ret
+
+global mutex_lock
+mutex_lock:
+    push rbp
+    mov rbp, rsp
+
+mutex_spin:
+    cmp [rdi], byte 0
+    jz mutex_spin
+    jnz mutex_lock_ret
+
+mutex_lock_ret:
+    lock inc byte [rdi] 
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
+global mutex_unlock
+mutex_unlock:
+    push rbp
+    mov rbp, rsp
+
+    mov [rdi], byte 0
+
+mutex_unlock_ret:
+    mov rsp, rbp
+    pop rbp
+    ret

@@ -17,5 +17,6 @@ static uint64_t* p4;
 void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags);
 bool vmm_page_is_mapped(uint64_t vaddr);
 void vmm_set_cr3(uint64_t addr);
+uint64_t vmm_get_cr3();
 
 #endif // VMM_H

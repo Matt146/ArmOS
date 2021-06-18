@@ -7,6 +7,15 @@ void mp_init() {
     memsetb(MP_REAL_MODE_STUB_LOCATION, 0, end-start);
     memcpy(MP_REAL_MODE_STUB_LOCATION, start, end-start);
 
+    struct __sched_GeneralDescriptor gdtr = {4096 - 1, (MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_GDT_OFFSET)};
+    asm volatile ("sgdt %0" : : "m"(gdtr));
+
+    struct __sched_GeneralDescriptor idtr = {4096 - 1, (MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_IDT_OFFSET)};
+    asm volatile ("sidt %0" : : "m"(idtr));
+
+    uint64_t* cr3_writer = (uint64_t*)(MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_CR3_OFFSET);
+    *cr3_writer = vmm_get_cr3();
+
     // Send INIT IPI's and SIPI's to core
     for (size_t i = 0; i < acpi_detected_processors_count; i++) {
         if (acpi_processors[i] != lapic_get_current_id()) {
