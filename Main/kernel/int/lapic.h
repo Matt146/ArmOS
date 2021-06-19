@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include "../lib/io.h"
 #include "../lib/util.h"
+#include "../driver/serial/serial.h"
 
 // LAPIC Version Register
 #define LAPIC_VERSION 0x020

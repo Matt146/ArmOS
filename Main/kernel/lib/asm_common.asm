@@ -36,15 +36,16 @@ global mutex_lock
 mutex_lock:
     push rbp
     mov rbp, rsp
+    push rdx
 
 mutex_spin:
-    cmp [rdi], byte 0
-    jz mutex_spin
-    jnz mutex_lock_ret
+    mov rax, 0
+    mov rdx, 1
+    lock cmpxchg [rdi], rdx
+    jnz mutex_spin
 
 mutex_lock_ret:
-    lock inc byte [rdi] 
-
+    pop rdx
     mov rsp, rbp
     pop rbp
     ret

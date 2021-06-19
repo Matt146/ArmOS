@@ -1,20 +1,39 @@
 #include "mp.h"
 
+struct sched_per_core* mp_init_per_core(uint8_t lapic_id) {
+    uint64_t per_core_paddr = pmm_alloc(1);
+    struct sched_per_core* per_core = (struct sched_per_core*)per_core_paddr;
+
+    // Per core paging
+    per_core->cr3 = vmm_get_cr3();
+
+    // Per core GDT
+    per_core->gdtr.length = 39;
+    per_core->gdtr.base = pmm_alloc(1);
+
+    // Per core IDT
+    per_core->idtr.length = 4095;
+    per_core->idtr.base = pmm_alloc(1);
+
+    // Per core rsp
+    per_core->rsp = pmm_alloc(SCHED_PER_CORE_STACK_SIZE) + PMM_PAGE_SIZE * SCHED_PER_CORE_STACK_SIZE;
+
+    // Per core LAPIC ID
+    per_core->lapic_id = lapic_id;
+
+    return per_core;
+}
+
 void mp_init() {
-    // Memcpy the real mode stub to 0x70000 (where it needs to be in memory)
-    uint8_t* start = &sched_core_binary_begin;
-    uint8_t* end = &sched_core_binary_end;
-    memsetb(MP_REAL_MODE_STUB_LOCATION, 0, end-start);
-    memcpy(MP_REAL_MODE_STUB_LOCATION, start, end-start);
-
-    struct __sched_GeneralDescriptor gdtr = {4096 - 1, (MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_GDT_OFFSET)};
-    asm volatile ("sgdt %0" : : "m"(gdtr));
-
-    struct __sched_GeneralDescriptor idtr = {4096 - 1, (MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_IDT_OFFSET)};
-    asm volatile ("sidt %0" : : "m"(idtr));
-
-    uint64_t* cr3_writer = (uint64_t*)(MP_REAL_MODE_STUB_LOCATION + MP_RM_STUB_DP_CR3_OFFSET);
-    *cr3_writer = vmm_get_cr3();
+    // Memcpy the SMP trampoline code to 0x70000
+    serial_puts("\n[SCHED] Memcpy'ing SMP trampoline code to 0x70000");
+    serial_puts("\n - Sched core binary begin: ");
+    serial_puts(unsigned_long_to_str(&sched_core_binary_begin));
+    serial_puts("\n - Sched core binary end: ");
+    serial_puts(unsigned_long_to_str(&sched_core_binary_end));
+    serial_puts("\n - Sched core binary length: ");
+    serial_puts(unsigned_long_to_str((uint64_t)&sched_core_binary_end - (uint64_t)&sched_core_binary_begin));
+    memcpy((uint8_t*)SCHED_SMP_TRAMPOLINE, &sched_core_binary_begin, (uint64_t)&sched_core_binary_end - (uint64_t)&sched_core_binary_begin);
 
     // Send INIT IPI's and SIPI's to core
     for (size_t i = 0; i < acpi_detected_processors_count; i++) {

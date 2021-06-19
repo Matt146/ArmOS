@@ -9,9 +9,9 @@ void acpi_init(struct stivale_struct* stivale_struct) {
         // ACPI version 1.0 - fucking trash
         serial_puts("\n - ACPI Version 1.0 detected");
         acpi_new = false;
-        rsdt = (struct ACPI_RSDT*)(rsdp_descriptor_ptr->rsdt_addr);
+        rsdt = (struct ACPI_RSDT*)((uint64_t)rsdp_descriptor_ptr->rsdt_addr);
         serial_puts("\n - ACPI RSDT Pointer: ");
-        serial_puts(unsigned_long_to_str(rsdt));
+        serial_puts(unsigned_long_to_str((uint64_t)rsdt));
     } else {
         // ACPI version 2.0 or above
         serial_puts("\n - ACPI Version 2.0 or above detected");
@@ -19,7 +19,7 @@ void acpi_init(struct stivale_struct* stivale_struct) {
         struct RSDP_Descriptor_2* rsdp_descriptor_ptr2 = (struct RSDP_Descriptor_2*)(stivale_struct->rsdp);
         xsdt = (struct ACPI_XSDT*)(rsdp_descriptor_ptr2->xsdt_addr);
         serial_puts("\n - ACPI XSDT Pointer: ");
-        serial_puts(unsigned_long_to_str(xsdt));
+        serial_puts(unsigned_long_to_str((uint64_t)xsdt));
     }
 }
 

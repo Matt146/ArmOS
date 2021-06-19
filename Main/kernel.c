@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stivale.h>
 #include "kernel/driver/serial/serial.h"
+#include "kernel/sched/mutex.h"
 #include "kernel/acpi/rsdp.h"
 #include "kernel/acpi/madt.h"
 #include "kernel/int/lapic.h"
@@ -85,6 +86,14 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize MP
     mp_init();
+
+    // Mutex test
+    serial_puts("\n[INFO] Locking mutex...");
+    uint8_t mu;
+    mutex_lock(&mu);
+    serial_puts("\n[INFO] Mutex locked.");
+    mutex_unlock(&mu);
+    serial_puts("\n[INFO] Mutex unlocked!");
 
     // Initialize the lapic timer
     lapic_init_timer();

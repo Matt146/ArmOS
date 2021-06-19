@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-typedef struct IDT_Gate {
+struct IDT_Gate {
     uint16_t offset0;   // offset bits 0..15
     uint16_t cs;  // a code segment selector in GDT or LDT
     uint8_t zero0;      // bits 0..2 holds Interrupt Stack Table offset, rest of bits zero.
@@ -13,6 +13,12 @@ typedef struct IDT_Gate {
     uint32_t offset2;   // offset bits 32..63
     uint32_t zero1;     // reserved
 } __attribute__((packed));
+
+struct IDTR {
+    uint16_t length;
+    uint64_t base;
+} __attribute__((packed));
+
 
 struct IDT_Gate IDT[256];
 

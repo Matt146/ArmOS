@@ -3,7 +3,8 @@ KERNEL := stivale.elf
 ASM = nasm
 CC = gcc
 
-CFLAGS = -Wall -Wextra -O2 -pipe
+#CFLAGS = -Wall -Wextra -O2 -pipe
+CFLAGS = -O2 -pipe
 
 #INTERNALLDFLAGS := \
 	-fno-pic -fpie \
