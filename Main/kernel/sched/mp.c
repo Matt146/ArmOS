@@ -8,12 +8,12 @@ struct sched_per_core* mp_init_per_core(uint8_t lapic_id) {
     per_core->cr3 = vmm_get_cr3();
 
     // Per core GDT
-    per_core->gdtr.length = 39;
-    per_core->gdtr.base = pmm_alloc(1);
+    asm volatile ("sgdt %0" :: "m"(per_core->gdtr));
+    per_core->gdtr.base -= KERNEL_HIGH_VMA;
 
     // Per core IDT
-    per_core->idtr.length = 4095;
-    per_core->idtr.base = pmm_alloc(1);
+    asm volatile ("sidt %0" :: "m"(per_core->idtr));
+    per_core->idtr.base -= KERNEL_HIGH_VMA;
 
     // Per core rsp
     per_core->rsp = pmm_alloc(SCHED_PER_CORE_STACK_SIZE) + PMM_PAGE_SIZE * SCHED_PER_CORE_STACK_SIZE;
@@ -38,6 +38,10 @@ void mp_init() {
     // Send INIT IPI's and SIPI's to core
     for (size_t i = 0; i < acpi_detected_processors_count; i++) {
         if (acpi_processors[i] != lapic_get_current_id()) {
+            // Prepare per-core area
+            struct sched_per_core* per_core_loc = mp_init_per_core(acpi_processors[i]);
+            memcpy((struct sched_per_core*)SCHED_PER_CORE, per_core_loc, sizeof(struct sched_per_core));
+
             // Send INIT
             serial_puts("\n[SCHED] Sending INIT to core ");
             serial_puts(unsigned_long_to_str(acpi_processors[i]));

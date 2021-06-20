@@ -13,6 +13,8 @@
 
 #define SCHED_PER_CORE_STACK_SIZE 5 // Amount of pages ther per-core stack should have
 #define SCHED_SMP_TRAMPOLINE 0x70000
+#define SCHED_PER_CORE (SCHED_SMP_TRAMPOLINE + 0x1000)
+#define SCHED_PER_CORE_LEN 512
 
 struct sched_per_core {
     uint64_t cr3;

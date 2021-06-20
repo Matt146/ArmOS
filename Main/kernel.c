@@ -7,6 +7,7 @@
 #include "kernel/acpi/madt.h"
 #include "kernel/int/lapic.h"
 #include "kernel/sched/mp.h"
+#include "kernel/lib/util.h"
 #include "kernel/int/idt.h"
 #include "kernel/mm/pmm.h"
 #include "kernel/mm/gdt.h"
@@ -56,11 +57,22 @@ void _start(struct stivale_struct *stivale_struct) {
     asm volatile ("sti");
 
     // Initialize the PMM and perform a test alloc
+    srand(56);
     pmm_init(stivale_struct);
     uint64_t alloc = pmm_alloc(25);
     serial_puts("\n[LOG] ALLOC BLOCK: ");
     serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
     pmm_free(alloc, 25);
+
+    for (size_t i = 0; i < 10; i++) {
+        uint64_t rand_num = rand64() % 10;
+        serial_puts("\n[LOG] Allocating ");
+        serial_puts(unsigned_long_to_str(rand));
+        serial_puts(" blocks");
+        uint64_t alloc = pmm_alloc(rand_num);
+        serial_puts("\n - ALLOC BLOCK: ");
+        serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
+    }
 
     // Initialize the VMM
     vmm_init();

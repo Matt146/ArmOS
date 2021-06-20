@@ -58,7 +58,7 @@ void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags) {
     } else {
         // Else, a P4 entry does exist, so we just set our p3 pointer to the existing
         // lower-level page table
-        p3 = (uint64_t*)(p4[p4_idx] - 3);
+        p3 = (uint64_t*)(p4[p4_idx]  & ~(0xfff));
     }
 
     // The specific P3 entry does not exist, meaning we need to make a new P2
@@ -70,7 +70,7 @@ void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags) {
     } else {
         // Else, a P3 entry does exist, so just set our p2 pointer to the existing
         // lower-level page table
-        p2 = (uint64_t*)(p3[p3_idx] - 3);
+        p2 = (uint64_t*)(p3[p3_idx]  & ~(0xfff));
     }
 
     // The specific P2 entry does not exist, meaning we need to make a new P1
@@ -82,7 +82,7 @@ void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags) {
     } else {
         // Else, a P2 entry does exist, so just set our p1 pointer to the existing
         // lower-level page table
-        p1 = (uint64_t*)(p2[p2_idx] - 3);
+        p1 = (uint64_t*)(p2[p2_idx]  & ~(0xfff));
     }
 
     // Now, we just map the page to the correct physical page-frame

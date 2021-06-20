@@ -42,3 +42,25 @@ void* memcpy (void* dest, const void* src, size_t len) {
     *d++ = *s++;
   return dest;
 }
+
+
+static int next;
+int rand( void ) // RAND_MAX assumed to be 32767
+{
+    next = next * 1103515245 + 12345;
+    return (unsigned int)(next / 65536) % 32768;
+}
+ 
+void srand( unsigned int seed )
+{
+    next = seed;
+}
+
+uint64_t rand64(void) {
+  uint64_t r = 0;
+  for (int i = 0; i < 64; i += RAND_MAX_WIDTH) {
+    r <<= RAND_MAX_WIDTH;
+    r ^= (unsigned) rand();
+  }
+  return r;
+}

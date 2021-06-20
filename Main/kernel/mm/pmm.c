@@ -50,17 +50,21 @@ static bool pmm_block_is_free(struct bitmap* _bitmap, uint64_t block) {
 }
 
 uint64_t pmm_alloc(uint64_t blocks) {
+    if (blocks == 0) {
+        return PMM_ALLOC_FAIL;
+    }
+
     bool valid_block = false;
-    //serial_puts("\n[PMM] Allocating blocks...");
-    //serial_puts("\n - [-] Number of blocks being allocated: ");
-    //serial_puts(unsigned_long_to_str(blocks));
+    serial_puts("\n[PMM] Allocating blocks...");
+    serial_puts("\n - [-] Number of blocks being allocated: ");
+    serial_puts(unsigned_long_to_str(blocks));
     for (size_t i = 0; i < __PMM_BITMAP_SIZE * 8; i++) {
         if (pmm_block_is_free(&pmm_bitmap, i)) {
-            //serial_puts("\n - [-] Found possible free block...");
+            serial_puts("\n - [-] Found possible free block...");
             for (size_t j = 0; j < blocks; j++) {
                 if (pmm_block_is_free(&pmm_bitmap, i + j)) {
-                    //serial_puts("\n - [-]");
-                    //serial_puts(unsigned_long_to_str(i + j));
+                    serial_puts("\n - [-]");
+                    serial_puts(unsigned_long_to_str(i + j));
                     valid_block = true;
                 } else {
                     valid_block = false;

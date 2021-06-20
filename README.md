@@ -19,9 +19,8 @@ This is an OS that I'm writing myself totally from scratch.
 ## WIP:
 
 - VMM: Unmapping pages & checking if page is mapped
-- Fix SMP trampoline code
-- VFS
 - Scheduler
+- VFS
 
 ## Future Features
 
