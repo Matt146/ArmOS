@@ -54,17 +54,18 @@ uint64_t pmm_alloc(uint64_t blocks) {
         return PMM_ALLOC_FAIL;
     }
 
+    mutex_lock(&pmm_bitmap_mux);
     bool valid_block = false;
-    serial_puts("\n[PMM] Allocating blocks...");
-    serial_puts("\n - [-] Number of blocks being allocated: ");
-    serial_puts(unsigned_long_to_str(blocks));
+    //serial_puts("\n[PMM] Allocating blocks...");
+    //serial_puts("\n - [-] Number of blocks being allocated: ");
+    //serial_puts(unsigned_long_to_str(blocks));
     for (size_t i = 0; i < __PMM_BITMAP_SIZE * 8; i++) {
         if (pmm_block_is_free(&pmm_bitmap, i)) {
-            serial_puts("\n - [-] Found possible free block...");
+            //serial_puts("\n - [-] Found possible free block...");
             for (size_t j = 0; j < blocks; j++) {
                 if (pmm_block_is_free(&pmm_bitmap, i + j)) {
-                    serial_puts("\n - [-]");
-                    serial_puts(unsigned_long_to_str(i + j));
+                    //serial_puts("\n - [-]");
+                    //serial_puts(unsigned_long_to_str(i + j));
                     valid_block = true;
                 } else {
                     valid_block = false;
@@ -75,27 +76,33 @@ uint64_t pmm_alloc(uint64_t blocks) {
                 for (size_t z = 0; z < blocks; z++) {
                     pmm_set_bitmap_block_used(&pmm_bitmap, i + z);
                 }
+                mutex_unlock(&pmm_bitmap_mux);
                 //serial_puts("\n--------------------");
                 return pmm_block_to_paddr(i);
             }
         }
     }
 
+    mutex_unlock(&pmm_bitmap_mux);
     return PMM_ALLOC_FAIL;
 }
 
+
 void pmm_free(uint64_t paddr_start, uint64_t blocks) {
-    serial_puts("\n[PMM] Freeing blocks...");
-    serial_puts("\n - [-] Starting block: ");
-    serial_puts(unsigned_long_to_str(pmm_paddr_to_block(paddr_start)));
-    serial_puts("\n - [-] Ending block: ");
-    serial_puts(unsigned_long_to_str(pmm_paddr_to_block(paddr_start) + blocks));
+    //serial_puts("\n[PMM] Freeing blocks...");
+    //serial_puts("\n - [-] Starting block: ");
+    //serial_puts(unsigned_long_to_str(pmm_paddr_to_block(paddr_start)));
+    //serial_puts("\n - [-] Ending block: ");
+    //serial_puts(unsigned_long_to_str(pmm_paddr_to_block(paddr_start) + blocks));
+
+    mutex_lock(&pmm_bitmap_mux);
     for (uint64_t i = pmm_paddr_to_block(paddr_start); i < blocks + pmm_paddr_to_block(paddr_start); i++) {
-        serial_puts("\n - [-]");
-        serial_puts(unsigned_long_to_str(i));
+        //serial_puts("\n - [-]");
+        //serial_puts(unsigned_long_to_str(i));
         pmm_set_bitmap_block_free(&pmm_bitmap, i);
     }
-    serial_puts("\n--------------------");
+    mutex_unlock(&pmm_bitmap_mux);
+    //serial_puts("\n--------------------");
 }
 
 

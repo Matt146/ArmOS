@@ -64,6 +64,8 @@ void _start(struct stivale_struct *stivale_struct) {
     serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
     pmm_free(alloc, 25);
 
+    // PMM Test Operations
+    /*
     for (size_t i = 0; i < 10; i++) {
         uint64_t rand_num = rand64() % 10;
         serial_puts("\n[LOG] Allocating ");
@@ -73,15 +75,28 @@ void _start(struct stivale_struct *stivale_struct) {
         serial_puts("\n - ALLOC BLOCK: ");
         serial_puts(unsigned_long_to_str(pmm_paddr_to_block(alloc)));
     }
+    */
 
     // Initialize the VMM
     vmm_init();
+
+    // VMM Test Operations
     bool mapped = vmm_page_is_mapped(0xffff800000000000);
     if (mapped) {
         serial_puts("\n[LOG] Testing vmm - page mapped. CHECK!");
     } else {
         serial_puts("\n[LOG] Testing vmm - page unmapped. FAILED!");
     }
+    /* VMM Unmap Test
+    vmm_unmap_page(0xffff800000000000);
+    vmm_flush_cr3();
+    mapped = vmm_page_is_mapped(0xffff800000000000);
+    if (mapped) {
+        serial_puts("\n[LOG] Testing vmm - page mapped. CHECK!");
+    } else {
+        serial_puts("\n[LOG] Testing vmm - page unmapped. FAILED!");
+    }
+    */
 
     // Initialize the new GDT
     gdt_init();
@@ -99,13 +114,15 @@ void _start(struct stivale_struct *stivale_struct) {
     // Initialize MP
     mp_init();
 
-    // Mutex test
+    /*
+    // Mutex Test Operations
     serial_puts("\n[INFO] Locking mutex...");
     uint8_t mu;
     mutex_lock(&mu);
     serial_puts("\n[INFO] Mutex locked.");
     mutex_unlock(&mu);
     serial_puts("\n[INFO] Mutex unlocked!");
+    */
 
     // Initialize the lapic timer
     lapic_init_timer();

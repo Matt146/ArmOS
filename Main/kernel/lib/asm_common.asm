@@ -37,6 +37,7 @@ mutex_lock:
     push rbp
     mov rbp, rsp
     push rdx
+    cli
 
 mutex_spin:
     mov rax, 0
@@ -54,10 +55,10 @@ global mutex_unlock
 mutex_unlock:
     push rbp
     mov rbp, rsp
-
     mov [rdi], byte 0
 
 mutex_unlock_ret:
+    sti
     mov rsp, rbp
     pop rbp
     ret

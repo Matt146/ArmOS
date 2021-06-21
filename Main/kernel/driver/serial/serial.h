@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "../../lib/io.h"
+#include "../../sched/mutex.h"
 
 #define COM1 0x3F8
 #define DIVISOR_LOW 0x2     // Set the divisor to 2 because that'll give me 57600 baud

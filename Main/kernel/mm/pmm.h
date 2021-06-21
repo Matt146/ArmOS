@@ -24,6 +24,7 @@ struct bitmap {
 
 uint64_t total_memory;              // Internal state - stores total memory
 static struct bitmap pmm_bitmap;    // Internal state - stores bitmap struct
+static uint8_t pmm_bitmap_mux = 0;  // Internal state - PMM mutex
 
 // Exported functions
 void pmm_init(struct stivale_struct *stivale_struct);       // Initialize the PMM - Run this before any other PMM exported function

@@ -1,6 +1,8 @@
 #include "util.h"
 
+static uint8_t util_ulong_to_str_mux;
 char* unsigned_long_to_str(unsigned long zahl) {
+    mutex_lock(&util_ulong_to_str_mux);
     for (size_t i = 0; i < 20; i++) {
         __text_buff_unsigned_long_to_str[i] = '\0';
     }
@@ -13,6 +15,7 @@ char* unsigned_long_to_str(unsigned long zahl) {
        text[loc] = (zahl%10)+'0';
        zahl/=10;
    } while (zahl);
+   mutex_unlock(&util_ulong_to_str_mux);
    return &text[loc];  //Start from where loc left off
 }
 

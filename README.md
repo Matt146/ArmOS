@@ -18,9 +18,9 @@ This is an OS that I'm writing myself totally from scratch.
 
 ## WIP:
 
-- VMM: Unmapping pages & checking if page is mapped
-- Scheduler
+- Slab Allocator
 - VFS
+- Scheduler
 
 ## Future Features
 

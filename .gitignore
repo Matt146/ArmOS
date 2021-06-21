@@ -6,6 +6,7 @@
 *.o
 *.obj
 *.bc
+*.bin
 
 ### C ###
 # Prerequisites
@@ -113,4 +114,7 @@ tags
 [._]*.un~
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,linux,assembler,c,c++
+
+# QEMU and serial debug logs
+*.log
 

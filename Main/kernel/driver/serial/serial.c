@@ -50,7 +50,9 @@ void serial_putc(char c) {
     out_b(COM1 + 0x0, c);
 }
 
+static uint8_t serial_mux;
 void serial_puts(char* str) {
+    mutex_lock(&serial_mux);
     size_t count = 0;
     while (true) {
         if (str[count] == '\0') {
@@ -59,4 +61,5 @@ void serial_puts(char* str) {
         serial_putc(str[count]);
         count += 1;
     }
+    mutex_unlock(&serial_mux);
 }

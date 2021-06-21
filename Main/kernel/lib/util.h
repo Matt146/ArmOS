@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "../sched/mutex.h"
 
 static char __text_buff_unsigned_long_to_str[25];
 char* unsigned_long_to_str(unsigned long zahl);
