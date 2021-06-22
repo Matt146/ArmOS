@@ -9,6 +9,7 @@
 #include "kernel/sched/mp.h"
 #include "kernel/lib/util.h"
 #include "kernel/int/idt.h"
+#include "kernel/mm/slab.h"
 #include "kernel/mm/pmm.h"
 #include "kernel/mm/gdt.h"
 
@@ -97,6 +98,15 @@ void _start(struct stivale_struct *stivale_struct) {
         serial_puts("\n[LOG] Testing vmm - page unmapped. FAILED!");
     }
     */
+
+   // Initialize slab allocator
+   mm_slab_init();
+
+    // Test kmalloc
+    void* data = kmalloc(64);
+    serial_puts("[LOG] KMALLOC ADDR: ");
+    serial_puts(unsigned_long_to_str((uint64_t)data));
+
 
     // Initialize the new GDT
     gdt_init();
