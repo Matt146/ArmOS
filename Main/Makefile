@@ -71,5 +71,6 @@ image.iso: stivale.h $(KERNEL) limine
 	qemu-system-x86_64 image.iso -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8
 
 clean:
-	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) kernel/sched/real.o kernel/sched/boot.bin debug/qemu.log
+	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) kernel/sched/real.o kernel/sched/boot.bin debug/qemu.log debug/COM1.log
 	touch debug/qemu.log
+	touch debug/COM1.log

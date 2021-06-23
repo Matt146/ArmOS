@@ -9,9 +9,10 @@
 #include "../driver/serial/serial.h"
 #include "../sched/mutex.h"
 
+#define SLAB_BIGGEST_CACHE 1024
 #define SLAB_INITIAL_ALLOC 5
 #define SLAB_STD_BATCHCOUNT 5
-#define __NONE 0
+#define GLOBAL_OFFSET 0
 
 #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 

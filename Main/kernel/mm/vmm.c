@@ -36,6 +36,8 @@ void vmm_init() {
     // Set cr3 now
     serial_puts(unsigned_long_to_str(p4));
     vmm_set_cr3((uint64_t)p4);
+
+    __vmm_initialized = true;
 }
 
 static uint8_t vmm_mux;
@@ -205,6 +207,16 @@ void vmm_unmap_page(uint64_t vaddr) {
 
 void vmm_flush_cr3() {
     vmm_set_cr3(vmm_get_cr3());
+}
+
+void vmm_check_and_map(uint64_t vaddr, uint64_t paddr) {
+    if (!vmm_page_is_mapped(vaddr)) {
+        vmm_map_page(vaddr, paddr, 0x3);
+    }
+}
+
+void vmm_check_and_iden_map(uint64_t vaddr)  {
+    vmm_check_and_map(vaddr, vaddr);
 }
 
 uint64_t vmm_get_cr3() {

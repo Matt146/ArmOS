@@ -14,6 +14,8 @@
 
 #define PMM_ALLOC_FAIL 0xFFFFFFFFFFFFFFFF // What is returned by PMM_ALLOC when it fails
 
+#define __PMM_SAFE_ALLOCS_ALWAYS
+
 #define __PMM_BITMAP_LENGTH (pmm_bitmap.end - (uint64_t)pmm_bitmap.bitmap)
 #define __PMM_BITMAP_SIZE (__PMM_BITMAP_LENGTH * 8)
 
@@ -25,6 +27,8 @@ struct bitmap {
 uint64_t total_memory;              // Internal state - stores total memory
 static struct bitmap pmm_bitmap;    // Internal state - stores bitmap struct
 static uint8_t pmm_bitmap_mux = 0;  // Internal state - PMM mutex
+
+static bool __pmm_initialized = false;
 
 // Exported functions
 void pmm_init(struct stivale_struct *stivale_struct);       // Initialize the PMM - Run this before any other PMM exported function
@@ -43,5 +47,44 @@ static void pmm_init_bitmap(struct stivale_struct *stivale_struct, struct bitmap
 static void pmm_set_bitmap_block_free(struct bitmap* _bitmap, uint64_t block);
 static void pmm_set_bitmap_block_used(struct bitmap* _bitmap, uint64_t block);
 static bool pmm_block_is_free(struct bitmap* _bitmap, uint64_t block);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////// VMMM FUNCTIONS://///////////////////////////////////
+// EDIT: I KNOW THIS IS CRUSTY BUT THIS IS HOW WE GET __PMM_SAFE_ALLOCS_ALWAYS
+
+// By default, stivale1 protocol mappings at entry will be:
+// Base Physical Address -                    Size                    ->  Virtual address
+//  0x0000000000000000   - 4 GiB plus any additional memory map entry -> 0x0000000000000000
+//  0x0000000000000000   - 4 GiB plus any additional memory map entry -> 0xffff800000000000 (4-level paging only)
+//  0x0000000000000000   - 4 GiB plus any additional memory map entry -> 0xff00000000000000 (5-level paging only)
+//  0x0000000000000000   -                 0x80000000                 -> 0xffffffff80000000
+
+static uint64_t* p4;
+static bool __vmm_initialized = false;
+
+void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags);
+void vmm_unmap_page(uint64_t vaddr);
+bool vmm_page_is_mapped(uint64_t vaddr);
+void vmm_check_and_map(uint64_t vaddr, uint64_t paddr); // checks if vaddr is mapped and then if it isn't, it maps it to paddr
+void vmm_check_and_iden_map(uint64_t vaddr);            // checks if vaddr is mapped and then if it isn't, it is identity mapped
+void vmm_set_cr3(uint64_t addr);
+void vmm_flush_cr3();
+uint64_t vmm_get_cr3();
 
 #endif // PMM_H

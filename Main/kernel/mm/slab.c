@@ -2,7 +2,7 @@
 
 void mm_slab_init() {
     serial_puts("\n[SLAB] ALlocating root cache and initializing memory...");
-    struct mm_slab_cache* _mm_slab_cache = (struct mm_slab_cache*)(pmm_alloc(1) + __NONE);
+    struct mm_slab_cache* _mm_slab_cache = (struct mm_slab_cache*)(pmm_alloc(1) + GLOBAL_OFFSET);
     memsetb((uint8_t*)_mm_slab_cache, 0, PMM_PAGE_SIZE);
 
     _mm_slab_cache->cache_name = "ROOT";
@@ -31,6 +31,7 @@ void mm_slab_init() {
     mm_slab_create_cache("Chad", 0, 256);
     mm_slab_create_cache("Chad", 0, 512);
     mm_slab_create_cache("Chad", 0, 1024);
+    mm_slab_create_cache("Chad", 0, SLAB_BIGGEST_CACHE);
     serial_puts("\n[SLAB] Custom caches added.");
 }
 
@@ -44,14 +45,14 @@ struct mm_slab_cache* mm_slab_create_cache(const char* name, uint32_t flags, uin
     }
     //serial_puts("\n[SLAB] mm_slab_create_cache: Got last cache.");
 
-    void* slabs_full_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + __NONE;
+    void* slabs_full_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)slabs_full_buff, 0, 1 * sizeof(struct mm_slab) * PMM_PAGE_SIZE);
-    void* slabs_partial_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + __NONE;
+    void* slabs_partial_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)slabs_partial_buff, 0, 1 * sizeof(struct mm_slab) * PMM_PAGE_SIZE);
-    void* slabs_free_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + __NONE;
+    void* slabs_free_buff = pmm_alloc(DIV_ROUND_UP(1 * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)slabs_free_buff, 0, 1 * sizeof(struct mm_slab) * PMM_PAGE_SIZE);
 
-    start->next = (struct mm_slab_cache*)(pmm_alloc(1) + __NONE);
+    start->next = (struct mm_slab_cache*)(pmm_alloc(1) + GLOBAL_OFFSET);
     start->next->cache_name = name;
     start->next->slabs_partial = slabs_partial_buff;
     start->next->slabs_free = slabs_free_buff;
@@ -66,21 +67,21 @@ struct mm_slab_cache* mm_slab_create_cache(const char* name, uint32_t flags, uin
     start->next->slabs_partial->parent_cache = start->next;
     start->next->slabs_free->parent_cache = start->next;
 
-    start->next->slabs_full->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    start->next->slabs_full->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)start->next->slabs_full->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
-    start->next->slabs_full->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    start->next->slabs_full->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + GLOBAL_OFFSET);
     memsetb((uint8_t*)start->next->slabs_full->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
     start->next->slabs_full->total_available = 0;
 
-    start->next->slabs_partial->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    start->next->slabs_partial->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)start->next->slabs_partial->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
-    start->next->slabs_partial->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    start->next->slabs_partial->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + GLOBAL_OFFSET);
     memsetb((uint8_t*)start->next->slabs_partial->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
     start->next->slabs_partial->total_available = SLAB_INITIAL_ALLOC;
 
-    start->next->slabs_free->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    start->next->slabs_free->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)start->next->slabs_free->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
-    start->next->slabs_free->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    start->next->slabs_free->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + GLOBAL_OFFSET);
     memsetb((uint8_t*)start->next->slabs_free->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
     start->next->slabs_free->total_available = SLAB_INITIAL_ALLOC;
 
@@ -102,7 +103,7 @@ static void mm_append_slabs(struct mm_slab* dstslab, struct mm_slab* srcslab) {
 
 static void mm_alloc_slabs(struct mm_slab_cache* cache, uint64_t count) {
     // Alloc a buffer with enough slabs
-    void* buff = pmm_alloc(DIV_ROUND_UP(count * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + __NONE;
+    void* buff = pmm_alloc(DIV_ROUND_UP(count * sizeof(struct mm_slab), PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
     memsetb((uint8_t*)buff, 0, count * sizeof(struct mm_slab) * PMM_PAGE_SIZE);
 
     // Now, initialize those slabs
@@ -112,9 +113,9 @@ static void mm_alloc_slabs(struct mm_slab_cache* cache, uint64_t count) {
         slab->parent_cache = cache;
 
         // Buffer shit
-        slab->buff = pmm_alloc(DIV_ROUND_UP(cache->object_size * count, PMM_PAGE_SIZE)) + __NONE;
+        slab->buff = pmm_alloc(DIV_ROUND_UP(cache->object_size * count, PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
         memsetb((uint8_t*)slab->buff, 0, cache->object_size * count * PMM_PAGE_SIZE);
-        slab->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(cache->object_size * count, 8), PMM_PAGE_SIZE) + __NONE);
+        slab->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(cache->object_size * count, 8), PMM_PAGE_SIZE)) + GLOBAL_OFFSET;
         memsetb((uint8_t*)slab->bitmap, 0xff, DIV_ROUND_UP(cache->object_size * count * PMM_PAGE_SIZE, 8));
 
         // Logistic fields
@@ -205,6 +206,11 @@ static void mm_move_free_slabs_to_partial_list(struct mm_slab_cache* cache) {
 }
 
 void* kmalloc(uint64_t size) {
+    // Check if the size is greater than the maximum implemented cache size
+    if (size > SLAB_BIGGEST_CACHE) {
+        return NULL;
+    }
+
     // Get the cache with suitable-sized objects
     serial_puts("\n[SLAB] KMALLOC STARTING...");
     struct mm_slab_cache* start = root_cache;

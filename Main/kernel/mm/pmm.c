@@ -19,6 +19,8 @@ void pmm_init(struct stivale_struct *stivale_struct) {
     serial_puts("\n[PMM] Bitmap end: ");
     serial_puts(unsigned_long_to_str(pmm_bitmap.end));
     pmm_init_bitmap(stivale_struct, &pmm_bitmap);
+
+    __pmm_initialized = true;
 }
 
 uint64_t pmm_paddr_to_block(uint64_t paddr) {
@@ -74,6 +76,13 @@ uint64_t pmm_alloc(uint64_t blocks) {
             }
             if (valid_block == true) {
                 for (size_t z = 0; z < blocks; z++) {
+#ifdef __PMM_SAFE_ALLOCS_ALWAYS
+                    if (__pmm_initialized && __vmm_initialized) {
+                        vmm_check_and_iden_map(pmm_paddr_to_block(i + z));
+                        vmm_check_and_iden_map(pmm_paddr_to_block(i + z) + KERNEL_HIGH_VMA);
+                        vmm_check_and_iden_map(pmm_paddr_to_block(i + z) + HIGH_VMA);
+                    }
+#endif // __PMM_SAFE_ALLOCS_ALWAYS
                     pmm_set_bitmap_block_used(&pmm_bitmap, i + z);
                 }
                 mutex_unlock(&pmm_bitmap_mux);
