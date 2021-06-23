@@ -101,11 +101,15 @@ void _start(struct stivale_struct *stivale_struct) {
 
    // Initialize slab allocator
    mm_slab_init();
+   serial_puts("\n[LOG] INITIALIZED SLAB ALLOCATOR!");
+   mm_slab_debug();
 
     // Test kmalloc
-    void* data = kmalloc(64);
-    serial_puts("[LOG] KMALLOC ADDR: ");
-    serial_puts(unsigned_long_to_str((uint64_t)data));
+    for (size_t i = 0; i < 10; i++) {
+        void* data = kmalloc(64);
+        serial_puts("\n[LOG] KMALLOC ADDR: ");
+        serial_puts(unsigned_long_to_str((uint64_t)data));
+    }
 
 
     // Initialize the new GDT

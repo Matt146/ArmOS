@@ -15,13 +15,13 @@
 [PMM] MMAP Entry Length: 1048576
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 2097152
-[PMM] MMAP Entry Length: 26048
+[PMM] MMAP Entry Length: 28416
 [PMM] MMAP Entry Type: 10
 [PMM] MMAP Entry Base: 2125824
-[PMM] MMAP Entry Length: 3218493440
+[PMM] MMAP Entry Length: 3218489344
 [PMM] MMAP Entry Type: 1
-[PMM] MMAP Entry Base: 3220619264
-[PMM] MMAP Entry Length: 471040
+[PMM] MMAP Entry Base: 3220615168
+[PMM] MMAP Entry Length: 475136
 [PMM] MMAP Entry Type: 4096
 [PMM] MMAP Entry Base: 3221090304
 [PMM] MMAP Entry Length: 135168
@@ -35,12 +35,415 @@
 [PMM] MMAP Entry Base: 4294967296
 [PMM] MMAP Entry Length: 5368709120
 [PMM] MMAP Entry Type: 1
-[PMM] Total available memory:8593004992
+[PMM] Total available memory:8593007360
 [PMM] Bitmap address: 159744
 [PMM] Bitmap end: 421981
 [PMM] Bitmap memset to 0.
 [LOG] ALLOC BLOCK: 104425984
-
-[VMM] Testing if page 18446603336221196288 is mapped
- - P4: 9273347
 [LOG] Testing vmm - page mapped. CHECK!
+[SLAB] ALlocating root cache and initializing memory...
+[SLAB] Root cache allocated and memory initialized.
+[SLAB] Adding custom caches...
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 1
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 1
+[SLAB] mm_slab_create_cache: Last cache count: 2
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 1
+[SLAB] mm_slab_create_cache: Last cache count: 2
+[SLAB] mm_slab_create_cache: Last cache count: 3
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 1
+[SLAB] mm_slab_create_cache: Last cache count: 2
+[SLAB] mm_slab_create_cache: Last cache count: 3
+[SLAB] mm_slab_create_cache: Last cache count: 4
+[SLAB] mm_slab_create_cache: Last cache count: 0
+[SLAB] mm_slab_create_cache: Last cache count: 1
+[SLAB] mm_slab_create_cache: Last cache count: 2
+[SLAB] mm_slab_create_cache: Last cache count: 3
+[SLAB] mm_slab_create_cache: Last cache count: 4
+[SLAB] mm_slab_create_cache: Last cache count: 5
+[SLAB] Custom caches added.
+[LOG] INITIALIZED SLAB ALLOCATOR!
+-----------------------
+[+] Cache Name: ROOT
+[+] Flags: 0
+[+] Object size: 0
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - NULL
+ - SLABS_FREE: 
+	 - NULL
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 8
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 21893120 {parent cache: 21905408, buffer address: 21909504, bitmap address: 21913600, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 21897216 {parent cache: 21905408, buffer address: 21917696, bitmap address: 21921792, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 21901312 {parent cache: 21905408, buffer address: 21925888, bitmap address: 21929984, inuse: 0, free: 0, next: 21934080, last: 0}
+	 - __ADDR: 21934080 {parent cache: 21905408, buffer address: 21938176, bitmap address: 21942272, inuse: 0, free: 5, next: 21937216, last: 21901312}
+	 - __ADDR: 21937216 {parent cache: 21905408, buffer address: 21946368, bitmap address: 21950464, inuse: 0, free: 5, next: 21940352, last: 21934080}
+	 - __ADDR: 21940352 {parent cache: 21905408, buffer address: 21954560, bitmap address: 21958656, inuse: 0, free: 5, next: 21943488, last: 21937216}
+	 - __ADDR: 21943488 {parent cache: 21905408, buffer address: 21962752, bitmap address: 21966848, inuse: 0, free: 5, next: 21946624, last: 21940352}
+	 - __ADDR: 21946624 {parent cache: 21905408, buffer address: 21970944, bitmap address: 21975040, inuse: 0, free: 5, next: 21979136, last: 21943488}
+	 - __ADDR: 21979136 {parent cache: 21905408, buffer address: 21983232, bitmap address: 21987328, inuse: 0, free: 5, next: 21982272, last: 21946624}
+	 - __ADDR: 21982272 {parent cache: 21905408, buffer address: 21991424, bitmap address: 21995520, inuse: 0, free: 5, next: 21985408, last: 21979136}
+	 - __ADDR: 21985408 {parent cache: 21905408, buffer address: 21999616, bitmap address: 22003712, inuse: 0, free: 5, next: 21988544, last: 21982272}
+	 - __ADDR: 21988544 {parent cache: 21905408, buffer address: 22007808, bitmap address: 22011904, inuse: 0, free: 5, next: 21991680, last: 21985408}
+	 - __ADDR: 21991680 {parent cache: 21905408, buffer address: 22016000, bitmap address: 22020096, inuse: 0, free: 5, next: 0, last: 21988544}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 16
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 22024192 {parent cache: 22036480, buffer address: 22040576, bitmap address: 22044672, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 22028288 {parent cache: 22036480, buffer address: 22048768, bitmap address: 22052864, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 22032384 {parent cache: 22036480, buffer address: 22056960, bitmap address: 22061056, inuse: 0, free: 0, next: 22065152, last: 0}
+	 - __ADDR: 22065152 {parent cache: 22036480, buffer address: 22069248, bitmap address: 22073344, inuse: 0, free: 5, next: 22068288, last: 22032384}
+	 - __ADDR: 22068288 {parent cache: 22036480, buffer address: 22077440, bitmap address: 22081536, inuse: 0, free: 5, next: 22071424, last: 22065152}
+	 - __ADDR: 22071424 {parent cache: 22036480, buffer address: 22085632, bitmap address: 22089728, inuse: 0, free: 5, next: 22074560, last: 22068288}
+	 - __ADDR: 22074560 {parent cache: 22036480, buffer address: 22093824, bitmap address: 22097920, inuse: 0, free: 5, next: 22077696, last: 22071424}
+	 - __ADDR: 22077696 {parent cache: 22036480, buffer address: 22102016, bitmap address: 22106112, inuse: 0, free: 5, next: 22110208, last: 22074560}
+	 - __ADDR: 22110208 {parent cache: 22036480, buffer address: 22114304, bitmap address: 22118400, inuse: 0, free: 5, next: 22113344, last: 22077696}
+	 - __ADDR: 22113344 {parent cache: 22036480, buffer address: 22122496, bitmap address: 22126592, inuse: 0, free: 5, next: 22116480, last: 22110208}
+	 - __ADDR: 22116480 {parent cache: 22036480, buffer address: 22130688, bitmap address: 22134784, inuse: 0, free: 5, next: 22119616, last: 22113344}
+	 - __ADDR: 22119616 {parent cache: 22036480, buffer address: 22138880, bitmap address: 22142976, inuse: 0, free: 5, next: 22122752, last: 22116480}
+	 - __ADDR: 22122752 {parent cache: 22036480, buffer address: 22147072, bitmap address: 22151168, inuse: 0, free: 5, next: 0, last: 22119616}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 32
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 22155264 {parent cache: 22167552, buffer address: 22171648, bitmap address: 22175744, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 22159360 {parent cache: 22167552, buffer address: 22179840, bitmap address: 22183936, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 22163456 {parent cache: 22167552, buffer address: 22188032, bitmap address: 22192128, inuse: 0, free: 0, next: 22196224, last: 0}
+	 - __ADDR: 22196224 {parent cache: 22167552, buffer address: 22200320, bitmap address: 22204416, inuse: 0, free: 5, next: 22199360, last: 22163456}
+	 - __ADDR: 22199360 {parent cache: 22167552, buffer address: 22208512, bitmap address: 22212608, inuse: 0, free: 5, next: 22202496, last: 22196224}
+	 - __ADDR: 22202496 {parent cache: 22167552, buffer address: 22216704, bitmap address: 22220800, inuse: 0, free: 5, next: 22205632, last: 22199360}
+	 - __ADDR: 22205632 {parent cache: 22167552, buffer address: 22224896, bitmap address: 22228992, inuse: 0, free: 5, next: 22208768, last: 22202496}
+	 - __ADDR: 22208768 {parent cache: 22167552, buffer address: 22233088, bitmap address: 22237184, inuse: 0, free: 5, next: 22241280, last: 22205632}
+	 - __ADDR: 22241280 {parent cache: 22167552, buffer address: 22245376, bitmap address: 22249472, inuse: 0, free: 5, next: 22244416, last: 22208768}
+	 - __ADDR: 22244416 {parent cache: 22167552, buffer address: 22253568, bitmap address: 22257664, inuse: 0, free: 5, next: 22247552, last: 22241280}
+	 - __ADDR: 22247552 {parent cache: 22167552, buffer address: 22261760, bitmap address: 22265856, inuse: 0, free: 5, next: 22250688, last: 22244416}
+	 - __ADDR: 22250688 {parent cache: 22167552, buffer address: 22269952, bitmap address: 22274048, inuse: 0, free: 5, next: 22253824, last: 22247552}
+	 - __ADDR: 22253824 {parent cache: 22167552, buffer address: 22278144, bitmap address: 22282240, inuse: 0, free: 5, next: 0, last: 22250688}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 64
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 22286336 {parent cache: 22298624, buffer address: 22302720, bitmap address: 22306816, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 22290432 {parent cache: 22298624, buffer address: 22310912, bitmap address: 22315008, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 22294528 {parent cache: 22298624, buffer address: 22319104, bitmap address: 22323200, inuse: 0, free: 0, next: 22327296, last: 0}
+	 - __ADDR: 22327296 {parent cache: 22298624, buffer address: 22331392, bitmap address: 22335488, inuse: 0, free: 5, next: 22330432, last: 22294528}
+	 - __ADDR: 22330432 {parent cache: 22298624, buffer address: 22339584, bitmap address: 22343680, inuse: 0, free: 5, next: 22333568, last: 22327296}
+	 - __ADDR: 22333568 {parent cache: 22298624, buffer address: 22347776, bitmap address: 22351872, inuse: 0, free: 5, next: 22336704, last: 22330432}
+	 - __ADDR: 22336704 {parent cache: 22298624, buffer address: 22355968, bitmap address: 22360064, inuse: 0, free: 5, next: 22339840, last: 22333568}
+	 - __ADDR: 22339840 {parent cache: 22298624, buffer address: 22364160, bitmap address: 22368256, inuse: 0, free: 5, next: 22372352, last: 22336704}
+	 - __ADDR: 22372352 {parent cache: 22298624, buffer address: 22376448, bitmap address: 22380544, inuse: 0, free: 5, next: 22375488, last: 22339840}
+	 - __ADDR: 22375488 {parent cache: 22298624, buffer address: 22384640, bitmap address: 22388736, inuse: 0, free: 5, next: 22378624, last: 22372352}
+	 - __ADDR: 22378624 {parent cache: 22298624, buffer address: 22392832, bitmap address: 22396928, inuse: 0, free: 5, next: 22381760, last: 22375488}
+	 - __ADDR: 22381760 {parent cache: 22298624, buffer address: 22401024, bitmap address: 22405120, inuse: 0, free: 5, next: 22384896, last: 22378624}
+	 - __ADDR: 22384896 {parent cache: 22298624, buffer address: 22409216, bitmap address: 22413312, inuse: 0, free: 5, next: 0, last: 22381760}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 128
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 22417408 {parent cache: 22429696, buffer address: 22433792, bitmap address: 22437888, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 22421504 {parent cache: 22429696, buffer address: 22441984, bitmap address: 22446080, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 22425600 {parent cache: 22429696, buffer address: 22450176, bitmap address: 22454272, inuse: 0, free: 0, next: 22458368, last: 0}
+	 - __ADDR: 22458368 {parent cache: 22429696, buffer address: 22462464, bitmap address: 22466560, inuse: 0, free: 5, next: 22461504, last: 22425600}
+	 - __ADDR: 22461504 {parent cache: 22429696, buffer address: 22470656, bitmap address: 22474752, inuse: 0, free: 5, next: 22464640, last: 22458368}
+	 - __ADDR: 22464640 {parent cache: 22429696, buffer address: 22478848, bitmap address: 22482944, inuse: 0, free: 5, next: 22467776, last: 22461504}
+	 - __ADDR: 22467776 {parent cache: 22429696, buffer address: 22487040, bitmap address: 22491136, inuse: 0, free: 5, next: 22470912, last: 22464640}
+	 - __ADDR: 22470912 {parent cache: 22429696, buffer address: 22495232, bitmap address: 22499328, inuse: 0, free: 5, next: 22503424, last: 22467776}
+	 - __ADDR: 22503424 {parent cache: 22429696, buffer address: 22507520, bitmap address: 22511616, inuse: 0, free: 5, next: 22506560, last: 22470912}
+	 - __ADDR: 22506560 {parent cache: 22429696, buffer address: 22515712, bitmap address: 22519808, inuse: 0, free: 5, next: 22509696, last: 22503424}
+	 - __ADDR: 22509696 {parent cache: 22429696, buffer address: 22523904, bitmap address: 22528000, inuse: 0, free: 5, next: 22512832, last: 22506560}
+	 - __ADDR: 22512832 {parent cache: 22429696, buffer address: 22532096, bitmap address: 22536192, inuse: 0, free: 5, next: 22515968, last: 22509696}
+	 - __ADDR: 22515968 {parent cache: 22429696, buffer address: 22540288, bitmap address: 22544384, inuse: 0, free: 5, next: 0, last: 22512832}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 256
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - __ADDR: 22548480 {parent cache: 22560768, buffer address: 22564864, bitmap address: 22568960, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_PARTIAL: 
+	 - __ADDR: 22552576 {parent cache: 22560768, buffer address: 22573056, bitmap address: 22577152, inuse: 0, free: 0, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 22556672 {parent cache: 22560768, buffer address: 22581248, bitmap address: 22585344, inuse: 0, free: 0, next: 22589440, last: 0}
+	 - __ADDR: 22589440 {parent cache: 22560768, buffer address: 22593536, bitmap address: 22597632, inuse: 0, free: 5, next: 22592576, last: 22556672}
+	 - __ADDR: 22592576 {parent cache: 22560768, buffer address: 22601728, bitmap address: 22605824, inuse: 0, free: 5, next: 22595712, last: 22589440}
+	 - __ADDR: 22595712 {parent cache: 22560768, buffer address: 22609920, bitmap address: 22614016, inuse: 0, free: 5, next: 22598848, last: 22592576}
+	 - __ADDR: 22598848 {parent cache: 22560768, buffer address: 22618112, bitmap address: 22622208, inuse: 0, free: 5, next: 22601984, last: 22595712}
+	 - __ADDR: 22601984 {parent cache: 22560768, buffer address: 22626304, bitmap address: 22630400, inuse: 0, free: 5, next: 22634496, last: 22598848}
+	 - __ADDR: 22634496 {parent cache: 22560768, buffer address: 22638592, bitmap address: 22642688, inuse: 0, free: 5, next: 22637632, last: 22601984}
+	 - __ADDR: 22637632 {parent cache: 22560768, buffer address: 22646784, bitmap address: 22650880, inuse: 0, free: 5, next: 22640768, last: 22634496}
+	 - __ADDR: 22640768 {parent cache: 22560768, buffer address: 22654976, bitmap address: 22659072, inuse: 0, free: 5, next: 22643904, last: 22637632}
+	 - __ADDR: 22643904 {parent cache: 22560768, buffer address: 22663168, bitmap address: 22667264, inuse: 0, free: 5, next: 22647040, last: 22640768}
+	 - __ADDR: 22647040 {parent cache: 22560768, buffer address: 22671360, bitmap address: 22675456, inuse: 0, free: 5, next: 0, last: 22643904}
+-----------------------
+[SLAB] KMALLOC STARTING...
+ - slabs_partial: 
+	 - __ADDR: 22290432 {parent cache: 22298624, buffer address: 22310912, bitmap address: 22315008, inuse: 0, free: 0, next: 22294528, last: 0}
+	 - __ADDR: 22294528 {parent cache: 22298624, buffer address: 22319104, bitmap address: 22323200, inuse: 0, free: 0, next: 22327296, last: 22290432}
+	 - __ADDR: 22327296 {parent cache: 22298624, buffer address: 22331392, bitmap address: 22335488, inuse: 0, free: 5, next: 22330432, last: 0}
+	 - __ADDR: 22330432 {parent cache: 22298624, buffer address: 22339584, bitmap address: 22343680, inuse: 0, free: 5, next: 22333568, last: 22327296}
+	 - __ADDR: 22333568 {parent cache: 22298624, buffer address: 22347776, bitmap address: 22351872, inuse: 0, free: 5, next: 22336704, last: 22330432}
+	 - __ADDR: 22336704 {parent cache: 22298624, buffer address: 22355968, bitmap address: 22360064, inuse: 0, free: 5, next: 22339840, last: 22333568}
+	 - __ADDR: 22339840 {parent cache: 22298624, buffer address: 22364160, bitmap address: 22368256, inuse: 0, free: 5, next: 22372352, last: 22336704}
+	 - __ADDR: 22372352 {parent cache: 22298624, buffer address: 22376448, bitmap address: 22380544, inuse: 0, free: 5, next: 22375488, last: 22339840}
+	 - __ADDR: 22375488 {parent cache: 22298624, buffer address: 22384640, bitmap address: 22388736, inuse: 0, free: 5, next: 22378624, last: 22372352}
+	 - __ADDR: 22378624 {parent cache: 22298624, buffer address: 22392832, bitmap address: 22396928, inuse: 0, free: 5, next: 22381760, last: 22375488}
+	 - __ADDR: 22381760 {parent cache: 22298624, buffer address: 22401024, bitmap address: 22405120, inuse: 0, free: 5, next: 22384896, last: 22378624}
+	 - __ADDR: 22384896 {parent cache: 22298624, buffer address: 22409216, bitmap address: 22413312, inuse: 0, free: 5, next: 22810624, last: 22381760}
+	 - __ADDR: 22810624 {parent cache: 22298624, buffer address: 22814720, bitmap address: 22818816, inuse: 0, free: 5, next: 22813760, last: 22384896}
+	 - __ADDR: 22813760 {parent cache: 22298624, buffer address: 22822912, bitmap address: 22827008, inuse: 0, free: 5, next: 22816896, last: 22810624}
+	 - __ADDR: 22816896 {parent cache: 22298624, buffer address: 22831104, bitmap address: 22835200, inuse: 0, free: 5, next: 22820032, last: 22813760}
+	 - __ADDR: 22820032 {parent cache: 22298624, buffer address: 22839296, bitmap address: 22843392, inuse: 0, free: 5, next: 22823168, last: 22816896}
+	 - __ADDR: 22823168 {parent cache: 22298624, buffer address: 22847488, bitmap address: 22851584, inuse: 0, free: 5, next: 22855680, last: 22820032}
+	 - __ADDR: 22855680 {parent cache: 22298624, buffer address: 22859776, bitmap address: 22863872, inuse: 0, free: 5, next: 22858816, last: 22823168}
+	 - __ADDR: 22858816 {parent cache: 22298624, buffer address: 22867968, bitmap address: 22872064, inuse: 0, free: 5, next: 22861952, last: 22855680}
+	 - __ADDR: 22861952 {parent cache: 22298624, buffer address: 22876160, bitmap address: 22880256, inuse: 0, free: 5, next: 22865088, last: 22858816}
+	 - __ADDR: 22865088 {parent cache: 22298624, buffer address: 22884352, bitmap address: 22888448, inuse: 0, free: 5, next: 22868224, last: 22861952}
+	 - __ADDR: 22868224 {parent cache: 22298624, buffer address: 22892544, bitmap address: 22896640, inuse: 0, free: 5, next: 0, last: 22865088}
+ - slabs_free: 
+	 - __ADDR: 22327296 {parent cache: 22298624, buffer address: 22331392, bitmap address: 22335488, inuse: 0, free: 5, next: 22330432, last: 0}
+	 - __ADDR: 22330432 {parent cache: 22298624, buffer address: 22339584, bitmap address: 22343680, inuse: 0, free: 5, next: 22333568, last: 22327296}
+	 - __ADDR: 22333568 {parent cache: 22298624, buffer address: 22347776, bitmap address: 22351872, inuse: 0, free: 5, next: 22336704, last: 22330432}
+	 - __ADDR: 22336704 {parent cache: 22298624, buffer address: 22355968, bitmap address: 22360064, inuse: 0, free: 5, next: 22339840, last: 22333568}
+	 - __ADDR: 22339840 {parent cache: 22298624, buffer address: 22364160, bitmap address: 22368256, inuse: 0, free: 5, next: 22372352, last: 22336704}
+	 - __ADDR: 22372352 {parent cache: 22298624, buffer address: 22376448, bitmap address: 22380544, inuse: 0, free: 5, next: 22375488, last: 22339840}
+	 - __ADDR: 22375488 {parent cache: 22298624, buffer address: 22384640, bitmap address: 22388736, inuse: 0, free: 5, next: 22378624, last: 22372352}
+	 - __ADDR: 22378624 {parent cache: 22298624, buffer address: 22392832, bitmap address: 22396928, inuse: 0, free: 5, next: 22381760, last: 22375488}
+	 - __ADDR: 22381760 {parent cache: 22298624, buffer address: 22401024, bitmap address: 22405120, inuse: 0, free: 5, next: 22384896, last: 22378624}
+	 - __ADDR: 22384896 {parent cache: 22298624, buffer address: 22409216, bitmap address: 22413312, inuse: 0, free: 5, next: 22810624, last: 22381760}
+	 - __ADDR: 22810624 {parent cache: 22298624, buffer address: 22814720, bitmap address: 22818816, inuse: 0, free: 5, next: 22813760, last: 22384896}
+	 - __ADDR: 22813760 {parent cache: 22298624, buffer address: 22822912, bitmap address: 22827008, inuse: 0, free: 5, next: 22816896, last: 22810624}
+	 - __ADDR: 22816896 {parent cache: 22298624, buffer address: 22831104, bitmap address: 22835200, inuse: 0, free: 5, next: 22820032, last: 22813760}
+	 - __ADDR: 22820032 {parent cache: 22298624, buffer address: 22839296, bitmap address: 22843392, inuse: 0, free: 5, next: 22823168, last: 22816896}
+	 - __ADDR: 22823168 {parent cache: 22298624, buffer address: 22847488, bitmap address: 22851584, inuse: 0, free: 5, next: 22855680, last: 22820032}
+	 - __ADDR: 22855680 {parent cache: 22298624, buffer address: 22859776, bitmap address: 22863872, inuse: 0, free: 5, next: 22858816, last: 22823168}
+	 - __ADDR: 22858816 {parent cache: 22298624, buffer address: 22867968, bitmap address: 22872064, inuse: 0, free: 5, next: 22861952, last: 22855680}
+	 - __ADDR: 22861952 {parent cache: 22298624, buffer address: 22876160, bitmap address: 22880256, inuse: 0, free: 5, next: 22865088, last: 22858816}
+	 - __ADDR: 22865088 {parent cache: 22298624, buffer address: 22884352, bitmap address: 22888448, inuse: 0, free: 5, next: 22868224, last: 22861952}
+	 - __ADDR: 22868224 {parent cache: 22298624, buffer address: 22892544, bitmap address: 22896640, inuse: 0, free: 5, next: 0, last: 22865088}
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22310912
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22310976
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311040
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311104
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311168
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+[SLAB] mm_slab_find_free_object: Searching block 5
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311232
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+[SLAB] mm_slab_find_free_object: Searching block 5
+[SLAB] mm_slab_find_free_object: Searching block 6
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311296
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+[SLAB] mm_slab_find_free_object: Searching block 5
+[SLAB] mm_slab_find_free_object: Searching block 6
+[SLAB] mm_slab_find_free_object: Searching block 7
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311360
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+[SLAB] mm_slab_find_free_object: Searching block 5
+[SLAB] mm_slab_find_free_object: Searching block 6
+[SLAB] mm_slab_find_free_object: Searching block 7
+[SLAB] mm_slab_find_free_object: Searching block 8
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311424
+[SLAB] KMALLOC STARTING...
+[SLAB] mm_slab_find_free_object: Searching block 0
+[SLAB] mm_slab_find_free_object: Searching block 1
+[SLAB] mm_slab_find_free_object: Searching block 2
+[SLAB] mm_slab_find_free_object: Searching block 3
+[SLAB] mm_slab_find_free_object: Searching block 4
+[SLAB] mm_slab_find_free_object: Searching block 5
+[SLAB] mm_slab_find_free_object: Searching block 6
+[SLAB] mm_slab_find_free_object: Searching block 7
+[SLAB] mm_slab_find_free_object: Searching block 8
+[SLAB] mm_slab_find_free_object: Searching block 9
+ - [-] Found possible free block...
+--------------------
+[LOG] KMALLOC ADDR: 22311488
+ - GDT loaded... initializing segment registers...
+[ACPI] Initializing ACPI
+ - ACPI Version 1.0 detected
+ - ACPI RSDT Pointer: 3221099582
+[LOG] ACPI MADT found: 3221099350
+[ACPI - MADT] MADT SDT Header:
+ - Signature: APIC 
+ - Length: 176
+ - Revision: 1
+ - Checksum: 62
+ - OEMID: 3221099360
+[ACPI - MADT] Detected Core: 0
+[ACPI - MADT] Detected Core: 1
+[ACPI - MADT] Detected Core: 2
+[ACPI - MADT] Detected Core: 3
+[ACPI - MADT] Detected Core: 4
+[ACPI - MADT] Detected Core: 5
+[ACPI - MADT] Detected Core: 6
+[ACPI - MADT] Detected Core: 7
+[LAPIC] LAPIC IA32_APIC_BASE MSR value: 4276092928
+[LAPIC] LAPIC Spurious Interrupt Vector Ptr: 4276093168
+[SCHED] Memcpy'ing SMP trampoline code to 0x70000
+ - Sched core binary begin: 18446744071564173648
+ - Sched core binary end: 18446744071564178436
+ - Sched core binary length: 4788
+[SCHED] Sending INIT to core 1
+[LAPIC] Sending IPI...
+ - ICR Upper value: 16777216
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 1
+[LAPIC] Sending IPI...
+ - ICR Upper value: 16777216
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 2
+[LAPIC] Sending IPI...
+ - ICR Upper value: 33554432
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 2
+[LAPIC] Sending IPI...
+ - ICR Upper value: 33554432
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 3
+[LAPIC] Sending IPI...
+ - ICR Upper value: 50331648
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 3
+[LAPIC] Sending IPI...
+ - ICR Upper value: 50331648
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 4
+[LAPIC] Sending IPI...
+ - ICR Upper value: 67108864
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 4
+[LAPIC] Sending IPI...
+ - ICR Upper value: 67108864
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 5
+[LAPIC] Sending IPI...
+ - ICR Upper value: 83886080
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 5
+[LAPIC] Sending IPI...
+ - ICR Upper value: 83886080
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 6
+[LAPIC] Sending IPI...
+ - ICR Upper value: 100663296
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 6
+[LAPIC] Sending IPI...
+ - ICR Upper value: 100663296
+ - ICR Lower value: 1648
+[SCHED] Sending INIT to core 7
+[LAPIC] Sending IPI...
+ - ICR Upper value: 117440512
+ - ICR Lower value: 1280
+[SCHED] Sending SIPI to core 7
+[LAPIC] Sending IPI...
+ - ICR Upper value: 117440512
+ - ICR Lower value: 1648
+[LOG] Done execution. Halting...

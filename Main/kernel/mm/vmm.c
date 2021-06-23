@@ -94,6 +94,7 @@ void vmm_map_page(uint64_t vaddr, uint64_t paddr, uint16_t flags) {
 
 bool vmm_page_is_mapped(uint64_t vaddr) {
     // Get the indices of each page table at each level for the virtual address
+    vaddr = pmm_align_paddr(vaddr);
     uint64_t p4_idx = (vaddr >> 39) & 0x1FF;
     uint64_t p3_idx = (vaddr >> 30) & 0x1FF;
     uint64_t p2_idx = (vaddr >> 21) & 0x1FF;
@@ -104,40 +105,40 @@ bool vmm_page_is_mapped(uint64_t vaddr) {
     uint64_t* p1 = NULL;
 
     mutex_lock(&vmm_mux);
-    serial_puts("\n\n[VMM] Testing if page ");
-    serial_puts(unsigned_long_to_str(vaddr));
-    serial_puts(" is mapped");
-    serial_puts("\n - P4: ");
-    serial_puts(unsigned_long_to_str(p4[p4_idx]));
+    //serial_puts("\n\n[VMM] Testing if page ");
+    //serial_puts(unsigned_long_to_str(vaddr));
+    //serial_puts(" is mapped");
+    //serial_puts("\n - P4: ");
+    //serial_puts(unsigned_long_to_str(p4[p4_idx]));
     if (p4[p4_idx] == NULL || ((p4[p4_idx] & 0x1) != 1)) {
-        serial_puts("\n - FAILED ON P4");
+        //serial_puts("\n - FAILED ON P4");
         mutex_unlock(&vmm_mux);
         return false;
     }
     p3 = (uint64_t*)(p4[p4_idx] & ~(0xfff));
 
     if (p3[p3_idx] == NULL || ((p3[p3_idx] & 0x1) != 1)) {
-        serial_puts("\n - FAILED ON P3");
-        serial_puts("\n - P3: ");
-        serial_puts(unsigned_long_to_str(p3[p3_idx]));
+        //serial_puts("\n - FAILED ON P3");
+        //serial_puts("\n - P3: ");
+        //serial_puts(unsigned_long_to_str(p3[p3_idx]));
         mutex_unlock(&vmm_mux);
         return false;
     }
     p2 = (uint64_t*)(p3[p3_idx] & ~(0xfff));
 
     if (p2[p2_idx] == NULL|| ((p2[p2_idx] & 0x1) != 1)) {
-        serial_puts("\n - FAILED ON P2");
+        //serial_puts("\n - FAILED ON P2");
         mutex_unlock(&vmm_mux);
         return false;
     }
     p1 = (uint64_t*)(p2[p2_idx] & ~(0xfff));
 
     if ((p1[p1_idx] == NULL) || ((p1[p1_idx] & 0x1) != 1)) {
-        serial_puts("\n - FAILED ON P1");
-        serial_puts("\n - P1: ");
-        serial_puts(unsigned_long_to_str(p1));
-        serial_puts("\n - P1[p1_idx]: ");
-        serial_puts(unsigned_long_to_str(p1[p1_idx]));
+        //serial_puts("\n - FAILED ON P1");
+        //serial_puts("\n - P1: ");
+        //serial_puts(unsigned_long_to_str(p1));
+        //serial_puts("\n - P1[p1_idx]: ");
+        //serial_puts(unsigned_long_to_str(p1[p1_idx]));
         mutex_unlock(&vmm_mux);
         return false;
     }

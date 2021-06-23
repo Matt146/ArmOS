@@ -6,6 +6,7 @@
         "serial.h": "c",
         "pmm.h": "c",
         "idt.h": "c",
-        "lapic.h": "c"
+        "lapic.h": "c",
+        "*.txt": "c"
     }
 }
