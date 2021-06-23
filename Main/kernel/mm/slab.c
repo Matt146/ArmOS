@@ -20,13 +20,17 @@ void mm_slab_init() {
 
     // Now add custom caches
     serial_puts("\n[SLAB] Adding custom caches...");
+    mm_slab_create_cache("Chad", 0, 1);
+    mm_slab_create_cache("Chad", 0, 2);
+    mm_slab_create_cache("Chad", 0, 4);
     mm_slab_create_cache("Chad", 0, 8);
     mm_slab_create_cache("Chad", 0, 16);
     mm_slab_create_cache("Chad", 0, 32);
     mm_slab_create_cache("Chad", 0, 64);
     mm_slab_create_cache("Chad", 0, 128);
     mm_slab_create_cache("Chad", 0, 256);
-    mm_slab_create_cache("Chad", 0, 256);
+    mm_slab_create_cache("Chad", 0, 512);
+    mm_slab_create_cache("Chad", 0, 1024);
     serial_puts("\n[SLAB] Custom caches added.");
 }
 
@@ -36,8 +40,6 @@ struct mm_slab_cache* mm_slab_create_cache(const char* name, uint32_t flags, uin
     struct mm_slab_cache* start = root_cache;
     while (start->next != NULL) {
         start = start->next;
-        serial_puts("\n[SLAB] mm_slab_create_cache: Last cache count: ");
-        serial_puts(unsigned_long_to_str(num));
         num++;
     }
     //serial_puts("\n[SLAB] mm_slab_create_cache: Got last cache.");
@@ -51,7 +53,6 @@ struct mm_slab_cache* mm_slab_create_cache(const char* name, uint32_t flags, uin
 
     start->next = (struct mm_slab_cache*)(pmm_alloc(1) + __NONE);
     start->next->cache_name = name;
-    start->next->slabs_full = slabs_full_buff;
     start->next->slabs_partial = slabs_partial_buff;
     start->next->slabs_free = slabs_free_buff;
     start->next->flags = flags;
@@ -62,30 +63,28 @@ struct mm_slab_cache* mm_slab_create_cache(const char* name, uint32_t flags, uin
     start->next->next = NULL;
     start->next->last = start;
 
-    start->next->slabs_full->parent_cache = start->next;
     start->next->slabs_partial->parent_cache = start->next;
     start->next->slabs_free->parent_cache = start->next;
 
-    start->next->slabs_full->buff = pmm_alloc(DIV_ROUND_UP(object_size * 5, PMM_PAGE_SIZE)) + __NONE;
-    memsetb((uint8_t*)start->next->slabs_full->buff, 0, object_size * 5 * PMM_PAGE_SIZE);
-    start->next->slabs_full->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * 5, 8), PMM_PAGE_SIZE) + __NONE);
-    memsetb((uint8_t*)start->next->slabs_full->bitmap, 0xff, DIV_ROUND_UP(object_size * 5 * PMM_PAGE_SIZE, 8));
+    start->next->slabs_full->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    memsetb((uint8_t*)start->next->slabs_full->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
+    start->next->slabs_full->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    memsetb((uint8_t*)start->next->slabs_full->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
+    start->next->slabs_full->total_available = 0;
 
-    start->next->slabs_partial->buff = pmm_alloc(DIV_ROUND_UP(object_size * 5, PMM_PAGE_SIZE)) + __NONE;
-    memsetb((uint8_t*)start->next->slabs_partial->buff, 0, object_size * 5 * PMM_PAGE_SIZE);
-    start->next->slabs_partial->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * 5, 8), PMM_PAGE_SIZE) + __NONE);
-    memsetb((uint8_t*)start->next->slabs_partial->bitmap, 0xff, DIV_ROUND_UP(object_size * 5 * PMM_PAGE_SIZE, 8));
+    start->next->slabs_partial->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    memsetb((uint8_t*)start->next->slabs_partial->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
+    start->next->slabs_partial->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    memsetb((uint8_t*)start->next->slabs_partial->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
+    start->next->slabs_partial->total_available = SLAB_INITIAL_ALLOC;
 
-    start->next->slabs_free->buff = pmm_alloc(DIV_ROUND_UP(object_size * 5, PMM_PAGE_SIZE)) + __NONE;
-    memsetb((uint8_t*)start->next->slabs_free->buff, 0, object_size * 5 * PMM_PAGE_SIZE);
-    start->next->slabs_free->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * 5, 8), PMM_PAGE_SIZE) + __NONE);
-    memsetb((uint8_t*)start->next->slabs_free->bitmap, 0xff, DIV_ROUND_UP(object_size * 5 * PMM_PAGE_SIZE, 8));
+    start->next->slabs_free->buff = pmm_alloc(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, PMM_PAGE_SIZE)) + __NONE;
+    memsetb((uint8_t*)start->next->slabs_free->buff, 0, object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE);
+    start->next->slabs_free->bitmap = pmm_alloc(DIV_ROUND_UP(DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC, 8), PMM_PAGE_SIZE) + __NONE);
+    memsetb((uint8_t*)start->next->slabs_free->bitmap, 0xff, DIV_ROUND_UP(object_size * SLAB_INITIAL_ALLOC * PMM_PAGE_SIZE, 8));
+    start->next->slabs_free->total_available = SLAB_INITIAL_ALLOC;
 
-    // Continue with the free slabs
-    //serial_puts("\n[SLAB] mm_slab_create_cache: allocating initial slabs for cache...");
     mm_alloc_slabs(start->next, start->next->batchcount);
-    mm_alloc_slabs(start->next, start->next->batchcount);
-    //serial_puts("\n[SLAB] mm_slab_create_cache: allocated initial slabs for cache.");
     return start->next;
 }
 
@@ -95,7 +94,6 @@ static void mm_append_slabs(struct mm_slab* dstslab, struct mm_slab* srcslab) {
             srcslab->last = dstslab;
             srcslab->next = NULL;
             dstslab->next = srcslab;
-            //mm_slab_debug_slabs(dstslab);
             break;
         }
         dstslab = dstslab->next;
@@ -121,7 +119,7 @@ static void mm_alloc_slabs(struct mm_slab_cache* cache, uint64_t count) {
 
         // Logistic fields
         slab->inuse = 0;
-        slab->free = count;
+        slab->total_available = count;
 
 
         // Linked list stuff - append function will do the work for us
@@ -149,8 +147,8 @@ static uint64_t mm_slab_find_free_object(uint8_t* bitmap, uint64_t starting_addr
 
     bool valid_block = false;
     for (size_t i = 0; i < possible_objects_in_bitmap * 8; i++) {
-        serial_puts("\n[SLAB] mm_slab_find_free_object: Searching block ");
-        serial_puts(unsigned_long_to_str(i));
+        //serial_puts("\n[SLAB] mm_slab_find_free_object: Searching block ");
+        //serial_puts(unsigned_long_to_str(i));
         if (mm_slab_block_is_free(bitmap, i)) {
             serial_puts("\n - [-] Found possible free block...");
             for (size_t j = 0; j < objects_to_allocate; j++) {
@@ -165,7 +163,7 @@ static uint64_t mm_slab_find_free_object(uint8_t* bitmap, uint64_t starting_addr
                 for (size_t z = 0; z < objects_to_allocate; z++) {
                     mm_slab_set_block_used(bitmap, i + z);
                 }
-                serial_puts("\n--------------------");
+                //serial_puts("\n--------------------");
                 return starting_addr + (i * obj_size);
             }
         }
@@ -204,12 +202,6 @@ static int mm_slab_rotate_slabs(struct mm_slab** dstslab, struct mm_slab** srcsl
 static void mm_move_free_slabs_to_partial_list(struct mm_slab_cache* cache) {
     mm_slab_rotate_slabs(&(cache->slabs_partial), &(cache->slabs_free), cache->slabs_free);
     mm_alloc_slabs(cache, cache->batchcount);
-
-    serial_puts("\n - slabs_partial: ");
-    mm_slab_debug_slabs(cache->slabs_partial);
-
-    serial_puts("\n - slabs_free: ");
-    mm_slab_debug_slabs(cache->slabs_free);
 }
 
 void* kmalloc(uint64_t size) {
@@ -236,10 +228,28 @@ void* kmalloc(uint64_t size) {
             //mm_slab_debug_slabs(slab_start);
             uint64_t free_obj = mm_slab_find_free_object(slab_start->bitmap, (uint64_t)slab_start->buff, start->object_size, DIV_ROUND_UP(size, start->object_size), start->batchcount);
             if (free_obj != __MM_FIND_FREE_OBJECT_FAIL) {
-                slab_start->free -= DIV_ROUND_UP(size, start->object_size);
                 slab_start->inuse += DIV_ROUND_UP(size, start->object_size);
+                //serial_puts("\n[SLAB] kmalloc: current slab inuse objects: ");
+                //serial_puts(unsigned_long_to_str(slab_start->inuse));
+                //serial_puts("\n - slabs_partial:");
+                //mm_slab_debug_slabs(start->slabs_partial);
+
+                // Rotate if slab_partial is full
+                if (slab_start->inuse >= slab_start->total_available) {
+                    slab_start->next = NULL;
+                    //serial_puts("\n--------------------");
+                    mm_slab_rotate_slabs(&(start->slabs_full), &(start->slabs_partial), slab_start);
+                    //serial_puts("\n[SLAB] kmalloc: Rotation is complete:");
+                    //serial_puts("\n - slabs_full:");
+                    //mm_slab_debug_slabs(start->slabs_full);
+                    //serial_puts("\n - slabs_partial:");
+                    //mm_slab_debug_slabs(start->slabs_partial);
+                }
+
+
                 return (void*)free_obj;
             }
+            //slab_start = &(slab_start_clone.next);
             slab_start = slab_start->next;
         }
     }
@@ -258,20 +268,6 @@ void mm_slab_debug_slabs(struct mm_slab* slab) {
 
     struct mm_slab* start = slab;
     while (start->next != NULL) {
-        /*
-        serial_puts("{parent cache: ");
-        serial_puts(unsigned_long_to_str((uint64_t)start->parent_cache));
-        serial_puts(", buffer address: ");
-        serial_puts(unsigned_long_to_str((uint64_t)start->buff));
-        serial_puts(", bitmap address: ");
-        serial_puts(unsigned_long_to_str((uint64_t)start->bitmap));
-        serial_puts(", inuse: ");
-        serial_puts(unsigned_long_to_str((uint64_t)start->inuse));
-        serial_puts(", free: ");
-        serial_puts(unsigned_long_to_str((uint64_t)start->free));
-        serial_puts("}");
-        serial_puts(" --> ");
-        */
         mm_slab_debug_slabs_no_next(start);
         start = start->next;
     }
@@ -297,8 +293,8 @@ void mm_slab_debug_slabs_no_next(struct mm_slab* slab) {
     serial_puts(unsigned_long_to_str((uint64_t)start->bitmap));
     serial_puts(", inuse: ");
     serial_puts(unsigned_long_to_str((uint64_t)start->inuse));
-    serial_puts(", free: ");
-    serial_puts(unsigned_long_to_str((uint64_t)start->free));
+    serial_puts(", total available: ");
+    serial_puts(unsigned_long_to_str((uint64_t)start->total_available));
     serial_puts(", next: ");
     serial_puts(unsigned_long_to_str((uint64_t)start->next));
     serial_puts(", last: ");

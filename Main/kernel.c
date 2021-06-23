@@ -105,7 +105,9 @@ void _start(struct stivale_struct *stivale_struct) {
    mm_slab_debug();
 
     // Test kmalloc
-    for (size_t i = 0; i < 10; i++) {
+    for (size_t i = 0; i < 10000; i++) {
+        serial_puts("\n\n\n\n\n\n\n\n\n\nKMALLOC NUM: ");
+        serial_puts(unsigned_long_to_str(i));
         void* data = kmalloc(64);
         serial_puts("\n[LOG] KMALLOC ADDR: ");
         serial_puts(unsigned_long_to_str((uint64_t)data));

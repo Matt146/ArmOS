@@ -9,6 +9,7 @@
 #include "../driver/serial/serial.h"
 #include "../sched/mutex.h"
 
+#define SLAB_INITIAL_ALLOC 5
 #define SLAB_STD_BATCHCOUNT 5
 #define __NONE 0
 
@@ -47,7 +48,7 @@ struct mm_slab {
 
     // Logistic fields - UNUSED: IMPLEMENT LATER
     uint64_t inuse;     //  Number of in-use objects in slab
-    uint64_t free;      // Number of free objects in slab
+    uint64_t total_available;      // Number of total objects in the slab
 
     // Linked list stuff
     struct mm_slab* next;
