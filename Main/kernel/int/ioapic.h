@@ -3,8 +3,8 @@
 
 ///////////////////////////////////////////////////////////
 // TO ANYONE READING THIS FILE - THERE MAY BE A BUG
-// I ONLY CONSIDER 1 IOAPIC
-// @FIXME LATER
+// ON PIC PIN 1 - remains default value
+// @FIXME - check with "info pic" on qemu
 ///////////////////////////////////////////////////////////
 
 #include <stdint.h>
@@ -13,17 +13,21 @@
 #include "../mm/vmm.h"
 #include "lapic.h"
 
-static uint64_t ioapic_base;
-static uint32_t ioapic_gsi;            // This is the first IRQ - Global System Interrupt
-static uint8_t ioapic_max_redirection_entry;
+struct IOAPIC {
+    uint64_t ioapic_base;
+    uint32_t ioapic_gsi;     // This is the first IRQ - Global System Interrupt
+    uint8_t ioapic_max_redirection_entry;
+} __attribute__((packed));
+
+struct IOAPIC ioapics[ACPI_IOAPIC_MAX];
 
 void ioapic_init();
-uint64_t ioapic_get_base();
-uint32_t ioapic_get_gsi();
-uint32_t ioapic_get_max_redirection_entry();
+uint64_t ioapic_get_base(size_t ioapic);
+uint32_t ioapic_get_gsi(size_t ioapic);
+uint32_t ioapic_get_max_redirection_entry(size_t ioapic);
 
-static void ioapic_write(uint32_t reg_offset, uint32_t value);
-static uint32_t ioapic_read(uint32_t reg_offset);
-void ioapic_map_irq(uint8_t irq, uint8_t vector, bool masked, uint8_t destination);
+static void ioapic_write(size_t ioapic, uint32_t reg_offset, uint32_t value);
+static uint32_t ioapic_read(size_t ioapic, uint32_t reg_offset);
+void ioapic_map_irq(size_t ioapic, uint8_t irq, uint8_t vector, bool masked, uint8_t destination);
 
 #endif // IOAPIC_H

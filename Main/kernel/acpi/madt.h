@@ -4,10 +4,12 @@
 #include "rsdp.h"
 
 #define ACPI_MAX_CORES 256
+#define ACPI_IOAPIC_MAX 256
 
 // Contains the LAPIC ID's of a bunch of processors
 uint8_t acpi_processors[ACPI_MAX_CORES];
 uint8_t acpi_detected_processors_count;
+size_t acpi_ioapics_count;
 
 struct MADT_SpecialHeader {
     uint32_t lapic_addr;
@@ -78,7 +80,7 @@ struct MADT_EntryType9 {
     uint32_t acpi_id;
 } __attribute__((packed));
 
-struct MADT_EntryType1 acpi_ioapic;
+struct MADT_EntryType1 acpi_ioapic[ACPI_IOAPIC_MAX];
 
 void acpi_madt_detect_cores(uint64_t madt_addr);
 

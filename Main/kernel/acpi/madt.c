@@ -22,6 +22,7 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
 
 
     size_t cur_lapic = 0;
+    size_t cur_ioapic = 0;
     acpi_detected_processors_count = 0;
     while (true) {
         // Check if we reach the end
@@ -47,8 +48,10 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
             serial_puts(unsigned_long_to_str((uint64_t)_madt_ioapic->ioapic_addr));
             serial_puts("\n - gsi: ");
             serial_puts(unsigned_long_to_str((uint64_t)_madt_ioapic->global_system_interrupt_base));
-            acpi_ioapic = *_madt_ioapic;
+            acpi_ioapic[cur_ioapic] = *_madt_ioapic;
             cur_madt_ptr += sizeof(struct MADT_EntryType1);
+            cur_ioapic += 1;
+            acpi_ioapics_count += 1;
             continue;
         } else if (*cur_madt_ptr == 2) {
             // IOAPIC Interrupt Source Override
