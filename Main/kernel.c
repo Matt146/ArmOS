@@ -2,7 +2,9 @@
 #include <stddef.h>
 #include <stivale.h>
 #include "kernel/driver/serial/serial.h"
+#include "kernel/mm/bigalloc.h"
 #include "kernel/sched/mutex.h"
+#include "kernel/int/ioapic.h"
 #include "kernel/acpi/rsdp.h"
 #include "kernel/acpi/madt.h"
 #include "kernel/int/lapic.h"
@@ -99,19 +101,25 @@ void _start(struct stivale_struct *stivale_struct) {
     }
     */
 
+   // Initialize the big allocator
+   mm_bigalloc_init();
+
    // Initialize slab allocator
    mm_slab_init();
    serial_puts("\n[LOG] INITIALIZED SLAB ALLOCATOR!");
    mm_slab_debug();
 
     // Test kmalloc
-    for (size_t i = 0; i < 10000; i++) {
+    /*
+    for (size_t i = 0; i < 100; i++) {
         serial_puts("\n\n\n\n\n\n\n\n\n\nKMALLOC NUM: ");
         serial_puts(unsigned_long_to_str(i));
-        void* data = kmalloc(64);
+        void* data = kmalloc(5000);
         serial_puts("\n[LOG] KMALLOC ADDR: ");
         serial_puts(unsigned_long_to_str((uint64_t)data));
+        mm_bigalloc_free(data);
     }
+    */
 
 
     // Initialize the new GDT
@@ -128,7 +136,10 @@ void _start(struct stivale_struct *stivale_struct) {
     lapic_init();
 
     // Initialize MP
-    mp_init();
+    //mp_init();
+
+    // Initialize IOAPIC
+    ioapic_init();
 
     /*
     // Mutex Test Operations

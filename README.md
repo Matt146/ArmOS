@@ -15,6 +15,7 @@ This is an OS that I'm writing myself totally from scratch.
 - ACPI: RDSP, RSDT, XSDT, MADT
 - Booting Cores
 - Mutexes/Locking
+- IOAPIC
 
 ## WIP:
 
@@ -24,7 +25,6 @@ This is an OS that I'm writing myself totally from scratch.
 
 ## Future Features
 
-- IOAPIC
 - PCI Driver
 - Disk driver
 

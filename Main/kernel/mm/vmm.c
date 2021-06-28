@@ -222,3 +222,55 @@ void vmm_check_and_iden_map(uint64_t vaddr)  {
 uint64_t vmm_get_cr3() {
     return (uint64_t)p4;
 }
+
+uint64_t vmm_vaddr_to_paddr(uint64_t vaddr) {
+    vaddr = pmm_align_paddr(vaddr);
+    uint64_t p4_idx = (vaddr >> 39) & 0x1FF;
+    uint64_t p3_idx = (vaddr >> 30) & 0x1FF;
+    uint64_t p2_idx = (vaddr >> 21) & 0x1FF;
+    uint64_t p1_idx = (vaddr >> 12) & 0x1FF;
+
+    uint64_t* p3 = NULL;
+    uint64_t* p2 = NULL;
+    uint64_t* p1 = NULL;
+
+    mutex_lock(&vmm_mux);
+    //serial_puts("\n\n[VMM] Testing if page ");
+    //serial_puts(unsigned_long_to_str(vaddr));
+    //serial_puts(" is mapped");
+    //serial_puts("\n - P4: ");
+    //serial_puts(unsigned_long_to_str(p4[p4_idx]));
+    if (p4[p4_idx] == NULL || ((p4[p4_idx] & 0x1) != 1)) {
+        //serial_puts("\n - FAILED ON P4");
+        mutex_unlock(&vmm_mux);
+        return PMM_ALLOC_FAIL;
+    }
+    p3 = (uint64_t*)(p4[p4_idx] & ~(0xfff));
+
+    if (p3[p3_idx] == NULL || ((p3[p3_idx] & 0x1) != 1)) {
+        //serial_puts("\n - FAILED ON P3");
+        //serial_puts("\n - P3: ");
+        //serial_puts(unsigned_long_to_str(p3[p3_idx]));
+        mutex_unlock(&vmm_mux);
+        return PMM_ALLOC_FAIL;
+    }
+    p2 = (uint64_t*)(p3[p3_idx] & ~(0xfff));
+
+    if (p2[p2_idx] == NULL|| ((p2[p2_idx] & 0x1) != 1)) {
+        //serial_puts("\n - FAILED ON P2");
+        mutex_unlock(&vmm_mux);
+        return PMM_ALLOC_FAIL;
+    }
+    p1 = (uint64_t*)(p2[p2_idx] & ~(0xfff));
+
+    if ((p1[p1_idx] == NULL) || ((p1[p1_idx] & 0x1) != 1)) {
+        //serial_puts("\n - FAILED ON P1");
+        //serial_puts("\n - P1: ");
+        //serial_puts(unsigned_long_to_str(p1));
+        //serial_puts("\n - P1[p1_idx]: ");
+        //serial_puts(unsigned_long_to_str(p1[p1_idx]));
+        mutex_unlock(&vmm_mux);
+        return PMM_ALLOC_FAIL;
+    }
+    return p1[p1_idx] & ~(0xfff);
+}

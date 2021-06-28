@@ -7,6 +7,9 @@
         "pmm.h": "c",
         "idt.h": "c",
         "lapic.h": "c",
-        "*.txt": "c"
+        "*.txt": "c",
+        "common.h": "c",
+        "panic.h": "c",
+        "stddef.h": "c"
     }
 }

@@ -206,13 +206,13 @@ static void mm_move_free_slabs_to_partial_list(struct mm_slab_cache* cache) {
 }
 
 void* kmalloc(uint64_t size) {
-    // Check if the size is greater than the maximum implemented cache size
+    // Check if the size is greater than the maximum implemented cache size, and if that's the case, use mm_bigalloc_alloc
     if (size > SLAB_BIGGEST_CACHE) {
-        return NULL;
+        serial_puts("\n[kmalloc] using big allocator");
+        return mm_bigalloc_alloc(size);
     }
 
     // Get the cache with suitable-sized objects
-    serial_puts("\n[SLAB] KMALLOC STARTING...");
     struct mm_slab_cache* start = root_cache;
     while (start->next != NULL) {
         if (start->object_size >= size) {
@@ -223,7 +223,7 @@ void* kmalloc(uint64_t size) {
 
     if (start->object_size == root_cache->object_size) {
         // No suitable cache found
-        serial_puts("\n[SLAB] ALLOC FAILED!");
+        serial_puts("\n[SLAB] alloc failed!");
         return NULL;
     }
 

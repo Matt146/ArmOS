@@ -8,13 +8,11 @@
 #include "vmm.h"
 #include "../driver/serial/serial.h"
 #include "../sched/mutex.h"
+#include "bigalloc.h"
 
 #define SLAB_BIGGEST_CACHE 1024
 #define SLAB_INITIAL_ALLOC 5
 #define SLAB_STD_BATCHCOUNT 5
-#define GLOBAL_OFFSET 0
-
-#define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 
 #define __MM_FIND_FREE_OBJECT_FAIL PMM_ALLOC_FAIL
 

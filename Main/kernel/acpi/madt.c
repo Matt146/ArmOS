@@ -41,6 +41,13 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
             continue;
         } else if (*cur_madt_ptr == 1) {
             // IOAPIC
+            struct MADT_EntryType1* _madt_ioapic = (struct MADT_EntryType1*)cur_madt_ptr;
+            serial_puts("\n[ACPI - MADT] Detected IOAPIC: ");
+            serial_puts("\n - base: ");
+            serial_puts(unsigned_long_to_str((uint64_t)_madt_ioapic->ioapic_addr));
+            serial_puts("\n - gsi: ");
+            serial_puts(unsigned_long_to_str((uint64_t)_madt_ioapic->global_system_interrupt_base));
+            acpi_ioapic = *_madt_ioapic;
             cur_madt_ptr += sizeof(struct MADT_EntryType1);
             continue;
         } else if (*cur_madt_ptr == 2) {

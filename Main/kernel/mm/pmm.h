@@ -9,12 +9,15 @@
 
 #define KERNEL_HIGH_VMA 0xffffffff80000000
 #define HIGH_VMA 0xffff800000000000
+#define GLOBAL_OFFSET 0
 #define PMM_MMAP_MAX_ENTRIES 256
 #define PMM_PAGE_SIZE 0x1000
 
 #define PMM_ALLOC_FAIL 0xFFFFFFFFFFFFFFFF // What is returned by PMM_ALLOC when it fails
 
 #define __PMM_SAFE_ALLOCS_ALWAYS
+
+#define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 
 #define __PMM_BITMAP_LENGTH (pmm_bitmap.end - (uint64_t)pmm_bitmap.bitmap)
 #define __PMM_BITMAP_SIZE (__PMM_BITMAP_LENGTH * 8)
@@ -86,5 +89,6 @@ void vmm_check_and_iden_map(uint64_t vaddr);            // checks if vaddr is ma
 void vmm_set_cr3(uint64_t addr);
 void vmm_flush_cr3();
 uint64_t vmm_get_cr3();
+uint64_t vmm_vaddr_to_paddr(uint64_t vaddr);            // takes the given vaddr and turns it into the corresponding paddr
 
 #endif // PMM_H

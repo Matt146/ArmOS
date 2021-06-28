@@ -78,6 +78,8 @@ struct MADT_EntryType9 {
     uint32_t acpi_id;
 } __attribute__((packed));
 
+struct MADT_EntryType1 acpi_ioapic;
+
 void acpi_madt_detect_cores(uint64_t madt_addr);
 
 #endif // MADT_H
