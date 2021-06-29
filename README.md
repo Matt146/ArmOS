@@ -27,7 +27,8 @@ This is an OS that I'm writing myself totally from scratch.
 
 ## Future Features
 
-- Disk driver
+- PS/2: Mouse Driver
+- Disk Driver
 
 ## TODO (to learn):
 - Look into scheduling algos + design scheduler
