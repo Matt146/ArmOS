@@ -16,16 +16,17 @@ This is an OS that I'm writing myself totally from scratch.
 - Booting Cores
 - Mutexes/Locking
 - IOAPIC
+- PS/2: Keyboard Driver (scancodes)
 
 ## WIP:
 
+- PCI Driver
 - Slab Allocator
 - VFS
 - Scheduler
 
 ## Future Features
 
-- PCI Driver
 - Disk driver
 
 ## TODO (to learn):

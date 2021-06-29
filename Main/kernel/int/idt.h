@@ -25,5 +25,7 @@ struct IDT_Gate IDT[256];
 void idt_init();
 static inline void lidt(void* base, uint16_t size);
 extern void isr_common_stub(void);
+extern void ps2_irq1_handler_stub(void);
+extern void ps2_irq12_handler_stub(void);
 
 #endif // IDT_H

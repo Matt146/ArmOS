@@ -22,6 +22,34 @@ void idt_init() {
         set_idt_gate(idt_default, i);
     }
 
+    offset = (uint64_t)ps2_irq1_handler_stub;
+
+    // Set the values of the default IDT gate
+    idt_default.offset0 = (uint16_t)offset;
+    idt_default.cs = 0x8;
+    idt_default.zero0 = 0x0;
+    idt_default.type = 0x8E;
+    idt_default.offset1 = (uint16_t)(offset >> 16);
+    idt_default.offset2 =  (uint32_t)(offset >> 32);
+    idt_default.zero1 = 0x0;
+
+    set_idt_gate(idt_default, 33);  // PS/2 Keyboard
+
+    /*
+    offset = (uint64_t)ps2_irq12_handler_stub;
+
+    // Set the values of the default IDT gate
+    idt_default.offset0 = (uint16_t)offset;
+    idt_default.cs = 0x8;
+    idt_default.zero0 = 0x0;
+    idt_default.type = 0x8E;
+    idt_default.offset1 = (uint16_t)(offset >> 16);
+    idt_default.offset2 =  (uint32_t)(offset >> 32);
+    idt_default.zero1 = 0x0;
+
+    set_idt_gate(idt_default, 44);  // PS/2 MOUSE
+    */
+
     lidt(&IDT, 16*256 - 1);
 }
 

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stivale.h>
+#include "kernel/driver/keyboard/keyboard.h"
 #include "kernel/driver/serial/serial.h"
 #include "kernel/mm/bigalloc.h"
 #include "kernel/sched/mutex.h"
@@ -150,6 +151,13 @@ void _start(struct stivale_struct *stivale_struct) {
     mutex_unlock(&mu);
     serial_puts("\n[INFO] Mutex unlocked!");
     */
+
+   // Initialize the keyboard
+    ps2_keyboard_init();
+
+    while (true) {
+
+    }
 
     // Initialize the lapic timer
     lapic_init_timer();

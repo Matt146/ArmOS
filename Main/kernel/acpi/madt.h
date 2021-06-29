@@ -5,11 +5,13 @@
 
 #define ACPI_MAX_CORES 256
 #define ACPI_IOAPIC_MAX 256
+#define ACPI_IS_OVERRIDES_MAX 256
 
 // Contains the LAPIC ID's of a bunch of processors
 uint8_t acpi_processors[ACPI_MAX_CORES];
 uint8_t acpi_detected_processors_count;
 size_t acpi_ioapics_count;
+size_t acpi_is_overrides_count;
 
 struct MADT_SpecialHeader {
     uint32_t lapic_addr;
@@ -81,6 +83,7 @@ struct MADT_EntryType9 {
 } __attribute__((packed));
 
 struct MADT_EntryType1 acpi_ioapic[ACPI_IOAPIC_MAX];
+struct MADT_EntryType2 acpi_interrupt_source_overrides[ACPI_IS_OVERRIDES_MAX];
 
 void acpi_madt_detect_cores(uint64_t madt_addr);
 

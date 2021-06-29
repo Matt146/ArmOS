@@ -19,6 +19,11 @@ uint8_t lapic_get_current_id() {
     return (uint8_t)((*lapic_version >> 24) & 0x7);
 }
 
+void lapic_signal_eoi() {
+    volatile uint32_t* lapic_eoi_reg = (volatile uint32_t*)(LAPIC_BASE + LAPIC_EOI);
+    *lapic_eoi_reg = 0;
+}
+
 void lapic_init_timer() {
     // Set timer to periodic mode and the interrupt vector to 0x69
     volatile uint32_t* lapic_timer = (volatile uint32_t*)(LAPIC_BASE + LAPIC_LVT_TIMER);

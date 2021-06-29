@@ -32,6 +32,9 @@
 #define LAPIC_ICR_HIGH 0x0310
 #define LAPIC_ICR_LOW 0x0300    // Writing to this portion of the ICR causes an interrupt to be sent
 
+// LAPIC EOI
+#define LAPIC_EOI 0x0B0
+
 static uint64_t LAPIC_BASE;
 
 void lapic_init();
@@ -40,6 +43,8 @@ uint8_t lapic_get_current_id();
 // LAPIC Timer facilities
 void lapic_init_timer();
 void lapic_set_timer(uint32_t value);
+
+void lapic_signal_eoi();
 
 // LAPIC IPI facilities
 void lapic_send_ipi(uint8_t lapic_id, uint32_t lower_icr_value);

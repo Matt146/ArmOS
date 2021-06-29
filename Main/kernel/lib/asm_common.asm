@@ -4,6 +4,16 @@ isr_common_stub:
     hlt
     iretq   ; fuck off
 
+extern ps2_irq1_handler
+global ps2_irq1_handler_stub
+ps2_irq1_handler_stub:
+    call ps2_irq1_handler
+    iretq
+
+extern ps2_irq12_handler
+ps2_irq12_handler_stub:
+    iretq
+
 global __lgdt
 __lgdt:
     lgdt [rdi]

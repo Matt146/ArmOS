@@ -55,6 +55,8 @@ void acpi_madt_detect_cores(uint64_t madt_addr) {
             continue;
         } else if (*cur_madt_ptr == 2) {
             // IOAPIC Interrupt Source Override
+            acpi_interrupt_source_overrides[acpi_is_overrides_count] = *((struct MADT_EntryType2*)cur_madt_ptr);
+            acpi_is_overrides_count += 1;
             cur_madt_ptr += sizeof(struct MADT_EntryType2);
             continue;
         } else if (*cur_madt_ptr == 3) {
