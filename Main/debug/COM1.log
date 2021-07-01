@@ -15,10 +15,10 @@
 [PMM] MMAP Entry Length: 1048576
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 2097152
-[PMM] MMAP Entry Length: 569984
+[PMM] MMAP Entry Length: 7188512
 [PMM] MMAP Entry Type: 10
-[PMM] MMAP Entry Base: 2670592
-[PMM] MMAP Entry Length: 3217936384
+[PMM] MMAP Entry Base: 9289728
+[PMM] MMAP Entry Length: 3211317248
 [PMM] MMAP Entry Type: 1
 [PMM] MMAP Entry Base: 3220606976
 [PMM] MMAP Entry Length: 483328
@@ -35,7 +35,7 @@
 [PMM] MMAP Entry Base: 4294967296
 [PMM] MMAP Entry Length: 5368709120
 [PMM] MMAP Entry Type: 1
-[PMM] Total available memory:8593004160
+[PMM] Total available memory:8593003552
 [PMM] Bitmap address: 159744
 [PMM] Bitmap end: 421981
 [PMM] Bitmap memset to 0.
@@ -70,14 +70,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22446080 {parent cache: 22454272, buffer address: 22466560, bitmap address: 22470656, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29065216 {parent cache: 29073408, buffer address: 29085696, bitmap address: 29089792, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22450176 {parent cache: 22454272, buffer address: 22474752, bitmap address: 22478848, inuse: 0, total available: 5, next: 22482944, last: 0}
-	 - __ADDR: 22482944 {parent cache: 22454272, buffer address: 22487040, bitmap address: 22491136, inuse: 0, total available: 5, next: 22486080, last: 22450176}
-	 - __ADDR: 22486080 {parent cache: 22454272, buffer address: 22495232, bitmap address: 22499328, inuse: 0, total available: 5, next: 22489216, last: 22482944}
-	 - __ADDR: 22489216 {parent cache: 22454272, buffer address: 22503424, bitmap address: 22507520, inuse: 0, total available: 5, next: 22492352, last: 22486080}
-	 - __ADDR: 22492352 {parent cache: 22454272, buffer address: 22511616, bitmap address: 22515712, inuse: 0, total available: 5, next: 22495488, last: 22489216}
-	 - __ADDR: 22495488 {parent cache: 22454272, buffer address: 22519808, bitmap address: 22523904, inuse: 0, total available: 5, next: 0, last: 22492352}
+	 - __ADDR: 29069312 {parent cache: 29073408, buffer address: 29093888, bitmap address: 29097984, inuse: 0, total available: 5, next: 29102080, last: 0}
+	 - __ADDR: 29102080 {parent cache: 29073408, buffer address: 29106176, bitmap address: 29110272, inuse: 0, total available: 5, next: 29105216, last: 29069312}
+	 - __ADDR: 29105216 {parent cache: 29073408, buffer address: 29114368, bitmap address: 29118464, inuse: 0, total available: 5, next: 29108352, last: 29102080}
+	 - __ADDR: 29108352 {parent cache: 29073408, buffer address: 29122560, bitmap address: 29126656, inuse: 0, total available: 5, next: 29111488, last: 29105216}
+	 - __ADDR: 29111488 {parent cache: 29073408, buffer address: 29130752, bitmap address: 29134848, inuse: 0, total available: 5, next: 29114624, last: 29108352}
+	 - __ADDR: 29114624 {parent cache: 29073408, buffer address: 29138944, bitmap address: 29143040, inuse: 0, total available: 5, next: 0, last: 29111488}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -89,14 +89,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22532096 {parent cache: 22540288, buffer address: 22552576, bitmap address: 22556672, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29151232 {parent cache: 29159424, buffer address: 29171712, bitmap address: 29175808, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22536192 {parent cache: 22540288, buffer address: 22560768, bitmap address: 22564864, inuse: 0, total available: 5, next: 22568960, last: 0}
-	 - __ADDR: 22568960 {parent cache: 22540288, buffer address: 22573056, bitmap address: 22577152, inuse: 0, total available: 5, next: 22572096, last: 22536192}
-	 - __ADDR: 22572096 {parent cache: 22540288, buffer address: 22581248, bitmap address: 22585344, inuse: 0, total available: 5, next: 22575232, last: 22568960}
-	 - __ADDR: 22575232 {parent cache: 22540288, buffer address: 22589440, bitmap address: 22593536, inuse: 0, total available: 5, next: 22578368, last: 22572096}
-	 - __ADDR: 22578368 {parent cache: 22540288, buffer address: 22597632, bitmap address: 22601728, inuse: 0, total available: 5, next: 22581504, last: 22575232}
-	 - __ADDR: 22581504 {parent cache: 22540288, buffer address: 22605824, bitmap address: 22609920, inuse: 0, total available: 5, next: 0, last: 22578368}
+	 - __ADDR: 29155328 {parent cache: 29159424, buffer address: 29179904, bitmap address: 29184000, inuse: 0, total available: 5, next: 29188096, last: 0}
+	 - __ADDR: 29188096 {parent cache: 29159424, buffer address: 29192192, bitmap address: 29196288, inuse: 0, total available: 5, next: 29191232, last: 29155328}
+	 - __ADDR: 29191232 {parent cache: 29159424, buffer address: 29200384, bitmap address: 29204480, inuse: 0, total available: 5, next: 29194368, last: 29188096}
+	 - __ADDR: 29194368 {parent cache: 29159424, buffer address: 29208576, bitmap address: 29212672, inuse: 0, total available: 5, next: 29197504, last: 29191232}
+	 - __ADDR: 29197504 {parent cache: 29159424, buffer address: 29216768, bitmap address: 29220864, inuse: 0, total available: 5, next: 29200640, last: 29194368}
+	 - __ADDR: 29200640 {parent cache: 29159424, buffer address: 29224960, bitmap address: 29229056, inuse: 0, total available: 5, next: 0, last: 29197504}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -108,14 +108,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22618112 {parent cache: 22626304, buffer address: 22638592, bitmap address: 22642688, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29237248 {parent cache: 29245440, buffer address: 29257728, bitmap address: 29261824, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22622208 {parent cache: 22626304, buffer address: 22646784, bitmap address: 22650880, inuse: 0, total available: 5, next: 22654976, last: 0}
-	 - __ADDR: 22654976 {parent cache: 22626304, buffer address: 22659072, bitmap address: 22663168, inuse: 0, total available: 5, next: 22658112, last: 22622208}
-	 - __ADDR: 22658112 {parent cache: 22626304, buffer address: 22667264, bitmap address: 22671360, inuse: 0, total available: 5, next: 22661248, last: 22654976}
-	 - __ADDR: 22661248 {parent cache: 22626304, buffer address: 22675456, bitmap address: 22679552, inuse: 0, total available: 5, next: 22664384, last: 22658112}
-	 - __ADDR: 22664384 {parent cache: 22626304, buffer address: 22683648, bitmap address: 22687744, inuse: 0, total available: 5, next: 22667520, last: 22661248}
-	 - __ADDR: 22667520 {parent cache: 22626304, buffer address: 22691840, bitmap address: 22695936, inuse: 0, total available: 5, next: 0, last: 22664384}
+	 - __ADDR: 29241344 {parent cache: 29245440, buffer address: 29265920, bitmap address: 29270016, inuse: 0, total available: 5, next: 29274112, last: 0}
+	 - __ADDR: 29274112 {parent cache: 29245440, buffer address: 29278208, bitmap address: 29282304, inuse: 0, total available: 5, next: 29277248, last: 29241344}
+	 - __ADDR: 29277248 {parent cache: 29245440, buffer address: 29286400, bitmap address: 29290496, inuse: 0, total available: 5, next: 29280384, last: 29274112}
+	 - __ADDR: 29280384 {parent cache: 29245440, buffer address: 29294592, bitmap address: 29298688, inuse: 0, total available: 5, next: 29283520, last: 29277248}
+	 - __ADDR: 29283520 {parent cache: 29245440, buffer address: 29302784, bitmap address: 29306880, inuse: 0, total available: 5, next: 29286656, last: 29280384}
+	 - __ADDR: 29286656 {parent cache: 29245440, buffer address: 29310976, bitmap address: 29315072, inuse: 0, total available: 5, next: 0, last: 29283520}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -127,14 +127,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22704128 {parent cache: 22712320, buffer address: 22724608, bitmap address: 22728704, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29323264 {parent cache: 29331456, buffer address: 29343744, bitmap address: 29347840, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22708224 {parent cache: 22712320, buffer address: 22732800, bitmap address: 22736896, inuse: 0, total available: 5, next: 22740992, last: 0}
-	 - __ADDR: 22740992 {parent cache: 22712320, buffer address: 22745088, bitmap address: 22749184, inuse: 0, total available: 5, next: 22744128, last: 22708224}
-	 - __ADDR: 22744128 {parent cache: 22712320, buffer address: 22753280, bitmap address: 22757376, inuse: 0, total available: 5, next: 22747264, last: 22740992}
-	 - __ADDR: 22747264 {parent cache: 22712320, buffer address: 22761472, bitmap address: 22765568, inuse: 0, total available: 5, next: 22750400, last: 22744128}
-	 - __ADDR: 22750400 {parent cache: 22712320, buffer address: 22769664, bitmap address: 22773760, inuse: 0, total available: 5, next: 22753536, last: 22747264}
-	 - __ADDR: 22753536 {parent cache: 22712320, buffer address: 22777856, bitmap address: 22781952, inuse: 0, total available: 5, next: 0, last: 22750400}
+	 - __ADDR: 29327360 {parent cache: 29331456, buffer address: 29351936, bitmap address: 29356032, inuse: 0, total available: 5, next: 29360128, last: 0}
+	 - __ADDR: 29360128 {parent cache: 29331456, buffer address: 29364224, bitmap address: 29368320, inuse: 0, total available: 5, next: 29363264, last: 29327360}
+	 - __ADDR: 29363264 {parent cache: 29331456, buffer address: 29372416, bitmap address: 29376512, inuse: 0, total available: 5, next: 29366400, last: 29360128}
+	 - __ADDR: 29366400 {parent cache: 29331456, buffer address: 29380608, bitmap address: 29384704, inuse: 0, total available: 5, next: 29369536, last: 29363264}
+	 - __ADDR: 29369536 {parent cache: 29331456, buffer address: 29388800, bitmap address: 29392896, inuse: 0, total available: 5, next: 29372672, last: 29366400}
+	 - __ADDR: 29372672 {parent cache: 29331456, buffer address: 29396992, bitmap address: 29401088, inuse: 0, total available: 5, next: 0, last: 29369536}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -146,14 +146,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22790144 {parent cache: 22798336, buffer address: 22810624, bitmap address: 22814720, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29409280 {parent cache: 29417472, buffer address: 29429760, bitmap address: 29433856, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22794240 {parent cache: 22798336, buffer address: 22818816, bitmap address: 22822912, inuse: 0, total available: 5, next: 22827008, last: 0}
-	 - __ADDR: 22827008 {parent cache: 22798336, buffer address: 22831104, bitmap address: 22835200, inuse: 0, total available: 5, next: 22830144, last: 22794240}
-	 - __ADDR: 22830144 {parent cache: 22798336, buffer address: 22839296, bitmap address: 22843392, inuse: 0, total available: 5, next: 22833280, last: 22827008}
-	 - __ADDR: 22833280 {parent cache: 22798336, buffer address: 22847488, bitmap address: 22851584, inuse: 0, total available: 5, next: 22836416, last: 22830144}
-	 - __ADDR: 22836416 {parent cache: 22798336, buffer address: 22855680, bitmap address: 22859776, inuse: 0, total available: 5, next: 22839552, last: 22833280}
-	 - __ADDR: 22839552 {parent cache: 22798336, buffer address: 22863872, bitmap address: 22867968, inuse: 0, total available: 5, next: 0, last: 22836416}
+	 - __ADDR: 29413376 {parent cache: 29417472, buffer address: 29437952, bitmap address: 29442048, inuse: 0, total available: 5, next: 29446144, last: 0}
+	 - __ADDR: 29446144 {parent cache: 29417472, buffer address: 29450240, bitmap address: 29454336, inuse: 0, total available: 5, next: 29449280, last: 29413376}
+	 - __ADDR: 29449280 {parent cache: 29417472, buffer address: 29458432, bitmap address: 29462528, inuse: 0, total available: 5, next: 29452416, last: 29446144}
+	 - __ADDR: 29452416 {parent cache: 29417472, buffer address: 29466624, bitmap address: 29470720, inuse: 0, total available: 5, next: 29455552, last: 29449280}
+	 - __ADDR: 29455552 {parent cache: 29417472, buffer address: 29474816, bitmap address: 29478912, inuse: 0, total available: 5, next: 29458688, last: 29452416}
+	 - __ADDR: 29458688 {parent cache: 29417472, buffer address: 29483008, bitmap address: 29487104, inuse: 0, total available: 5, next: 0, last: 29455552}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -165,14 +165,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22876160 {parent cache: 22884352, buffer address: 22896640, bitmap address: 22900736, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29495296 {parent cache: 29503488, buffer address: 29515776, bitmap address: 29519872, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22880256 {parent cache: 22884352, buffer address: 22904832, bitmap address: 22908928, inuse: 0, total available: 5, next: 22913024, last: 0}
-	 - __ADDR: 22913024 {parent cache: 22884352, buffer address: 22917120, bitmap address: 22921216, inuse: 0, total available: 5, next: 22916160, last: 22880256}
-	 - __ADDR: 22916160 {parent cache: 22884352, buffer address: 22925312, bitmap address: 22929408, inuse: 0, total available: 5, next: 22919296, last: 22913024}
-	 - __ADDR: 22919296 {parent cache: 22884352, buffer address: 22933504, bitmap address: 22937600, inuse: 0, total available: 5, next: 22922432, last: 22916160}
-	 - __ADDR: 22922432 {parent cache: 22884352, buffer address: 22941696, bitmap address: 22945792, inuse: 0, total available: 5, next: 22925568, last: 22919296}
-	 - __ADDR: 22925568 {parent cache: 22884352, buffer address: 22949888, bitmap address: 22953984, inuse: 0, total available: 5, next: 0, last: 22922432}
+	 - __ADDR: 29499392 {parent cache: 29503488, buffer address: 29523968, bitmap address: 29528064, inuse: 0, total available: 5, next: 29532160, last: 0}
+	 - __ADDR: 29532160 {parent cache: 29503488, buffer address: 29536256, bitmap address: 29540352, inuse: 0, total available: 5, next: 29535296, last: 29499392}
+	 - __ADDR: 29535296 {parent cache: 29503488, buffer address: 29544448, bitmap address: 29548544, inuse: 0, total available: 5, next: 29538432, last: 29532160}
+	 - __ADDR: 29538432 {parent cache: 29503488, buffer address: 29552640, bitmap address: 29556736, inuse: 0, total available: 5, next: 29541568, last: 29535296}
+	 - __ADDR: 29541568 {parent cache: 29503488, buffer address: 29560832, bitmap address: 29564928, inuse: 0, total available: 5, next: 29544704, last: 29538432}
+	 - __ADDR: 29544704 {parent cache: 29503488, buffer address: 29569024, bitmap address: 29573120, inuse: 0, total available: 5, next: 0, last: 29541568}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -184,14 +184,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 22962176 {parent cache: 22970368, buffer address: 22982656, bitmap address: 22986752, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29581312 {parent cache: 29589504, buffer address: 29601792, bitmap address: 29605888, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 22966272 {parent cache: 22970368, buffer address: 22990848, bitmap address: 22994944, inuse: 0, total available: 5, next: 22999040, last: 0}
-	 - __ADDR: 22999040 {parent cache: 22970368, buffer address: 23003136, bitmap address: 23007232, inuse: 0, total available: 5, next: 23002176, last: 22966272}
-	 - __ADDR: 23002176 {parent cache: 22970368, buffer address: 23011328, bitmap address: 23015424, inuse: 0, total available: 5, next: 23005312, last: 22999040}
-	 - __ADDR: 23005312 {parent cache: 22970368, buffer address: 23019520, bitmap address: 23023616, inuse: 0, total available: 5, next: 23008448, last: 23002176}
-	 - __ADDR: 23008448 {parent cache: 22970368, buffer address: 23027712, bitmap address: 23031808, inuse: 0, total available: 5, next: 23011584, last: 23005312}
-	 - __ADDR: 23011584 {parent cache: 22970368, buffer address: 23035904, bitmap address: 23040000, inuse: 0, total available: 5, next: 0, last: 23008448}
+	 - __ADDR: 29585408 {parent cache: 29589504, buffer address: 29609984, bitmap address: 29614080, inuse: 0, total available: 5, next: 29618176, last: 0}
+	 - __ADDR: 29618176 {parent cache: 29589504, buffer address: 29622272, bitmap address: 29626368, inuse: 0, total available: 5, next: 29621312, last: 29585408}
+	 - __ADDR: 29621312 {parent cache: 29589504, buffer address: 29630464, bitmap address: 29634560, inuse: 0, total available: 5, next: 29624448, last: 29618176}
+	 - __ADDR: 29624448 {parent cache: 29589504, buffer address: 29638656, bitmap address: 29642752, inuse: 0, total available: 5, next: 29627584, last: 29621312}
+	 - __ADDR: 29627584 {parent cache: 29589504, buffer address: 29646848, bitmap address: 29650944, inuse: 0, total available: 5, next: 29630720, last: 29624448}
+	 - __ADDR: 29630720 {parent cache: 29589504, buffer address: 29655040, bitmap address: 29659136, inuse: 0, total available: 5, next: 0, last: 29627584}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -203,14 +203,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 23048192 {parent cache: 23056384, buffer address: 23068672, bitmap address: 23072768, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29667328 {parent cache: 29675520, buffer address: 29687808, bitmap address: 29691904, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 23052288 {parent cache: 23056384, buffer address: 23076864, bitmap address: 23080960, inuse: 0, total available: 5, next: 23085056, last: 0}
-	 - __ADDR: 23085056 {parent cache: 23056384, buffer address: 23089152, bitmap address: 23093248, inuse: 0, total available: 5, next: 23088192, last: 23052288}
-	 - __ADDR: 23088192 {parent cache: 23056384, buffer address: 23097344, bitmap address: 23101440, inuse: 0, total available: 5, next: 23091328, last: 23085056}
-	 - __ADDR: 23091328 {parent cache: 23056384, buffer address: 23105536, bitmap address: 23109632, inuse: 0, total available: 5, next: 23094464, last: 23088192}
-	 - __ADDR: 23094464 {parent cache: 23056384, buffer address: 23113728, bitmap address: 23117824, inuse: 0, total available: 5, next: 23097600, last: 23091328}
-	 - __ADDR: 23097600 {parent cache: 23056384, buffer address: 23121920, bitmap address: 23126016, inuse: 0, total available: 5, next: 0, last: 23094464}
+	 - __ADDR: 29671424 {parent cache: 29675520, buffer address: 29696000, bitmap address: 29700096, inuse: 0, total available: 5, next: 29704192, last: 0}
+	 - __ADDR: 29704192 {parent cache: 29675520, buffer address: 29708288, bitmap address: 29712384, inuse: 0, total available: 5, next: 29707328, last: 29671424}
+	 - __ADDR: 29707328 {parent cache: 29675520, buffer address: 29716480, bitmap address: 29720576, inuse: 0, total available: 5, next: 29710464, last: 29704192}
+	 - __ADDR: 29710464 {parent cache: 29675520, buffer address: 29724672, bitmap address: 29728768, inuse: 0, total available: 5, next: 29713600, last: 29707328}
+	 - __ADDR: 29713600 {parent cache: 29675520, buffer address: 29732864, bitmap address: 29736960, inuse: 0, total available: 5, next: 29716736, last: 29710464}
+	 - __ADDR: 29716736 {parent cache: 29675520, buffer address: 29741056, bitmap address: 29745152, inuse: 0, total available: 5, next: 0, last: 29713600}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -222,14 +222,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 23134208 {parent cache: 23142400, buffer address: 23154688, bitmap address: 23158784, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29753344 {parent cache: 29761536, buffer address: 29773824, bitmap address: 29777920, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 23138304 {parent cache: 23142400, buffer address: 23162880, bitmap address: 23166976, inuse: 0, total available: 5, next: 23171072, last: 0}
-	 - __ADDR: 23171072 {parent cache: 23142400, buffer address: 23175168, bitmap address: 23179264, inuse: 0, total available: 5, next: 23174208, last: 23138304}
-	 - __ADDR: 23174208 {parent cache: 23142400, buffer address: 23183360, bitmap address: 23187456, inuse: 0, total available: 5, next: 23177344, last: 23171072}
-	 - __ADDR: 23177344 {parent cache: 23142400, buffer address: 23191552, bitmap address: 23195648, inuse: 0, total available: 5, next: 23180480, last: 23174208}
-	 - __ADDR: 23180480 {parent cache: 23142400, buffer address: 23199744, bitmap address: 23203840, inuse: 0, total available: 5, next: 23183616, last: 23177344}
-	 - __ADDR: 23183616 {parent cache: 23142400, buffer address: 23207936, bitmap address: 23212032, inuse: 0, total available: 5, next: 0, last: 23180480}
+	 - __ADDR: 29757440 {parent cache: 29761536, buffer address: 29782016, bitmap address: 29786112, inuse: 0, total available: 5, next: 29790208, last: 0}
+	 - __ADDR: 29790208 {parent cache: 29761536, buffer address: 29794304, bitmap address: 29798400, inuse: 0, total available: 5, next: 29793344, last: 29757440}
+	 - __ADDR: 29793344 {parent cache: 29761536, buffer address: 29802496, bitmap address: 29806592, inuse: 0, total available: 5, next: 29796480, last: 29790208}
+	 - __ADDR: 29796480 {parent cache: 29761536, buffer address: 29810688, bitmap address: 29814784, inuse: 0, total available: 5, next: 29799616, last: 29793344}
+	 - __ADDR: 29799616 {parent cache: 29761536, buffer address: 29818880, bitmap address: 29822976, inuse: 0, total available: 5, next: 29802752, last: 29796480}
+	 - __ADDR: 29802752 {parent cache: 29761536, buffer address: 29827072, bitmap address: 29831168, inuse: 0, total available: 5, next: 0, last: 29799616}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -241,14 +241,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 23220224 {parent cache: 23228416, buffer address: 23240704, bitmap address: 23244800, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29839360 {parent cache: 29847552, buffer address: 29859840, bitmap address: 29863936, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 23224320 {parent cache: 23228416, buffer address: 23248896, bitmap address: 23252992, inuse: 0, total available: 5, next: 23257088, last: 0}
-	 - __ADDR: 23257088 {parent cache: 23228416, buffer address: 23261184, bitmap address: 23265280, inuse: 0, total available: 5, next: 23260224, last: 23224320}
-	 - __ADDR: 23260224 {parent cache: 23228416, buffer address: 23269376, bitmap address: 23273472, inuse: 0, total available: 5, next: 23263360, last: 23257088}
-	 - __ADDR: 23263360 {parent cache: 23228416, buffer address: 23277568, bitmap address: 23281664, inuse: 0, total available: 5, next: 23266496, last: 23260224}
-	 - __ADDR: 23266496 {parent cache: 23228416, buffer address: 23285760, bitmap address: 23289856, inuse: 0, total available: 5, next: 23269632, last: 23263360}
-	 - __ADDR: 23269632 {parent cache: 23228416, buffer address: 23293952, bitmap address: 23298048, inuse: 0, total available: 5, next: 0, last: 23266496}
+	 - __ADDR: 29843456 {parent cache: 29847552, buffer address: 29868032, bitmap address: 29872128, inuse: 0, total available: 5, next: 29876224, last: 0}
+	 - __ADDR: 29876224 {parent cache: 29847552, buffer address: 29880320, bitmap address: 29884416, inuse: 0, total available: 5, next: 29879360, last: 29843456}
+	 - __ADDR: 29879360 {parent cache: 29847552, buffer address: 29888512, bitmap address: 29892608, inuse: 0, total available: 5, next: 29882496, last: 29876224}
+	 - __ADDR: 29882496 {parent cache: 29847552, buffer address: 29896704, bitmap address: 29900800, inuse: 0, total available: 5, next: 29885632, last: 29879360}
+	 - __ADDR: 29885632 {parent cache: 29847552, buffer address: 29904896, bitmap address: 29908992, inuse: 0, total available: 5, next: 29888768, last: 29882496}
+	 - __ADDR: 29888768 {parent cache: 29847552, buffer address: 29913088, bitmap address: 29917184, inuse: 0, total available: 5, next: 0, last: 29885632}
 -----------------------
 -----------------------
 [+] Cache Name: Chad
@@ -260,14 +260,14 @@
  - SLABS_FULL: 
 	 - NULL
  - SLABS_PARTIAL: 
-	 - __ADDR: 23306240 {parent cache: 23314432, buffer address: 23330816, bitmap address: 23339008, inuse: 0, total available: 5, next: 0, last: 0}
+	 - __ADDR: 29925376 {parent cache: 29933568, buffer address: 29949952, bitmap address: 29958144, inuse: 0, total available: 5, next: 0, last: 0}
  - SLABS_FREE: 
-	 - __ADDR: 23310336 {parent cache: 23314432, buffer address: 23343104, bitmap address: 23351296, inuse: 0, total available: 5, next: 23355392, last: 0}
-	 - __ADDR: 23355392 {parent cache: 23314432, buffer address: 23359488, bitmap address: 23367680, inuse: 0, total available: 5, next: 23358528, last: 23310336}
-	 - __ADDR: 23358528 {parent cache: 23314432, buffer address: 23371776, bitmap address: 23379968, inuse: 0, total available: 5, next: 23361664, last: 23355392}
-	 - __ADDR: 23361664 {parent cache: 23314432, buffer address: 23384064, bitmap address: 23392256, inuse: 0, total available: 5, next: 23364800, last: 23358528}
-	 - __ADDR: 23364800 {parent cache: 23314432, buffer address: 23396352, bitmap address: 23404544, inuse: 0, total available: 5, next: 23367936, last: 23361664}
-	 - __ADDR: 23367936 {parent cache: 23314432, buffer address: 23408640, bitmap address: 23416832, inuse: 0, total available: 5, next: 0, last: 23364800}
+	 - __ADDR: 29929472 {parent cache: 29933568, buffer address: 29962240, bitmap address: 29970432, inuse: 0, total available: 5, next: 29974528, last: 0}
+	 - __ADDR: 29974528 {parent cache: 29933568, buffer address: 29978624, bitmap address: 29986816, inuse: 0, total available: 5, next: 29977664, last: 29929472}
+	 - __ADDR: 29977664 {parent cache: 29933568, buffer address: 29990912, bitmap address: 29999104, inuse: 0, total available: 5, next: 29980800, last: 29974528}
+	 - __ADDR: 29980800 {parent cache: 29933568, buffer address: 30003200, bitmap address: 30011392, inuse: 0, total available: 5, next: 29983936, last: 29977664}
+	 - __ADDR: 29983936 {parent cache: 29933568, buffer address: 30015488, bitmap address: 30023680, inuse: 0, total available: 5, next: 29987072, last: 29980800}
+	 - __ADDR: 29987072 {parent cache: 29933568, buffer address: 30027776, bitmap address: 30035968, inuse: 0, total available: 5, next: 0, last: 29983936}
 -----------------------
  - GDT loaded... initializing segment registers...
 [ACPI] Initializing ACPI
@@ -447,26 +447,38 @@
 [PS2] Writing to ps2 controller: 864
  - First byte: 96
  - Second byte: 3
-[PS2] Absolute bruh moment.
-[PCI] Detected device...
+[PS2] Absolute bruh moment.[PCI - DEBUG] DEVICES DETECTED TOTAL: 6
+[PCI - DEBUG]: Device:
+ - Device ID: 4663
+ - Vendor ID: 32902
  - Bus: 0
  - Device: 0
- - Header type: 0
-[PCI] Detected device...
- - Bus: 0
- - Device: 1
- - Header type: 128
-	 - Function detected: 0
-	 - Function detected: 1
-	 - Function detected: 3
-[PCI] Detected device...
- - Bus: 0
- - Device: 2
- - Header type: 0
-[PCI] Detected device...
- - Bus: 0
- - Device: 3
- - Header type: 0
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
 [PCI - DEBUG]: Device:
  - Device ID: 28672
  - Vendor ID: 32902
@@ -487,16 +499,16 @@
 	 - Length: 0
 	 - Is MMIO: true
 	 - Bar #3: 
-	 - Base Address: 6207350072775208960
-	 - Length: 17888843081848832000
-	 - Is MMIO: false
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
 	 - Bar #4: 
-	 - Base Address: 65084422590037744
-	 - Length: 65353802940176880
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true
 	 - Bar #5: 
-	 - Base Address: 17294056111976017874
-	 - Length: 17294102321529153266
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true
 [PCI - DEBUG]: Device:
  - Device ID: 28688
@@ -518,16 +530,16 @@
 	 - Length: 0
 	 - Is MMIO: true
 	 - Bar #3: 
-	 - Base Address: 6207350072775208960
-	 - Length: 17888843081848832000
-	 - Is MMIO: false
-	 - Bar #4: 
-	 - Base Address: 65084422590037744
-	 - Length: 65353802940176880
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 49216
+	 - Length: 16
+	 - Is MMIO: false
 	 - Bar #5: 
-	 - Base Address: 17294056111976017874
-	 - Length: 17294102321529153266
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true
 [PCI - DEBUG]: Device:
  - Device ID: 28947
@@ -549,14 +561,76 @@
 	 - Length: 0
 	 - Is MMIO: true
 	 - Bar #3: 
-	 - Base Address: 6207350072775208960
-	 - Length: 17888843081848832000
-	 - Is MMIO: false
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
 	 - Bar #4: 
-	 - Base Address: 65084422590037744
-	 - Length: 65353802940176880
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true
 	 - Bar #5: 
-	 - Base Address: 17294056111976017874
-	 - Length: 17294102321529153266
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 4369
+ - Vendor ID: 4660
+ - Bus: 0
+ - Device: 2
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4244635648
+	 - Length: 16777216
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 4273668096
+	 - Length: 4096
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 4110
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 3
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4273471488
+	 - Length: 131072
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 49152
+	 - Length: 64
+	 - Is MMIO: false
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
 	 - Is MMIO: true

@@ -33,14 +33,13 @@ struct PCI_Device {
 } __attribute__((packed));
 
 static uint8_t pci_legacy_cam_buffer[256];
-static uint64_t pci_devices[PCI_MAX_DEVICES];   // contains pointers to PCI_Device structs
+static struct PCI_Device pci_devices[PCI_MAX_DEVICES];   // contains pointers to PCI_Device structs
 static uint64_t cur_pci_device;
 
 // Legacy PCI CAM
 uint32_t pci_legacy_read(uint8_t bus, uint8_t device, uint8_t function, uint8_t reg_offset);
 void pci_legacy_write(uint8_t bus, uint8_t device, uint8_t function, uint8_t reg_offset, uint32_t data);
 void pci_scan_devices();
-struct PCI_Device get_pci_device(uint64_t ptr_id);  // ID into the PCI device list
 static bool pci_device_exists(uint8_t bus, uint8_t device, uint8_t function);
 static bool pci_device_is_multifunction(uint8_t bus, uint8_t device);
 static uint8_t pci_get_header_type(uint8_t bus, uint8_t device, uint8_t function);
