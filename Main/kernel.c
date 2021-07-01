@@ -3,6 +3,7 @@
 #include <stivale.h>
 #include "kernel/driver/keyboard/keyboard.h"
 #include "kernel/driver/serial/serial.h"
+#include "kernel/driver/pci/pci.h"
 #include "kernel/mm/bigalloc.h"
 #include "kernel/sched/mutex.h"
 #include "kernel/int/ioapic.h"
@@ -154,6 +155,9 @@ void _start(struct stivale_struct *stivale_struct) {
 
    // Initialize the keyboard
     ps2_keyboard_init();
+
+    // Initialize PCI devices
+    pci_scan_devices();
 
     while (true) {
 
