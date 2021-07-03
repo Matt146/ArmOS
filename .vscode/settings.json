@@ -10,6 +10,7 @@
         "*.txt": "c",
         "common.h": "c",
         "panic.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "functional": "c"
     }
 }

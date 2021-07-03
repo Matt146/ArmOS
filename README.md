@@ -17,18 +17,22 @@ This is an OS that I'm writing myself totally from scratch.
 - Mutexes/Locking
 - IOAPIC
 - PS/2: Keyboard Driver (scancodes)
+- PCI Driver
 
 ## WIP:
-
-- PCI Driver
-- Slab Allocator
-- VFS
-- Scheduler
+- Disk Driver: NVME
+    - MSI
 
 ## Future Features
 
+- NIC Driver
 - PS/2: Mouse Driver
-- Disk Driver
+- Slab Allocator
+- HPET
+- VFS
+- Scheduler
+- Fielsystems: EXT2
+- Framebuffer/GUI
 
 ## TODO (to learn):
 - Look into scheduling algos + design scheduler
