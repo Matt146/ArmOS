@@ -6,6 +6,7 @@
 #include "../../mm/pmm.h"
 #include "../../lib/io.h"
 #include "../../lib/util.h"
+#include "../../int/lapic.h"
 
 // CAM stuff = Configuration Address Space
 // This is the legacy stuff
@@ -36,15 +37,25 @@ static uint8_t pci_legacy_cam_buffer[256];
 static struct PCI_Device pci_devices[PCI_MAX_DEVICES];   // contains pointers to PCI_Device structs
 static uint64_t cur_pci_device;
 
-// Legacy PCI CAM
+// PCI Read/Write Basic Functions
 uint32_t pci_legacy_read(uint8_t bus, uint8_t device, uint8_t function, uint8_t reg_offset);
 void pci_legacy_write(uint8_t bus, uint8_t device, uint8_t function, uint8_t reg_offset, uint32_t data);
-void pci_scan_devices();
+
+// PCI Enumeration Functions
 static bool pci_device_exists(uint8_t bus, uint8_t device, uint8_t function);
 static bool pci_device_is_multifunction(uint8_t bus, uint8_t device);
 static uint8_t pci_get_header_type(uint8_t bus, uint8_t device, uint8_t function);
 static uint64_t pci_get_device(uint8_t bus, uint8_t device, uint8_t function);
 static void pci_debug_devices();
+static void pci_init_msi(uint8_t bus, uint8_t device, uint8_t function, uint8_t irq);
+void pci_init_device(uint8_t bus, uint8_t device, uint8_t function);
+
+// PCI Functions to Export - Setting command register bits, initializing the device, becoming the busmaster
+void pci_scan_devices();
+void pci_set_command_reg(uint8_t bus, uint8_t device, uint8_t function, uint16_t comamnd_reg_value);
+uint16_t pci_get_command_reg(uint8_t bus, uint8_t device, uint8_t function);
+uint16_t pci_get_status_reg(uint8_t bus, uint8_t device, uint8_t function);
+void pci_become_busmaster(uint8_t bus, uint8_t device, uint8_t function);
 
 // So this is how PCI works:
 // We put the address of the PCI register we want into 0xCF8 and then put the value we want to write (32-bit)

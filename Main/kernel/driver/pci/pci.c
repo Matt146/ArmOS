@@ -107,6 +107,7 @@ void pci_scan_devices() {
                         if (pci_device_exists(x, y, z) == true) {
                             if ((pci_get_header_type(x, y, z) & 0x7F) == 0) {
                                 pci_get_device(x, y, z);
+                                pci_init_device(x, y, z);
                             }
                         }
                     }
@@ -114,6 +115,7 @@ void pci_scan_devices() {
                 } else {
                     if ((pci_get_header_type(x, y, 0) & 0x7F) == 0) {
                         pci_get_device(x, y, 0);
+                        pci_init_device(x, y, 0);
                     }
                 }
             }
@@ -155,4 +157,56 @@ static void pci_debug_devices() {
             }
         }
     }
+}
+
+void pci_set_command_reg(uint8_t bus, uint8_t device, uint8_t function, uint16_t comamnd_reg_value) {
+    uint32_t prev_value = pci_legacy_read(bus, device, function, 0x4);
+    pci_legacy_write(bus, device, function, 0x4, (prev_value & 0xffff0000) | comamnd_reg_value);
+}
+
+static void pci_init_msi(uint8_t bus, uint8_t device, uint8_t function, uint8_t irq) {
+    if ((pci_get_status_reg(bus, device, function) & (1 << 4)) == 0x1) {
+        // Device has a capabilities pointer list
+        serial_puts("\n\t - MSI - DEVICE HAS CAPABILITY POINTER LIST!");
+        uint32_t capabilities_ptr =(uint32_t)(pci_legacy_read(bus, device, function, 0x34));
+        uint8_t offset = (uint8_t)((pci_legacy_read(bus, device, function, 0x34) & 0xff00) >> 8);
+        while ((capabilities_ptr & 0xff) != 0x5) {
+            offset = (uint8_t)((capabilities_ptr & 0xff00) >> 8);
+            uint32_t capabilities_ptr =(uint8_t)(pci_legacy_read(bus, device, function, offset));
+        }
+        // Check if the MSI Control Register is 64-bit
+        if (((capabilities_ptr >> 16) & (1 << 7)) == 1) {
+            // @SMP: BUG ON NEXT LINE IF RUN ON OTHER CORE THAN BSP!!!
+            uint32_t addr = (0xFEE << 20) | (lapic_get_current_id() << 12);
+            pci_legacy_write(bus, device, function, offset + 0x4, addr);
+            uint32_t interrupt_info =  irq;
+            pci_legacy_write(bus, device, function, offset + 0x8, interrupt_info);
+        }
+
+    }
+    serial_puts("\n\t - MSI - DEVICE DOES NOT SUPPORT MSI!");
+}
+
+void pci_init_device(uint8_t bus, uint8_t device, uint8_t function) {
+    uint32_t prev_value = pci_legacy_read(bus, device, function, 0x4);
+    pci_legacy_write(bus, device, function, 0x4, prev_value | (0x1 << 1)); // We enable MMIO by setting bit 1
+
+    pci_init_msi(bus, device, function, 0x50); // Initialize MSI for the device - // BUG - Set the IRQ to something other than 50 - this is just a quick and dirty IMPL that most likely does not work
+}
+
+void pci_become_busmaster(uint8_t bus, uint8_t device, uint8_t function) {
+    uint32_t prev_value = pci_legacy_read(bus, device, function, 0x4);
+    pci_legacy_write(bus, device, function, 0x4, prev_value | (0x1 << 2));
+}
+
+uint16_t pci_get_command_reg(uint8_t bus, uint8_t device, uint8_t function) {
+    return (uint16_t)(pci_legacy_read(bus, device, function, 0x4) & 0x0000ffff);
+}
+
+uint16_t pci_get_status_reg(uint8_t bus, uint8_t device, uint8_t function) {
+    serial_puts("\n\t - STATUS REG|COMMAND REG: ");
+    serial_puts(unsigned_long_to_str((uint64_t)pci_legacy_read(bus, device, function, 0x4)));
+    serial_puts("\n\t - STATUS REG: ");
+    serial_puts(unsigned_long_to_str((uint64_t)(uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16)));
+    return (uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16);
 }
