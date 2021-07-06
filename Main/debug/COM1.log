@@ -1,0 +1,773 @@
+[LOG] Starting kernel...
+[PMM] MMAP Entry Base: 4096
+[PMM] MMAP Entry Length: 155648
+[PMM] MMAP Entry Type: 4096
+[PMM] MMAP Entry Base: 159744
+[PMM] MMAP Entry Length: 491520
+[PMM] MMAP Entry Type: 1
+[PMM] MMAP Entry Base: 654336
+[PMM] MMAP Entry Length: 1024
+[PMM] MMAP Entry Type: 2
+[PMM] MMAP Entry Base: 983040
+[PMM] MMAP Entry Length: 65536
+[PMM] MMAP Entry Type: 2
+[PMM] MMAP Entry Base: 1048576
+[PMM] MMAP Entry Length: 1048576
+[PMM] MMAP Entry Type: 1
+[PMM] MMAP Entry Base: 2097152
+[PMM] MMAP Entry Length: 7326656
+[PMM] MMAP Entry Type: 10
+[PMM] MMAP Entry Base: 9424896
+[PMM] MMAP Entry Length: 3211132928
+[PMM] MMAP Entry Type: 1
+[PMM] MMAP Entry Base: 3220557824
+[PMM] MMAP Entry Length: 499712
+[PMM] MMAP Entry Type: 4096
+[PMM] MMAP Entry Base: 3221057536
+[PMM] MMAP Entry Length: 167936
+[PMM] MMAP Entry Type: 2
+[PMM] MMAP Entry Base: 4244635648
+[PMM] MMAP Entry Length: 3145728
+[PMM] MMAP Entry Type: 4098
+[PMM] MMAP Entry Base: 4294705152
+[PMM] MMAP Entry Length: 262144
+[PMM] MMAP Entry Type: 2
+[PMM] MMAP Entry Base: 4294967296
+[PMM] MMAP Entry Length: 5368709120
+[PMM] MMAP Entry Type: 1
+[PMM] Total available memory:8593006528
+[PMM] Bitmap address: 159744
+[PMM] Bitmap end: 421981
+[PMM] Bitmap memset to 0.
+[LOG] ALLOC BLOCK: 104425984
+[LOG] Testing vmm - page mapped. CHECK!
+[SLAB] ALlocating root cache and initializing memory...
+[SLAB] Root cache allocated and memory initialized.
+[SLAB] Adding custom caches...
+[SLAB] Custom caches added.
+[LOG] INITIALIZED SLAB ALLOCATOR!
+-----------------------
+[+] Cache Name: ROOT
+[+] Flags: 0
+[+] Object size: 0
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - NULL
+ - SLABS_FREE: 
+	 - NULL
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 1
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29200384 {parent cache: 29208576, buffer address: 29220864, bitmap address: 29224960, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29204480 {parent cache: 29208576, buffer address: 29229056, bitmap address: 29233152, inuse: 0, total available: 5, next: 29237248, last: 0}
+	 - __ADDR: 29237248 {parent cache: 29208576, buffer address: 29241344, bitmap address: 29245440, inuse: 0, total available: 5, next: 29240384, last: 29204480}
+	 - __ADDR: 29240384 {parent cache: 29208576, buffer address: 29249536, bitmap address: 29253632, inuse: 0, total available: 5, next: 29243520, last: 29237248}
+	 - __ADDR: 29243520 {parent cache: 29208576, buffer address: 29257728, bitmap address: 29261824, inuse: 0, total available: 5, next: 29246656, last: 29240384}
+	 - __ADDR: 29246656 {parent cache: 29208576, buffer address: 29265920, bitmap address: 29270016, inuse: 0, total available: 5, next: 29249792, last: 29243520}
+	 - __ADDR: 29249792 {parent cache: 29208576, buffer address: 29274112, bitmap address: 29278208, inuse: 0, total available: 5, next: 0, last: 29246656}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 2
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29286400 {parent cache: 29294592, buffer address: 29306880, bitmap address: 29310976, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29290496 {parent cache: 29294592, buffer address: 29315072, bitmap address: 29319168, inuse: 0, total available: 5, next: 29323264, last: 0}
+	 - __ADDR: 29323264 {parent cache: 29294592, buffer address: 29327360, bitmap address: 29331456, inuse: 0, total available: 5, next: 29326400, last: 29290496}
+	 - __ADDR: 29326400 {parent cache: 29294592, buffer address: 29335552, bitmap address: 29339648, inuse: 0, total available: 5, next: 29329536, last: 29323264}
+	 - __ADDR: 29329536 {parent cache: 29294592, buffer address: 29343744, bitmap address: 29347840, inuse: 0, total available: 5, next: 29332672, last: 29326400}
+	 - __ADDR: 29332672 {parent cache: 29294592, buffer address: 29351936, bitmap address: 29356032, inuse: 0, total available: 5, next: 29335808, last: 29329536}
+	 - __ADDR: 29335808 {parent cache: 29294592, buffer address: 29360128, bitmap address: 29364224, inuse: 0, total available: 5, next: 0, last: 29332672}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 4
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29372416 {parent cache: 29380608, buffer address: 29392896, bitmap address: 29396992, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29376512 {parent cache: 29380608, buffer address: 29401088, bitmap address: 29405184, inuse: 0, total available: 5, next: 29409280, last: 0}
+	 - __ADDR: 29409280 {parent cache: 29380608, buffer address: 29413376, bitmap address: 29417472, inuse: 0, total available: 5, next: 29412416, last: 29376512}
+	 - __ADDR: 29412416 {parent cache: 29380608, buffer address: 29421568, bitmap address: 29425664, inuse: 0, total available: 5, next: 29415552, last: 29409280}
+	 - __ADDR: 29415552 {parent cache: 29380608, buffer address: 29429760, bitmap address: 29433856, inuse: 0, total available: 5, next: 29418688, last: 29412416}
+	 - __ADDR: 29418688 {parent cache: 29380608, buffer address: 29437952, bitmap address: 29442048, inuse: 0, total available: 5, next: 29421824, last: 29415552}
+	 - __ADDR: 29421824 {parent cache: 29380608, buffer address: 29446144, bitmap address: 29450240, inuse: 0, total available: 5, next: 0, last: 29418688}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 8
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29458432 {parent cache: 29466624, buffer address: 29478912, bitmap address: 29483008, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29462528 {parent cache: 29466624, buffer address: 29487104, bitmap address: 29491200, inuse: 0, total available: 5, next: 29495296, last: 0}
+	 - __ADDR: 29495296 {parent cache: 29466624, buffer address: 29499392, bitmap address: 29503488, inuse: 0, total available: 5, next: 29498432, last: 29462528}
+	 - __ADDR: 29498432 {parent cache: 29466624, buffer address: 29507584, bitmap address: 29511680, inuse: 0, total available: 5, next: 29501568, last: 29495296}
+	 - __ADDR: 29501568 {parent cache: 29466624, buffer address: 29515776, bitmap address: 29519872, inuse: 0, total available: 5, next: 29504704, last: 29498432}
+	 - __ADDR: 29504704 {parent cache: 29466624, buffer address: 29523968, bitmap address: 29528064, inuse: 0, total available: 5, next: 29507840, last: 29501568}
+	 - __ADDR: 29507840 {parent cache: 29466624, buffer address: 29532160, bitmap address: 29536256, inuse: 0, total available: 5, next: 0, last: 29504704}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 16
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29544448 {parent cache: 29552640, buffer address: 29564928, bitmap address: 29569024, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29548544 {parent cache: 29552640, buffer address: 29573120, bitmap address: 29577216, inuse: 0, total available: 5, next: 29581312, last: 0}
+	 - __ADDR: 29581312 {parent cache: 29552640, buffer address: 29585408, bitmap address: 29589504, inuse: 0, total available: 5, next: 29584448, last: 29548544}
+	 - __ADDR: 29584448 {parent cache: 29552640, buffer address: 29593600, bitmap address: 29597696, inuse: 0, total available: 5, next: 29587584, last: 29581312}
+	 - __ADDR: 29587584 {parent cache: 29552640, buffer address: 29601792, bitmap address: 29605888, inuse: 0, total available: 5, next: 29590720, last: 29584448}
+	 - __ADDR: 29590720 {parent cache: 29552640, buffer address: 29609984, bitmap address: 29614080, inuse: 0, total available: 5, next: 29593856, last: 29587584}
+	 - __ADDR: 29593856 {parent cache: 29552640, buffer address: 29618176, bitmap address: 29622272, inuse: 0, total available: 5, next: 0, last: 29590720}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 32
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29630464 {parent cache: 29638656, buffer address: 29650944, bitmap address: 29655040, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29634560 {parent cache: 29638656, buffer address: 29659136, bitmap address: 29663232, inuse: 0, total available: 5, next: 29667328, last: 0}
+	 - __ADDR: 29667328 {parent cache: 29638656, buffer address: 29671424, bitmap address: 29675520, inuse: 0, total available: 5, next: 29670464, last: 29634560}
+	 - __ADDR: 29670464 {parent cache: 29638656, buffer address: 29679616, bitmap address: 29683712, inuse: 0, total available: 5, next: 29673600, last: 29667328}
+	 - __ADDR: 29673600 {parent cache: 29638656, buffer address: 29687808, bitmap address: 29691904, inuse: 0, total available: 5, next: 29676736, last: 29670464}
+	 - __ADDR: 29676736 {parent cache: 29638656, buffer address: 29696000, bitmap address: 29700096, inuse: 0, total available: 5, next: 29679872, last: 29673600}
+	 - __ADDR: 29679872 {parent cache: 29638656, buffer address: 29704192, bitmap address: 29708288, inuse: 0, total available: 5, next: 0, last: 29676736}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 64
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29716480 {parent cache: 29724672, buffer address: 29736960, bitmap address: 29741056, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29720576 {parent cache: 29724672, buffer address: 29745152, bitmap address: 29749248, inuse: 0, total available: 5, next: 29753344, last: 0}
+	 - __ADDR: 29753344 {parent cache: 29724672, buffer address: 29757440, bitmap address: 29761536, inuse: 0, total available: 5, next: 29756480, last: 29720576}
+	 - __ADDR: 29756480 {parent cache: 29724672, buffer address: 29765632, bitmap address: 29769728, inuse: 0, total available: 5, next: 29759616, last: 29753344}
+	 - __ADDR: 29759616 {parent cache: 29724672, buffer address: 29773824, bitmap address: 29777920, inuse: 0, total available: 5, next: 29762752, last: 29756480}
+	 - __ADDR: 29762752 {parent cache: 29724672, buffer address: 29782016, bitmap address: 29786112, inuse: 0, total available: 5, next: 29765888, last: 29759616}
+	 - __ADDR: 29765888 {parent cache: 29724672, buffer address: 29790208, bitmap address: 29794304, inuse: 0, total available: 5, next: 0, last: 29762752}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 128
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29802496 {parent cache: 29810688, buffer address: 29822976, bitmap address: 29827072, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29806592 {parent cache: 29810688, buffer address: 29831168, bitmap address: 29835264, inuse: 0, total available: 5, next: 29839360, last: 0}
+	 - __ADDR: 29839360 {parent cache: 29810688, buffer address: 29843456, bitmap address: 29847552, inuse: 0, total available: 5, next: 29842496, last: 29806592}
+	 - __ADDR: 29842496 {parent cache: 29810688, buffer address: 29851648, bitmap address: 29855744, inuse: 0, total available: 5, next: 29845632, last: 29839360}
+	 - __ADDR: 29845632 {parent cache: 29810688, buffer address: 29859840, bitmap address: 29863936, inuse: 0, total available: 5, next: 29848768, last: 29842496}
+	 - __ADDR: 29848768 {parent cache: 29810688, buffer address: 29868032, bitmap address: 29872128, inuse: 0, total available: 5, next: 29851904, last: 29845632}
+	 - __ADDR: 29851904 {parent cache: 29810688, buffer address: 29876224, bitmap address: 29880320, inuse: 0, total available: 5, next: 0, last: 29848768}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 256
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29888512 {parent cache: 29896704, buffer address: 29908992, bitmap address: 29913088, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29892608 {parent cache: 29896704, buffer address: 29917184, bitmap address: 29921280, inuse: 0, total available: 5, next: 29925376, last: 0}
+	 - __ADDR: 29925376 {parent cache: 29896704, buffer address: 29929472, bitmap address: 29933568, inuse: 0, total available: 5, next: 29928512, last: 29892608}
+	 - __ADDR: 29928512 {parent cache: 29896704, buffer address: 29937664, bitmap address: 29941760, inuse: 0, total available: 5, next: 29931648, last: 29925376}
+	 - __ADDR: 29931648 {parent cache: 29896704, buffer address: 29945856, bitmap address: 29949952, inuse: 0, total available: 5, next: 29934784, last: 29928512}
+	 - __ADDR: 29934784 {parent cache: 29896704, buffer address: 29954048, bitmap address: 29958144, inuse: 0, total available: 5, next: 29937920, last: 29931648}
+	 - __ADDR: 29937920 {parent cache: 29896704, buffer address: 29962240, bitmap address: 29966336, inuse: 0, total available: 5, next: 0, last: 29934784}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 512
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 29974528 {parent cache: 29982720, buffer address: 29995008, bitmap address: 29999104, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 29978624 {parent cache: 29982720, buffer address: 30003200, bitmap address: 30007296, inuse: 0, total available: 5, next: 30011392, last: 0}
+	 - __ADDR: 30011392 {parent cache: 29982720, buffer address: 30015488, bitmap address: 30019584, inuse: 0, total available: 5, next: 30014528, last: 29978624}
+	 - __ADDR: 30014528 {parent cache: 29982720, buffer address: 30023680, bitmap address: 30027776, inuse: 0, total available: 5, next: 30017664, last: 30011392}
+	 - __ADDR: 30017664 {parent cache: 29982720, buffer address: 30031872, bitmap address: 30035968, inuse: 0, total available: 5, next: 30020800, last: 30014528}
+	 - __ADDR: 30020800 {parent cache: 29982720, buffer address: 30040064, bitmap address: 30044160, inuse: 0, total available: 5, next: 30023936, last: 30017664}
+	 - __ADDR: 30023936 {parent cache: 29982720, buffer address: 30048256, bitmap address: 30052352, inuse: 0, total available: 5, next: 0, last: 30020800}
+-----------------------
+-----------------------
+[+] Cache Name: Chad
+[+] Flags: 0
+[+] Object size: 1024
+[+] Limit: 0
+[+] Batchount: 5
+[+] Slab mutex state: 0
+ - SLABS_FULL: 
+	 - NULL
+ - SLABS_PARTIAL: 
+	 - __ADDR: 30060544 {parent cache: 30068736, buffer address: 30085120, bitmap address: 30093312, inuse: 0, total available: 5, next: 0, last: 0}
+ - SLABS_FREE: 
+	 - __ADDR: 30064640 {parent cache: 30068736, buffer address: 30097408, bitmap address: 30105600, inuse: 0, total available: 5, next: 30109696, last: 0}
+	 - __ADDR: 30109696 {parent cache: 30068736, buffer address: 30113792, bitmap address: 30121984, inuse: 0, total available: 5, next: 30112832, last: 30064640}
+	 - __ADDR: 30112832 {parent cache: 30068736, buffer address: 30126080, bitmap address: 30134272, inuse: 0, total available: 5, next: 30115968, last: 30109696}
+	 - __ADDR: 30115968 {parent cache: 30068736, buffer address: 30138368, bitmap address: 30146560, inuse: 0, total available: 5, next: 30119104, last: 30112832}
+	 - __ADDR: 30119104 {parent cache: 30068736, buffer address: 30150656, bitmap address: 30158848, inuse: 0, total available: 5, next: 30122240, last: 30115968}
+	 - __ADDR: 30122240 {parent cache: 30068736, buffer address: 30162944, bitmap address: 30171136, inuse: 0, total available: 5, next: 0, last: 30119104}
+-----------------------
+ - GDT loaded... initializing segment registers...
+[ACPI] Initializing ACPI
+ - ACPI Version 1.0 detected
+ - ACPI RSDT Pointer: 3221099582
+[LOG] ACPI MADT found: 3221099350
+[ACPI - MADT] MADT SDT Header:
+ - Signature: APIC 
+ - Length: 176
+ - Revision: 1
+ - Checksum: 62
+ - OEMID: 3221099360
+[ACPI - MADT] Detected Core: 0
+[ACPI - MADT] Detected Core: 1
+[ACPI - MADT] Detected Core: 2
+[ACPI - MADT] Detected Core: 3
+[ACPI - MADT] Detected Core: 4
+[ACPI - MADT] Detected Core: 5
+[ACPI - MADT] Detected Core: 6
+[ACPI - MADT] Detected Core: 7
+[ACPI - MADT] Detected IOAPIC: 
+ - base: 4273995776
+ - gsi: 0
+[LAPIC] LAPIC IA32_APIC_BASE MSR value: 4276092928
+[LAPIC] LAPIC Spurious Interrupt Vector Ptr: 4276093168
+[IOAPIC] base: 4273995776
+[IOAPIC] gsi: 0
+[IOAPIC] max redirection entry: 23
+ - irq 0 --> gsi 2 : 0
+ - RETURNING TRUE;
+[IOAPIC] Remapping IOAPIC irq 2 to vector 252
+ - irq 0 --> gsi 2 : 1
+ - irq 5 --> gsi 5 : 1
+ - irq 9 --> gsi 9 : 1
+ - irq 10 --> gsi 10 : 1
+ - irq 11 --> gsi 11 : 1
+[IOAPIC] Remapping IOAPIC irq 1 to vector 33
+ - irq 0 --> gsi 2 : 2
+ - RETURNING TRUE;
+ - irq 0 --> gsi 2 : 3
+ - irq 5 --> gsi 5 : 3
+ - irq 9 --> gsi 9 : 3
+ - irq 10 --> gsi 10 : 3
+ - irq 11 --> gsi 11 : 3
+[IOAPIC] Remapping IOAPIC irq 3 to vector 35
+ - irq 0 --> gsi 2 : 4
+ - irq 5 --> gsi 5 : 4
+ - irq 9 --> gsi 9 : 4
+ - irq 10 --> gsi 10 : 4
+ - irq 11 --> gsi 11 : 4
+[IOAPIC] Remapping IOAPIC irq 4 to vector 36
+ - irq 0 --> gsi 2 : 5
+ - irq 5 --> gsi 5 : 5
+ - RETURNING TRUE;
+[IOAPIC] Remapping IOAPIC irq 5 to vector 249
+ - irq 0 --> gsi 2 : 6
+ - irq 5 --> gsi 5 : 6
+ - irq 9 --> gsi 9 : 6
+ - irq 10 --> gsi 10 : 6
+ - irq 11 --> gsi 11 : 6
+[IOAPIC] Remapping IOAPIC irq 6 to vector 38
+ - irq 0 --> gsi 2 : 7
+ - irq 5 --> gsi 5 : 7
+ - irq 9 --> gsi 9 : 7
+ - irq 10 --> gsi 10 : 7
+ - irq 11 --> gsi 11 : 7
+[IOAPIC] Remapping IOAPIC irq 7 to vector 39
+ - irq 0 --> gsi 2 : 8
+ - irq 5 --> gsi 5 : 8
+ - irq 9 --> gsi 9 : 8
+ - irq 10 --> gsi 10 : 8
+ - irq 11 --> gsi 11 : 8
+[IOAPIC] Remapping IOAPIC irq 8 to vector 40
+ - irq 0 --> gsi 2 : 9
+ - irq 5 --> gsi 5 : 9
+ - irq 9 --> gsi 9 : 9
+ - RETURNING TRUE;
+[IOAPIC] Remapping IOAPIC irq 9 to vector 245
+ - irq 0 --> gsi 2 : 10
+ - irq 5 --> gsi 5 : 10
+ - irq 9 --> gsi 9 : 10
+ - irq 10 --> gsi 10 : 10
+ - RETURNING TRUE;
+[IOAPIC] Remapping IOAPIC irq 10 to vector 244
+ - irq 0 --> gsi 2 : 11
+ - irq 5 --> gsi 5 : 11
+ - irq 9 --> gsi 9 : 11
+ - irq 10 --> gsi 10 : 11
+ - irq 11 --> gsi 11 : 11
+ - RETURNING TRUE;
+[IOAPIC] Remapping IOAPIC irq 11 to vector 243
+ - irq 0 --> gsi 2 : 12
+ - irq 5 --> gsi 5 : 12
+ - irq 9 --> gsi 9 : 12
+ - irq 10 --> gsi 10 : 12
+ - irq 11 --> gsi 11 : 12
+[IOAPIC] Remapping IOAPIC irq 12 to vector 44
+ - irq 0 --> gsi 2 : 13
+ - irq 5 --> gsi 5 : 13
+ - irq 9 --> gsi 9 : 13
+ - irq 10 --> gsi 10 : 13
+ - irq 11 --> gsi 11 : 13
+[IOAPIC] Remapping IOAPIC irq 13 to vector 45
+ - irq 0 --> gsi 2 : 14
+ - irq 5 --> gsi 5 : 14
+ - irq 9 --> gsi 9 : 14
+ - irq 10 --> gsi 10 : 14
+ - irq 11 --> gsi 11 : 14
+[IOAPIC] Remapping IOAPIC irq 14 to vector 46
+ - irq 0 --> gsi 2 : 15
+ - irq 5 --> gsi 5 : 15
+ - irq 9 --> gsi 9 : 15
+ - irq 10 --> gsi 10 : 15
+ - irq 11 --> gsi 11 : 15
+[IOAPIC] Remapping IOAPIC irq 15 to vector 47
+ - irq 0 --> gsi 2 : 16
+ - irq 5 --> gsi 5 : 16
+ - irq 9 --> gsi 9 : 16
+ - irq 10 --> gsi 10 : 16
+ - irq 11 --> gsi 11 : 16
+[IOAPIC] Remapping IOAPIC irq 16 to vector 48
+ - irq 0 --> gsi 2 : 17
+ - irq 5 --> gsi 5 : 17
+ - irq 9 --> gsi 9 : 17
+ - irq 10 --> gsi 10 : 17
+ - irq 11 --> gsi 11 : 17
+[IOAPIC] Remapping IOAPIC irq 17 to vector 49
+ - irq 0 --> gsi 2 : 18
+ - irq 5 --> gsi 5 : 18
+ - irq 9 --> gsi 9 : 18
+ - irq 10 --> gsi 10 : 18
+ - irq 11 --> gsi 11 : 18
+[IOAPIC] Remapping IOAPIC irq 18 to vector 50
+ - irq 0 --> gsi 2 : 19
+ - irq 5 --> gsi 5 : 19
+ - irq 9 --> gsi 9 : 19
+ - irq 10 --> gsi 10 : 19
+ - irq 11 --> gsi 11 : 19
+[IOAPIC] Remapping IOAPIC irq 19 to vector 51
+ - irq 0 --> gsi 2 : 20
+ - irq 5 --> gsi 5 : 20
+ - irq 9 --> gsi 9 : 20
+ - irq 10 --> gsi 10 : 20
+ - irq 11 --> gsi 11 : 20
+[IOAPIC] Remapping IOAPIC irq 20 to vector 52
+ - irq 0 --> gsi 2 : 21
+ - irq 5 --> gsi 5 : 21
+ - irq 9 --> gsi 9 : 21
+ - irq 10 --> gsi 10 : 21
+ - irq 11 --> gsi 11 : 21
+[IOAPIC] Remapping IOAPIC irq 21 to vector 53
+ - irq 0 --> gsi 2 : 22
+ - irq 5 --> gsi 5 : 22
+ - irq 9 --> gsi 9 : 22
+ - irq 10 --> gsi 10 : 22
+ - irq 11 --> gsi 11 : 22
+[IOAPIC] Remapping IOAPIC irq 22 to vector 54
+ - irq 0 --> gsi 2 : 23
+ - irq 5 --> gsi 5 : 23
+ - irq 9 --> gsi 9 : 23
+ - irq 10 --> gsi 10 : 23
+ - irq 11 --> gsi 11 : 23
+[IOAPIC] Remapping IOAPIC irq 23 to vector 55
+[IOAPIC] Finished IRQ Mappings!
+[PS2] Writing to ps2 controller: 173
+ - First byte: 173
+[PS2] Writing to ps2 controller: 167
+ - First byte: 167
+[PS2] Flushing output buffer
+[PS2] READING PS2 INPUT.
+[PS2] Enabling ps2 devices
+[PS2] Writing to ps2 controller: 174
+ - First byte: 174
+[PS2] Writing to ps2 controller: 168
+ - First byte: 168
+[PS2] Setting controller configuration byte to support interrupts
+[PS2] Writing to ps2 controller: 864
+ - First byte: 96
+ - Second byte: 3
+[PS2] Absolute bruh moment.
+	 - CLASS CODE: 6
+	 - SUBCLASS: 0
+	 - STATUS REG|COMMAND REG: 259
+	 - STATUS REG: 0
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 6
+	 - SUBCLASS: 1
+	 - STATUS REG|COMMAND REG: 33554691
+	 - STATUS REG: 512
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 1
+	 - SUBCLASS: 1
+	 - STATUS REG|COMMAND REG: 41943299
+	 - STATUS REG: 640
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 6
+	 - SUBCLASS: 128
+	 - STATUS REG|COMMAND REG: 41943299
+	 - STATUS REG: 640
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 3
+	 - SUBCLASS: 0
+	 - STATUS REG|COMMAND REG: 259
+	 - STATUS REG: 0
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 2
+	 - SUBCLASS: 0
+	 - STATUS REG|COMMAND REG: 259
+	 - STATUS REG: 0
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 1
+	 - SUBCLASS: 8
+	 - STATUS REG|COMMAND REG: 1048839
+	 - STATUS REG: 16
+	 - MSI - DEVICE DOES NOT SUPPORT MSI!
+	 - CLASS CODE: 1
+	 - SUBCLASS: 6
+	 - STATUS REG|COMMAND REG: 1048839
+	 - STATUS REG: 16
+	 - MSI - DEVICE DOES NOT SUPPORT MSI![PCI - DEBUG] DEVICES DETECTED TOTAL: 8
+[PCI - DEBUG]: Device:
+ - Device ID: 4663
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 0
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 28672
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 1
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 28688
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 1
+ - Function: 1
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 49248
+	 - Length: 16
+	 - Is MMIO: false
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 28947
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 1
+ - Function: 3
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 4369
+ - Vendor ID: 4660
+ - Bus: 0
+ - Device: 2
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4244635648
+	 - Length: 16777216
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 4273676288
+	 - Length: 4096
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 4110
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 3
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4273471488
+	 - Length: 131072
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 49152
+	 - Length: 64
+	 - Is MMIO: false
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 22597
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 4
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4273668096
+	 - Length: 8192
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: false
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 4273680384
+	 - Length: 4096
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[PCI - DEBUG]: Device:
+ - Device ID: 10530
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 5
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 49216
+	 - Length: 32
+	 - Is MMIO: false
+	 - Bar #5: 
+	 - Base Address: 4273684480
+	 - Length: 4096
+	 - Is MMIO: true
+[NVME] Initializing NVME...
+[NVME] Found NVME Drive: 
+ - Device ID: 22597
+ - Vendor ID: 32902
+ - Bus: 0
+ - Device: 4
+ - Function: 0
+ - BAR's:
+	 - Bar #0: 
+	 - Base Address: 4273668096
+	 - Length: 8192
+	 - Is MMIO: true
+	 - Bar #1: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: false
+	 - Bar #2: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #3: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+	 - Bar #4: 
+	 - Base Address: 4273680384
+	 - Length: 4096
+	 - Is MMIO: true
+	 - Bar #5: 
+	 - Base Address: 0
+	 - Length: 0
+	 - Is MMIO: true
+[NVME] Writing to AQA...
+[NVME] Writing to ACQ...
+[NVME] Writing to ASQ...

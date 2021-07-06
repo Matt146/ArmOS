@@ -11,6 +11,11 @@
         "common.h": "c",
         "panic.h": "c",
         "stddef.h": "c",
-        "functional": "c"
+        "functional": "c",
+        "nvme.h": "c",
+        "stivale.h": "c",
+        "rsdp.h": "c",
+        "io.h": "c",
+        "madt.h": "c"
     }
 }

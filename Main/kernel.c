@@ -3,6 +3,7 @@
 #include <stivale.h>
 #include "kernel/driver/keyboard/keyboard.h"
 #include "kernel/driver/serial/serial.h"
+#include "kernel/driver/nvme/nvme.h"
 #include "kernel/driver/pci/pci.h"
 #include "kernel/mm/bigalloc.h"
 #include "kernel/sched/mutex.h"
@@ -158,6 +159,9 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // Initialize PCI devices
     pci_scan_devices();
+
+    // Initialize NVMe
+    nvme_init();
 
     while (true) {
 

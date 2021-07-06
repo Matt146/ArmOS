@@ -51,6 +51,8 @@ static uint64_t pci_get_device(uint8_t bus, uint8_t device, uint8_t function) {
     pci_devices[cur_pci_device].bus = bus;
     pci_devices[cur_pci_device].device = device;
     pci_devices[cur_pci_device].function = function;
+    pci_devices[cur_pci_device]._class = pci_get_class(bus, device, function);
+    pci_devices[cur_pci_device].subclass = pci_get_subclass(bus, device, function);
     for (size_t i = 0; i < 6; i++) {
         // Read the bar in question
         uint32_t bar = pci_legacy_read(bus, device, function, 0x10 + (i * 4));
@@ -64,7 +66,7 @@ static uint64_t pci_get_device(uint8_t bus, uint8_t device, uint8_t function) {
         }
 
         // Determine if the bar is 32-bit or 64-bit base address from the type field
-        if ((bar & 0x6) == 0x0) {
+        if (((bar >> 1) & 0b11) == 0x0) {
             // 32-bit
             // get the bar base
             uint32_t bar_base = bar & 0xFFFFFFF0;
@@ -78,9 +80,10 @@ static uint64_t pci_get_device(uint8_t bus, uint8_t device, uint8_t function) {
             pci_devices[cur_pci_device].bars[i].len = (uint64_t)bar_limit;
             pci_devices[cur_pci_device].bars[i].is_mmio = mmio;
             continue;
-        } else if ((bar & 0x6) == 0x2) {
+        } else if (((bar >> 1) & 0b11) == 0x2) {
             // 64-bit means it consumes the BAR below it as well
-            uint64_t bar_base = (bar & 0xFFFFFFF0) + ((pci_legacy_read(bus, device, function, 0x10 + (i * 4) + 1) & 0xFFFFFFFF) << 32);
+            uint64_t bar_base = ((uint64_t)(bar & 0xFFFFFFF0)) + (uint64_t)(((uint64_t)(pci_legacy_read(bus, device, function, 0x10 + (i * 4) + 4) & (uint64_t)0xFFFFFFFF)) << 32);
+            pci_legacy_write(bus, device, function, 0x10 + (i * 4), 0xFFFFFFFF);
             uint32_t bar_limit = pci_legacy_read(bus, device, function, 0x10 + (i * 4)); // read the value back, mask the information bits, and perform a two's complement of that to get the limit
             bar_limit = (~(bar_limit & 0xFFFFFFF0)) + 1;    // this is the bar limit
             pci_legacy_write(bus, device, function, 0x10 + (i * 4), bar);
@@ -209,4 +212,57 @@ uint16_t pci_get_status_reg(uint8_t bus, uint8_t device, uint8_t function) {
     serial_puts("\n\t - STATUS REG: ");
     serial_puts(unsigned_long_to_str((uint64_t)(uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16)));
     return (uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16);
+}
+
+uint8_t pci_get_class(uint8_t bus, uint8_t device, uint8_t function) {
+    serial_puts("\n\t - CLASS CODE: ");
+    uint8_t retval = (uint8_t)(pci_legacy_read(bus, device, function, 0x8) >> 24);
+    serial_puts(unsigned_long_to_str((uint64_t)retval));
+    return (uint8_t)(pci_legacy_read(bus, device, function, 0x8) >> 24);
+}
+
+uint8_t pci_get_subclass(uint8_t bus, uint8_t device, uint8_t function) {
+    serial_puts("\n\t - SUBCLASS: ");
+    uint8_t retval = (uint8_t)(pci_legacy_read(bus, device, function, 0x8) >> 16);
+    serial_puts(unsigned_long_to_str((uint64_t)retval));
+    return (uint8_t)(pci_legacy_read(bus, device, function, 0x8) >> 16);
+}
+
+struct PCI_Device* pci_search_for_device(uint8_t _class, uint8_t subclass) {
+    for (size_t i = 0; i < cur_pci_device; i++) {
+        if (_class == pci_devices[i]._class && subclass == pci_devices[i].subclass) {
+            return &(pci_devices[i]);
+        }
+    }
+
+    return NULL;
+}
+
+void pci_debug_device(struct PCI_Device* dev) {
+    serial_puts("\n - Device ID: ");
+    serial_puts(unsigned_long_to_str((uint64_t)dev->device_id));
+    serial_puts("\n - Vendor ID: ");
+    serial_puts(unsigned_long_to_str((uint64_t)dev->vendor_id));
+    serial_puts("\n - Bus: ");
+    serial_puts(unsigned_long_to_str((uint64_t)dev->bus));
+    serial_puts("\n - Device: ");
+    serial_puts(unsigned_long_to_str((uint64_t)dev->device));
+    serial_puts("\n - Function: ");
+    serial_puts(unsigned_long_to_str((uint64_t)dev->function));
+    serial_puts("\n - BAR's:");
+    for (size_t j = 0; j < 6; j++) {
+        serial_puts("\n\t - Bar #");
+        serial_puts(unsigned_long_to_str(j));
+        serial_puts(": ");
+        serial_puts("\n\t - Base Address: ");
+        serial_puts(unsigned_long_to_str(dev->bars[j].addr));
+        serial_puts("\n\t - Length: ");
+        serial_puts(unsigned_long_to_str(dev->bars[j].len));
+        serial_puts("\n\t - Is MMIO: ");
+        if (dev->bars[j].is_mmio == true) {
+            serial_puts("true");
+        } else {
+            serial_puts("false");
+        }
+    }
 }

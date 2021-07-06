@@ -118,3 +118,5 @@ tags
 # QEMU and serial debug logs
 *.log
 
+# Drives
+nvme.img

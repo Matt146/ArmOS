@@ -40,13 +40,13 @@ static inline uint32_t in_d(uint16_t port) {
     return ret;
 }
 
-inline uint64_t rdmsr(uint64_t msr) {
+static inline uint64_t rdmsr(uint64_t msr) {
     uint64_t rax, rdx;
     asm volatile ("rdmsr" : "=a"(rax), "=d"(rdx) : "c"(msr));
     return (rdx << 32) | rax;
 }
 
-inline void wrmsr(uint64_t msr, uint64_t data) {
+static inline void wrmsr(uint64_t msr, uint64_t data) {
     uint64_t rax = (uint32_t)data;
     uint64_t rdx = data >> 32;
     asm volatile ("wrmsr" :: "a"(rax), "d"(rdx), "c"(msr));

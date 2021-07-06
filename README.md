@@ -31,7 +31,7 @@ This is an OS that I'm writing myself totally from scratch.
 - HPET
 - VFS
 - Scheduler
-- Fielsystems: EXT2
+- Filesystems: EXT2
 - Framebuffer/GUI
 
 ## TODO (to learn):

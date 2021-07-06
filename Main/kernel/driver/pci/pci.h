@@ -29,12 +29,14 @@ struct PCI_Device {
     uint8_t function;
     uint16_t device_id;
     uint16_t vendor_id;
+    uint8_t _class;
+    uint8_t subclass;
 
     struct PCI_BAR bars[6];
 } __attribute__((packed));
 
 static uint8_t pci_legacy_cam_buffer[256];
-static struct PCI_Device pci_devices[PCI_MAX_DEVICES];   // contains pointers to PCI_Device structs
+static struct PCI_Device pci_devices[PCI_MAX_DEVICES];
 static uint64_t cur_pci_device;
 
 // PCI Read/Write Basic Functions
@@ -49,12 +51,16 @@ static uint64_t pci_get_device(uint8_t bus, uint8_t device, uint8_t function);
 static void pci_debug_devices();
 static void pci_init_msi(uint8_t bus, uint8_t device, uint8_t function, uint8_t irq);
 void pci_init_device(uint8_t bus, uint8_t device, uint8_t function);
+struct PCI_Device* pci_search_for_device(uint8_t _class, uint8_t subclass);
+void pci_debug_device(struct PCI_Device* dev);
 
 // PCI Functions to Export - Setting command register bits, initializing the device, becoming the busmaster
 void pci_scan_devices();
 void pci_set_command_reg(uint8_t bus, uint8_t device, uint8_t function, uint16_t comamnd_reg_value);
 uint16_t pci_get_command_reg(uint8_t bus, uint8_t device, uint8_t function);
 uint16_t pci_get_status_reg(uint8_t bus, uint8_t device, uint8_t function);
+uint8_t pci_get_class(uint8_t bus, uint8_t device, uint8_t function);
+uint8_t pci_get_subclass(uint8_t bus, uint8_t device, uint8_t function);
 void pci_become_busmaster(uint8_t bus, uint8_t device, uint8_t function);
 
 // So this is how PCI works:
