@@ -8,8 +8,8 @@
 #define MUBAR 1 // PCI BAR1
 
 // NVME Queue Constants
-#define NVME_DEFAULT_AQUEUE_SIZE 4095   // Default Admin Queue Size
-#define NVME_DEFAULT_IOQUEUE_SIZE 4095  // Default IO Queue Size (forSQ)
+#define NVME_DEFAULT_AQUEUE_SIZE 4096   // Default Admin Queue Size
+#define NVME_DEFAULT_IOQUEUE_SIZE 4096  // Default IO Queue Size (forSQ)
 #define NVME_DEFAULT_IOSQ_COUNT 5
 #define NVME_MAX_SUPPORTED_IOQUEUES 256
 
@@ -70,12 +70,12 @@ struct NVME_Command {
     // Rest of command - common part (up to DWORD 9)
     uint32_t nsid;  // No namespace, should be cleared to 0. Otherwise, set to INT32_MAX
     uint64_t zero1;  // Reserved
-    uint8_t mptr;   // Metadata pointer
+    uint64_t mptr;   // Metadata pointer
     uint64_t prp1;  // Data pointer (part 1)
     uint64_t prp2;  // Data pointer (part 2)
 
     // DWORD's 10, 11, 12, 13, 14, 15
-    uint64_t specifics[6];
+    uint32_t specifics[6];
 } __attribute__((packed));
 
 void nvme_init();

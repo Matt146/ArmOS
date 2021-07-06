@@ -60,7 +60,7 @@ void ioapic_init() {
                     ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), true, lapic_get_current_id());
                     continue;
                 }
-                ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), false, lapic_get_current_id());
+                ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), true, lapic_get_current_id());     // Set to false to unmask
             } else {
                 for (size_t j = 0; j < acpi_is_overrides_count; j++) {
                     if (i == acpi_interrupt_source_overrides[j].irq_source) {
@@ -72,7 +72,7 @@ void ioapic_init() {
                             ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), true, lapic_get_current_id());
                             continue;
                         }
-                        ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), false, lapic_get_current_id());
+                        ioapic_map_irq(x, ioapic_get_gsi_from_irq(i), ioapic_get_vector_from_irq(i), true, lapic_get_current_id()); // Set to false to unmask
                         break;
                     }
                 }

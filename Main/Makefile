@@ -91,6 +91,7 @@ image.iso: stivale.h $(KERNEL) limine nvme.img
         	-efi-boot-part --efi-boot-image --protective-msdos-label \
         	iso_root -o image.iso
 	./limine/limine-install image.iso
+
 	qemu-system-x86_64 -vga std -no-reboot -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8 \
 				-drive file=nvme.img,if=none,id=NVME \
 				-device nvme,drive=NVME,serial=nvme  \
@@ -99,7 +100,7 @@ image.iso: stivale.h $(KERNEL) limine nvme.img
 				-device ide-hd,drive=disk,bus=ahci.0 \
 				-trace "nvme*"
 
-# qemu-system-x86_64 -vga std -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8 \
+#qemu-system-x86_64 -vga std -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8 \
                         -drive file=nvme.img,if=none,id=NVME \
                         -device nvme,drive=NVME,serial=nvme  \
                         -drive id=disk,file=image.iso,if=none \

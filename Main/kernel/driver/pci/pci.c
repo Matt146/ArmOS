@@ -199,7 +199,7 @@ void pci_init_device(uint8_t bus, uint8_t device, uint8_t function) {
 
 void pci_become_busmaster(uint8_t bus, uint8_t device, uint8_t function) {
     uint32_t prev_value = pci_legacy_read(bus, device, function, 0x4);
-    pci_legacy_write(bus, device, function, 0x4, prev_value | (0x1 << 2));
+    pci_legacy_write(bus, device, function, 0x4, prev_value | (1 << 2) | (0x1 << 1));
 }
 
 uint16_t pci_get_command_reg(uint8_t bus, uint8_t device, uint8_t function) {
@@ -207,10 +207,6 @@ uint16_t pci_get_command_reg(uint8_t bus, uint8_t device, uint8_t function) {
 }
 
 uint16_t pci_get_status_reg(uint8_t bus, uint8_t device, uint8_t function) {
-    serial_puts("\n\t - STATUS REG|COMMAND REG: ");
-    serial_puts(unsigned_long_to_str((uint64_t)pci_legacy_read(bus, device, function, 0x4)));
-    serial_puts("\n\t - STATUS REG: ");
-    serial_puts(unsigned_long_to_str((uint64_t)(uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16)));
     return (uint16_t)(pci_legacy_read(bus, device, function, 0x4) >> 16);
 }
 
@@ -265,4 +261,8 @@ void pci_debug_device(struct PCI_Device* dev) {
             serial_puts("false");
         }
     }
+    serial_puts("\n - Command Register: ");
+    serial_puts(unsigned_long_to_str((uint64_t)pci_get_command_reg(dev->bus, dev->device, dev->function)));
+    serial_puts("\n - Status Register: ");
+    serial_puts(unsigned_long_to_str((uint64_t)pci_get_status_reg(dev->bus, dev->device, dev->function)));
 }

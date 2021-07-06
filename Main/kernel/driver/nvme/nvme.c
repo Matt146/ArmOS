@@ -14,6 +14,10 @@ void nvme_init() {
 }
 
 void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
+    // Disable the controller
+    volatile uint32_t* cc_ptr = (volatile uint32_t*)(nvme_dev->pci->bars[0].addr + NVME_CC);
+    *cc_ptr &= (~0x1);
+
     // Configure Admin SQ and CQ by initializing the AQA, ASQ and ACQ
     // We do this before we set CC because you can't access these registers when you set CC.EN
     serial_puts("\n[NVME] Writing to AQA...");
@@ -39,8 +43,8 @@ void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
     // Configure the CC (controller configuration register) with CC.AMS (Arbitration Mechanism), CC.MPS (Memory Page Size)
     // CC.CSS( Command Set) before we set CC.EN. We also set CC.IOCQES/CC.IOSQES while we're here because they're required
     // to create IO Queues
-    volatile uint32_t* cc_ptr = (volatile uint32_t*)(nvme_dev->pci->bars[0].addr + NVME_CC);
-    *cc_ptr |= (NVME_CC_IOCQES << 20) | (NVME_CC_IOSQES << 16) | (NVME_CC_AMS << 11) | (NVME_CC_MPS << 7) | (NVME_CC_CSS << 4) | 0x1;
+    *cc_ptr |= (NVME_CC_IOCQES << 20) | (NVME_CC_IOSQES << 16) | (NVME_CC_AMS << 11) | (NVME_CC_MPS << 7) | (NVME_CC_CSS << 4);
+    *cc_ptr |= 0x1;
 
     // Check the controller status to see what we did wrong (if we did)
     volatile uint32_t* csts_ptr = (volatile uint32_t*)(nvme_dev->pci->bars[0].addr + NVME_CSTS);
@@ -77,6 +81,8 @@ void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
 
 void nvme_debug_command(struct NVME_Command* cmd) {
     serial_puts("\n - Command: ");
+    serial_puts("\n\t - sizeof(struct NVME_Command): ");
+    serial_puts(unsigned_long_to_str(sizeof(struct NVME_Command)));
     serial_puts("\n\t - Opcode: ");
     serial_puts(unsigned_long_to_str(cmd->opcode));
     serial_puts("\n\t - Zero0: ");
@@ -122,7 +128,11 @@ void nvme_submit_command(struct NVME_IOQueue* sq, struct NVME_Command* command) 
         sq->doorbell_prev_value = 0;
     }
 
+    serial_puts("\n - Submission Queue Pointer Value: ");
+    serial_puts(unsigned_long_to_str((uint64_t)sq_ptr));
+
     memcpy(sq_ptr, command, sizeof(struct NVME_Command));
+    //nvme_debug_command((struct NVME_Command*)sq_ptr);
     volatile uint32_t* sq_doorbell_ptr = (volatile uint32_t*)(sq->doorbell_register_addr);
     *sq_doorbell_ptr = (sq->doorbell_prev_value + 1);
     sq->doorbell_prev_value += 1;
