@@ -76,7 +76,12 @@ void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
     cmd.specifics[5] = 0;
     nvme_submit_command(&(nvme_dev->asq_queue), &cmd);
 
+    // Determine the maximum entries supported per queue
+    nvme_dev->mqes = (uint16_t)((*cap_ptr) & 0xffff);
+
     // Create IO Queues
+    nvme_create_iocq(nvme_dev);
+    nvme_create_iosq(nvme_dev);
 }
 
 void nvme_debug_command(struct NVME_Command* cmd) {
@@ -126,7 +131,9 @@ void nvme_submit_command(struct NVME_IOQueue* sq, struct NVME_Command* command) 
     volatile struct NVME_Command* sq_ptr = (volatile struct NVME_Command*)(sq->base + (sq->doorbell_prev_value * NVME_CC_IOSQES));
     if (sq->doorbell_prev_value >= sq->len) {
         sq->doorbell_prev_value = 0;
+        sq->cur_cid = 0;    // @FIXME @BUG HERE MAYBE????????
     }
+    command->cid = sq->cur_cid;
 
     serial_puts("\n - Submission Queue Pointer Value: ");
     serial_puts(unsigned_long_to_str((uint64_t)sq_ptr));
@@ -147,4 +154,77 @@ void nvme_submit_command(struct NVME_IOQueue* sq, struct NVME_Command* command) 
     serial_puts(unsigned_long_to_str(sq->doorbell_register_addr));
     serial_puts("\n\t - Queue Doorbell Previous Value: ");
     serial_puts(unsigned_long_to_str(sq->doorbell_prev_value));
+
+    sq->cur_cid += 1;
+}
+
+uint64_t nvme_create_prp_list(uint64_t pages) {
+    uint64_t* prp_list_ptr = (uint64_t*)pmm_alloc(1);
+    if (pages >= 4096) {
+        pages = 4096;
+    }
+    uint64_t prp_list_base = pmm_alloc(pages);
+    for (size_t i = 0; i < pages; i++) {
+        *prp_list_ptr = prp_list_base;
+        prp_list_ptr += sizeof(uint64_t);
+        prp_list_base += PMM_PAGE_SIZE;
+    }
+
+    return prp_list_ptr;
+}
+
+void nvme_create_iocq(struct NVME_Drive* nvme_dev) {
+    uint64_t cq_prp_ptr = nvme_create_prp_list(nvme_dev->mqes % PMM_PAGE_SIZE);
+    struct NVME_Command cmd;
+    cmd.opcode = 0x4;       // "Create IOCQ" command opcode is 0x4
+    cmd.zero0 = 0;
+    cmd.cid = 0;
+    cmd.nsid = 0;
+    cmd.zero1 = 0;
+    cmd.mptr = 0;
+    cmd.prp1 = cq_prp_ptr;
+    cmd.prp2 = 0;
+    cmd.specifics[0] = (nvme_dev->mqes << 16) | (nvme_dev->cur_iocq_qid); // Number of Queues feature ID
+    cmd.specifics[1] = 0x0 | (1 << 1);
+    cmd.specifics[2] = 0;
+    cmd.specifics[3] = 0;
+    cmd.specifics[4] = 0;
+    cmd.specifics[5] = 0;
+
+    nvme_dev->cur_iocq_qid += 1;
+
+    nvme_submit_command(&(nvme_dev->asq_queue), &cmd);
+    nvme_dev->iocq.base = (*(uint64_t*)cq_prp_ptr);
+    nvme_dev->iocq.len = nvme_dev->mqes;
+    nvme_dev->iocq.doorbell_prev_value = 0;
+    nvme_dev->iocq.doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
+    nvme_dev->iocq.cur_cid = 0;
+}
+
+void nvme_create_iosq(struct NVME_Drive* nvme_dev) {
+    uint64_t sq_prp_ptr = nvme_create_prp_list(nvme_dev->mqes % PMM_PAGE_SIZE);
+    struct NVME_Command cmd;
+    cmd.opcode = 0x1;       // "Create IOSQ" command opcode is 0x1
+    cmd.zero0 = 0;
+    cmd.cid = 0;
+    cmd.nsid = 0;
+    cmd.zero1 = 0;
+    cmd.mptr = 0;
+    cmd.prp1 = sq_prp_ptr;
+    cmd.prp2 = 0;
+    cmd.specifics[0] = (nvme_dev->mqes << 16) | (nvme_dev->cur_iosq_qid); // Number of Queues feature ID
+    cmd.specifics[1] = 0x0 | (1 << 1);
+    cmd.specifics[2] = 0;
+    cmd.specifics[3] = 0;
+    cmd.specifics[4] = 0;
+    cmd.specifics[5] = 0;
+
+    nvme_dev->cur_iosq_qid += 1;
+
+    nvme_submit_command(&(nvme_dev->asq_queue), &cmd);
+    nvme_dev->iosqs[0].base = (*(uint64_t*)sq_prp_ptr);
+    nvme_dev->iosqs[0].len = nvme_dev->mqes;
+    nvme_dev->iosqs[0].doorbell_prev_value = 0;
+    nvme_dev->iosqs[0].doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
+    nvme_dev->iosqs[0].cur_cid = 0;
 }

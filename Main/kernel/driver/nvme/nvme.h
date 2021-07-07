@@ -10,7 +10,7 @@
 // NVME Queue Constants
 #define NVME_DEFAULT_AQUEUE_SIZE 4096   // Default Admin Queue Size
 #define NVME_DEFAULT_IOQUEUE_SIZE 4096  // Default IO Queue Size (forSQ)
-#define NVME_DEFAULT_IOSQ_COUNT 5
+#define NVME_DEFAULT_IOSQ_COUNT 1
 #define NVME_MAX_SUPPORTED_IOQUEUES 256
 
 // NVME Controller COnfiguration Constants
@@ -40,6 +40,9 @@ struct NVME_IOQueue {
     // Doorbell stuff
     uint64_t doorbell_prev_value;
     uint64_t doorbell_register_addr;
+
+    // Cur CID
+    uint16_t cur_cid;
 };
 
 struct NVME_Drive {
@@ -56,9 +59,12 @@ struct NVME_Drive {
     struct NVME_IOQueue iosqs[NVME_MAX_SUPPORTED_IOQUEUES];     // The IO SQ's
     uint16_t cur_ioqueues;                                      // How many IO Submission Queues we have
     uint8_t dstrd;                                              // Value of CAP.DSTRD (doorbell stride)
-    uint16_t mqes;                                              // Maximum queue entry size (CAP.MQES)
+    uint16_t mqes;                                              // Maximum entries supported per queue (CAP.MQES)
     uint64_t io_cq_entry_size;                                  // Size of IO Completion Queue Etnries (based on CC.IOCQES)
     uint64_t io_sq_entry_size;                                  // Size of IO Submission QUeue ENtries (based on CC>IOSQES)
+    bool queue_entries_contiguous;                              // baed on CAP.CQR; Are IO Queue entries required to be contiguous
+    uint16_t cur_iocq_qid;                                      // Current IO Completion Queue Queue Identifier
+    uint16_t cur_iosq_qid;                                      // Current IO Submission Queue Queue Identifier
 };
 
 struct NVME_Command {
@@ -78,9 +84,14 @@ struct NVME_Command {
     uint32_t specifics[6];
 } __attribute__((packed));
 
+
 void nvme_init();
-void nvme_setup_queues(struct NVME_Drive* nvme_dev);   // Initialize IO SQ's, IO CQ's, etc, etc
 void nvme_submit_command(struct NVME_IOQueue* sq, struct NVME_Command* command);
+
+// IO Quueue Commands
+void nvme_create_iocq(struct NVME_Drive* nvme_dev);
+void nvme_create_iosq(struct NVME_Drive* nvme_dev);
+uint64_t nvme_create_prp_list(uint64_t pages);
 
 // Debug Functions
 void nvme_debug_command(struct NVME_Command* cmd);
