@@ -19,5 +19,6 @@ void srand( unsigned int seed );
 _Static_assert((RAND_MAX & (RAND_MAX + 1u)) == 0, "RAND_MAX not a Mersenne number");
 
 uint64_t rand64(void);
+uint64_t pow(uint64_t x, uint64_t n);   // returns x^n
 
 #endif // UTIL_H

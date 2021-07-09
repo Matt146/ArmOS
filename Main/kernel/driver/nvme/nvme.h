@@ -10,7 +10,7 @@
 // NVME Queue Constants
 #define NVME_DEFAULT_AQUEUE_SIZE 4096   // Default Admin Queue Size
 #define NVME_DEFAULT_IOQUEUE_SIZE 4096  // Default IO Queue Size (forSQ)
-#define NVME_DEFAULT_IOSQ_COUNT 1
+#define NVME_DEFAULT_IOSQ_COUNT 0
 #define NVME_MAX_SUPPORTED_IOQUEUES 256
 
 // NVME Controller COnfiguration Constants
@@ -45,6 +45,12 @@ struct NVME_IOQueue {
     uint16_t cur_cid;
 };
 
+struct NVME_Namespace {
+    uint32_t namespace_id;
+    uint64_t namespace_size;
+    uint64_t namespace_capacity;
+};
+
 struct NVME_Drive {
     // General PCI information
     struct PCI_Device* pci;
@@ -65,6 +71,7 @@ struct NVME_Drive {
     bool queue_entries_contiguous;                              // baed on CAP.CQR; Are IO Queue entries required to be contiguous
     uint16_t cur_iocq_qid;                                      // Current IO Completion Queue Queue Identifier
     uint16_t cur_iosq_qid;                                      // Current IO Submission Queue Queue Identifier
+    struct NVME_Namespace namespaces[1024];
 };
 
 struct NVME_Command {
@@ -84,14 +91,36 @@ struct NVME_Command {
     uint32_t specifics[6];
 } __attribute__((packed));
 
+struct NVME_CQ_Entry {
+    // DWORD 0
+    uint32_t command_specific;  // Command-specific DWORD
+
+    // DWORD 1
+    uint32_t zero0;             // Reserved
+
+    // DWORD 2
+    uint16_t sq_head_ptr;       // Submission Queue Head Pointer (at the time the completion queue was created)
+    uint16_t sq_identifier;     // Submission Queue Identifier (which submission queue this is from)
+
+    // DWORD 3
+    uint16_t cid;               // Command ID
+    uint16_t status;            // Status Field - Bit 0 of this is the "P" bit
+};
+
 
 void nvme_init();
-void nvme_submit_command(struct NVME_IOQueue* sq, struct NVME_Command* command);
 
-// IO Quueue Commands
+// NVMe General Queue Functions
+struct NVME_CQ_Entry* nvme_submit_command(struct NVME_Drive* nvme_dev, struct NVME_IOQueue* sq, struct NVME_IOQueue* cq, struct NVME_Command* command);
+
+
+// Admin Queue Commands
 void nvme_create_iocq(struct NVME_Drive* nvme_dev);
 void nvme_create_iosq(struct NVME_Drive* nvme_dev);
-uint64_t nvme_create_prp_list(uint64_t pages);
+void nvme_detect_namespaces(struct NVME_Drive* nvme_dev);       // Detects up to the first 1024 nameespaces with the "Identify" command
+
+// IO Quueue Commands
+void nvme_write(struct NVME_Drive* nvme_dev);
 
 // Debug Functions
 void nvme_debug_command(struct NVME_Command* cmd);

@@ -67,3 +67,14 @@ uint64_t rand64(void) {
   }
   return r;
 }
+
+uint64_t pow(uint64_t x, uint64_t n)
+{
+    uint64_t i; /* Variable used in loop counter */
+    uint64_t number = 1;
+
+    for (i = 0; i < n; ++i)
+        number *= x;
+
+    return(number);
+}
