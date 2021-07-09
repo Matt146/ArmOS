@@ -105,6 +105,10 @@ void pmm_free(uint64_t paddr_start, uint64_t blocks) {
     //serial_puts(unsigned_long_to_str(pmm_paddr_to_block(paddr_start) + blocks));
 
     mutex_lock(&pmm_bitmap_mux);
+    if (paddr_start == NULL) {
+        mutex_unlock(&pmm_bitmap_mux);
+        return;
+    }
     for (uint64_t i = pmm_paddr_to_block(paddr_start); i < blocks + pmm_paddr_to_block(paddr_start); i++) {
         //serial_puts("\n - [-]");
         //serial_puts(unsigned_long_to_str(i));

@@ -33,6 +33,8 @@ void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
     volatile uint32_t* asq_ptr = (volatile uint32_t*)(nvme_dev->pci->bars[0].addr + NVME_ASQ);
     *asq_ptr = pmm_alloc(1);
     nvme_dev->asq_queue.base = *asq_ptr;
+    nvme_dev->asq_queue.iocqid = 0;
+    nvme_dev->asq_queue.iosqid = 0;
 
     // Store NVME Admin Queue Doorbell/Queue Info
     volatile uint64_t* cap_ptr = (volatile uint64_t*)((uint64_t)nvme_dev->pci->bars[0].addr + NVME_CAP);
@@ -92,6 +94,14 @@ void nvme_setup_queues(struct NVME_Drive* nvme_dev) {
     nvme_create_iocq(nvme_dev);
     serial_puts("\n\n[NVME] Creating IO Submission Queues!");
     nvme_create_iosq(nvme_dev);
+
+    // TEST NVME WRITE:
+    nvme_write_block(nvme_dev, 10, nvme_dev->namespaces[0].namespace_id, "SCOOBY DOOBY DOO WHERE THE FUCK ARE YOU?", 40);
+
+    // TEST NVME READ:
+    uint64_t data_buff_ptr = nvme_read_block(nvme_dev, 10, nvme_dev->namespaces[0].namespace_id);
+    serial_puts("\n\n\n[NVME] READ FROM DISK: ");
+    serial_puts((char*)data_buff_ptr);
 }
 
 void nvme_debug_command(struct NVME_Command* cmd) {
@@ -175,6 +185,7 @@ struct NVME_CQ_Entry* nvme_submit_command(struct NVME_Drive* nvme_dev, struct NV
         }
     }
     serial_puts("\n[NVME] Reading CQ Value...");
+    nvme_debug_command(command);
 
     // NOW, get the corresponding CQ entry
     struct NVME_CQ_Entry* entry_ptr = (struct NVME_CQ_Entry*)(cq->base);
@@ -191,8 +202,6 @@ struct NVME_CQ_Entry* nvme_submit_command(struct NVME_Drive* nvme_dev, struct NV
             break;
         }
     }
-    serial_puts("\n[NVME] Got corresponding CQ Value");
-
     struct NVME_CQ_Entry* entry_copied_ptr = (struct NVME_CQ_Entry*)pmm_alloc(1);
     memsetb(entry_copied_ptr, 0x0, PMM_PAGE_SIZE);
     memcpy(entry_copied_ptr, entry_ptr, sizeof(struct NVME_CQ_Entry));
@@ -202,6 +211,7 @@ struct NVME_CQ_Entry* nvme_submit_command(struct NVME_Drive* nvme_dev, struct NV
     cq->doorbell_prev_value += 1;
     serial_puts("\n[NVME] Wrote to CQ Doorbell Register... Returning...");
     return entry_copied_ptr;
+    return NULL;
 }
 
 void nvme_create_iocq(struct NVME_Drive* nvme_dev) {
@@ -225,10 +235,13 @@ void nvme_create_iocq(struct NVME_Drive* nvme_dev) {
     cmd.specifics[5] = 0;
 
     pmm_free(nvme_submit_command(nvme_dev, &(nvme_dev->asq_queue), &(nvme_dev->acq_queue), &cmd), 1);
-    nvme_dev->iocq.base = (*(uint64_t*)cq_prp_ptr);
+    nvme_dev->iocq.base = (uint64_t*)cq_prp_ptr;
     nvme_dev->iocq.len = nvme_dev->mqes;
     nvme_dev->iocq.doorbell_prev_value = 0;
-    nvme_dev->iocq.doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
+    //nvme_dev->iocq.doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
+    nvme_dev->iocq.iocqid = nvme_dev->cur_iocq_qid;
+    nvme_dev->iocq.iosqid = 0;
+    nvme_dev->iocq.doorbell_register_addr = 0x1000 + nvme_dev->pci->bars[0].addr + ((2 * nvme_dev->iocq.iocqid + 1) * (4 << nvme_dev->dstrd));
     nvme_dev->iocq.cur_cid = 0;
 }
 
@@ -253,11 +266,14 @@ void nvme_create_iosq(struct NVME_Drive* nvme_dev) {
     cmd.specifics[5] = 0;
 
     pmm_free(nvme_submit_command(nvme_dev, &(nvme_dev->asq_queue), &(nvme_dev->acq_queue), &cmd), 1);
-    nvme_dev->iosqs[0].base = (*(uint64_t*)sq_prp_ptr);
+    nvme_dev->iosqs[0].base = (uint64_t*)sq_prp_ptr;
     nvme_dev->iosqs[0].len = nvme_dev->mqes;
     nvme_dev->iosqs[0].doorbell_prev_value = 0;
-    nvme_dev->iosqs[0].doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
+    //nvme_dev->iosqs[0].doorbell_register_addr = nvme_dev->pci->bars[0].addr + (3 * 4 << nvme_dev->dstrd);
     nvme_dev->iosqs[0].cur_cid = 0;
+    nvme_dev->iosqs[0].iocqid = nvme_dev->cur_iocq_qid;
+    nvme_dev->iosqs[0].iosqid = nvme_dev->cur_iosq_qid;
+    nvme_dev->iosqs[0].doorbell_register_addr = 0x1000 + nvme_dev->pci->bars[0].addr + ((2 * nvme_dev->iosqs[0].iosqid) * (4 << nvme_dev->dstrd));
 }
 
 void nvme_detect_namespaces(struct NVME_Drive* nvme_dev) {
@@ -333,4 +349,81 @@ void nvme_detect_namespaces(struct NVME_Drive* nvme_dev) {
 
     // Free the identify buffer
     pmm_free(identify_buffer, 1);
+}
+
+uint64_t nvme_read_block(struct NVME_Drive* nvme_dev, uint64_t lba, uint32_t nsid) {
+    serial_puts("\n[NVME] READING BLOCK:");
+    uint64_t buff = pmm_alloc(1);
+    memsetb((uint8_t*)buff, 0x0, PMM_PAGE_SIZE);
+
+    struct NVME_Command cmd;
+    cmd.opcode = 0x2;       // 0x2 = command for read
+    cmd.zero0 = 0;
+    cmd.cid = 0;
+    cmd.nsid = nsid;
+    cmd.zero1 = 0;
+    cmd.mptr = 0;
+    cmd.prp1 = buff;
+    cmd.prp2 = 0;
+    cmd.specifics[0] = (uint32_t)(lba & 0xffffffff);
+    cmd.specifics[1] = (uint32_t)(lba >> 32);
+    cmd.specifics[2] = 0x1;
+    cmd.specifics[3] = 0;
+    cmd.specifics[4] = 0;
+    cmd.specifics[5] = 0;
+
+    // Send the command now
+    nvme_submit_command(nvme_dev, &(nvme_dev->iosqs[0]), &(nvme_dev->iocq), &cmd);
+    serial_puts("\n[NVME] Read block...:");
+
+    // Return buffer
+    return buff;
+}
+
+void nvme_write_block(struct NVME_Drive* nvme_dev, uint64_t lba, uint32_t nsid, uint8_t* data, uint64_t data_len) {
+    serial_puts("\n[NVME] WRITING BLOCK:");
+    uint64_t buff = pmm_alloc(1);
+    memsetb(buff, 0x0, PMM_PAGE_SIZE);
+    memcpy(buff, data, data_len);
+
+    struct NVME_Command cmd;
+    cmd.opcode = 0x1;       // 0x1 = command for write
+    cmd.zero0 = 0;
+    cmd.cid = 0;
+    cmd.nsid = nsid;
+    cmd.zero1 = 0;
+    cmd.mptr = 0;
+    cmd.prp1 = buff;
+    cmd.prp2 = 0;
+    cmd.specifics[0] = (uint32_t)(lba & 0xffffffff);
+    cmd.specifics[1] = (uint32_t)(lba >> 32);
+    cmd.specifics[2] = 0x1;
+    cmd.specifics[3] = 0;
+    cmd.specifics[4] = 0;
+    cmd.specifics[5] = 0;
+
+    // Send the command now
+    pmm_free(nvme_submit_command(nvme_dev, &(nvme_dev->iosqs[0]), &(nvme_dev->iocq), &cmd), 1);
+    serial_puts("\n[NVME] WROTE block...:");
+    serial_puts("\n[NVME] FLUSHING CHANGES:");
+
+    cmd.opcode = 0x0;       // 0x0 = command for flush
+    cmd.zero0 = 0;
+    cmd.cid = 0;
+    cmd.nsid = nsid;
+    cmd.zero1 = 0;
+    cmd.mptr = 0;
+    cmd.prp1 = 0;
+    cmd.prp2 = 0;
+    cmd.specifics[0] = 0;
+    cmd.specifics[1] = 0;
+    cmd.specifics[2] = 0;
+    cmd.specifics[3] = 0;
+    cmd.specifics[4] = 0;
+    cmd.specifics[5] = 0;
+
+    pmm_free(nvme_submit_command(nvme_dev, &(nvme_dev->iosqs[0]), &(nvme_dev->iocq), &cmd), 1);
+    serial_puts("\n[NVME] FLUSHED block...:");
+
+    return buff;
 }

@@ -43,6 +43,10 @@ struct NVME_IOQueue {
 
     // Cur CID
     uint16_t cur_cid;
+
+    // Qeuue Information
+    uint16_t iocqid;
+    uint16_t iosqid;
 };
 
 struct NVME_Namespace {
@@ -81,7 +85,7 @@ struct NVME_Command {
     uint16_t cid;   // Command identifier - unique for each command
 
     // Rest of command - common part (up to DWORD 9)
-    uint32_t nsid;  // No namespace, should be cleared to 0. Otherwise, set to INT32_MAX
+    uint32_t nsid;  // No namespace, should be cleared to 0. Otherwise, set to INT32_MAX to broadcast or the specific namespace you want which you can choose by putting its namespace ID here
     uint64_t zero1;  // Reserved
     uint64_t mptr;   // Metadata pointer
     uint64_t prp1;  // Data pointer (part 1)
@@ -105,7 +109,7 @@ struct NVME_CQ_Entry {
     // DWORD 3
     uint16_t cid;               // Command ID
     uint16_t status;            // Status Field - Bit 0 of this is the "P" bit
-};
+} __attribute__((packed));
 
 
 void nvme_init();
@@ -113,14 +117,14 @@ void nvme_init();
 // NVMe General Queue Functions
 struct NVME_CQ_Entry* nvme_submit_command(struct NVME_Drive* nvme_dev, struct NVME_IOQueue* sq, struct NVME_IOQueue* cq, struct NVME_Command* command);
 
-
 // Admin Queue Commands
 void nvme_create_iocq(struct NVME_Drive* nvme_dev);
 void nvme_create_iosq(struct NVME_Drive* nvme_dev);
 void nvme_detect_namespaces(struct NVME_Drive* nvme_dev);       // Detects up to the first 1024 nameespaces with the "Identify" command
 
 // IO Quueue Commands
-void nvme_write(struct NVME_Drive* nvme_dev);
+uint64_t nvme_read_block(struct NVME_Drive* nvme_dev, uint64_t lba, uint32_t nsid);
+void nvme_write_block(struct NVME_Drive* nvme_dev, uint64_t lba, uint32_t nsid, uint8_t* data, uint64_t data_len);
 
 // Debug Functions
 void nvme_debug_command(struct NVME_Command* cmd);
