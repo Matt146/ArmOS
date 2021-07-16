@@ -54,15 +54,13 @@ $(KERNEL): $(OBJ) stub
 	$(CC) $(INTERNALLDFLAGS) $(OBJ) $(ASMOBJ) ./kernel/sched/real.o -o $@
 
 stivale.h:
+	git clone https://github.com/limine-bootloader/limine.git --single-branch -b latest-binary
 	wget https://github.com/stivale/stivale/raw/master/stivale.h
 
 %.o: %.c stivale.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
-limine:
-	git clone https://github.com/limine-bootloader/limine.git --single-branch -b latest-binary
-
-build: stivale.h $(KERNEL) limine
+build: stivale.h $(KERNEL)
 	rm -f armos.img disk.img
 	dd if=/dev/zero bs=1M count=0 seek=128 of=armos.img
 	dd if=/dev/zero bs=1M count=0 seek=128 of=disk.img
