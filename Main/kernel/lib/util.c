@@ -19,6 +19,26 @@ char* unsigned_long_to_str(unsigned long zahl) {
    return &text[loc];  //Start from where loc left off
 }
 
+char *int_base_to_string(size_t number, size_t base) {
+    static char lock = 0;
+    mutex_lock(&lock);
+
+    static char digits[] = "0123456789ABCDEF";
+    static char buffer[50];
+    char *str;
+
+    str = &buffer[49];
+    *str = '\0';
+
+    do {
+        *--str = digits[number % base];
+        number /= base;
+    } while(number != 0);
+
+    mutex_unlock(&lock);
+    return str;
+}
+
 void memsetb(uint8_t* src, uint8_t data, size_t count) {
     for(size_t i = 0; i < count; i++)
         *src++ = data;
@@ -77,4 +97,11 @@ uint64_t pow(uint64_t x, uint64_t n)
         number *= x;
 
     return(number);
+}
+
+size_t strlen(const char *str) {
+    size_t len = 0;
+    while(str[len])
+        len++;
+    return len;
 }

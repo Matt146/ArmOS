@@ -1,55 +1,38 @@
-KERNEL := stivale.elf
+KERNEL := armos.elf
 
 ASM = nasm
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -O2 -pipe
-CFLAGS = -O2 -pipe
+CFLAGS = -Wall -Wextra -O2 -pipe
 
-#INTERNALLDFLAGS := \
-	-fno-pic -fpie \
-	-Wl,-static,-pie,--no-dynamic-linker,-ztext \
-	-static-pie    \
-	-nostdlib      \
-	-Tlinker.ld    \
-	-z max-page-size=0x1000
+INTERNALLDFLAGS := 	-no-pie \
+				   	-nostdlib \
+					-nodefaultlibs \
+					-nostartfiles \
+				    -z max-page-size=0x1000
 
-INTERNALLDFLAGS := -no-pie -nostdlib -nodefaultlibs -nostartfiles -n -T linker.ld -z max-page-size=0x1000
+INTERNALCFLAGS  :=	-I. \
+					-std=gnu11 \
+					-ffreestanding \
+					-fno-stack-protector \
+					-fno-pic -fpie \
+					-mno-80387 \
+					-mno-mmx \
+					-mno-3dnow \
+					-mno-sse \
+					-mno-sse2 \
+					-mno-red-zone \
+					-fcommon
 
-#INTERNALCFLAGS  :=       \
-	-I.                  \
-	-std=gnu11           \
-	-ffreestanding       \
-	-fno-stack-protector \
-	-fno-pic -fpie       \
-	-mno-80387           \
-	-mno-mmx             \
-	-mno-3dnow           \
-	-mno-sse             \
-	-mno-sse2            \
-	-mno-red-zone
-
-#INTERNALLDFLAGS := \
-	-fno-pic -fpie \
-	-Wl,-static,-pie,--no-dynamic-linker,-ztext \
-	-static-pie    \
-	-nostdlib      \
-	-Tlinker.ld    \
-	-z max-page-size=0x1000
-
-INTERNALCFLAGS  :=       \
-	-I.                  \
-	-std=gnu11           \
-	-ffreestanding       \
-	-fno-stack-protector \
-	-fno-pic -fpie       \
-	-mno-80387           \
-	-mno-mmx             \
-	-mno-3dnow           \
-	-mno-sse             \
-	-mno-sse2            \
-	-mno-red-zone        \
-	-fcommon
+QEMUFLAGS :=	-vga std \
+				-serial file:'com1.log' \
+				-m 4G \
+				-smp 4 \
+				-drive file=disk.img,if=none,id=NVME1 \
+				-device nvme,drive=NVME1,serial=nvme \
+				-drive id=disk,file=armos.img,if=none \
+				-device ahci,id=ahci \
+				-device ide-hd,drive=disk,bus=ahci.0
 
 INTERNALASMFLAGS := -f elf64
 
@@ -60,7 +43,7 @@ ASMOBJ := ./kernel/lib/asm_common.o
 
 .PHONY: all clean
 
-all: $(KERNEL) image.iso
+all: clean build
 
 stub:
 	nasm -f bin ./kernel/sched/boot.asm -o ./kernel/sched/boot.bin
@@ -71,44 +54,50 @@ $(KERNEL): $(OBJ) stub
 	$(CC) $(INTERNALLDFLAGS) $(OBJ) $(ASMOBJ) ./kernel/sched/real.o -o $@
 
 stivale.h:
+	git clone https://github.com/limine-bootloader/limine.git --single-branch -b latest-binary
 	wget https://github.com/stivale/stivale/raw/master/stivale.h
 
 %.o: %.c stivale.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
-limine:
-	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
+build: stivale.h $(KERNEL)
+	rm -f armos.img disk.img
+	dd if=/dev/zero bs=1M count=0 seek=128 of=armos.img
+	dd if=/dev/zero bs=1M count=0 seek=128 of=disk.img
+	parted -s armos.img mklabel msdos
+	parted -s armos.img mkpart primary 1 100%
+	rm -rf disk_image/
+	mkdir disk_image
+	sudo losetup -Pf --show armos.img > loopback_dev
+	sudo mkfs.ext2 `cat loopback_dev`p1
+	sudo mount `cat loopback_dev`p1 disk_image
+	sudo mkdir disk_image/boot
+	sudo cp armos.elf disk_image/boot/
+	sudo cp limine.cfg disk_image/
+	sudo cp limine/limine.sys disk_image/boot/
+	sync
+	sudo umount disk_image/
+	sudo losetup -d `cat loopback_dev`
+	rm -rf disk_image loopback_dev
+	./limine/limine-install-linux-x86_64 armos.img
+	parted -s disk.img mklabel msdos
+	parted -s disk.img mkpart primary 1 100%
+	sudo losetup -Pf --show disk.img > loopback_dev
+	sudo mkfs.ext2 `cat loopback_dev`p1
+	sudo losetup -d `cat loopback_dev`
+	sync
+	rm -rf loopback_dev
 
-image.iso: stivale.h $(KERNEL) limine nvme.img
-	dd if=/dev/zero of=nvme.img bs=1M count=128
-	make -C limine
-	mkdir -p iso_root
-	cp -v stivale.elf limine.cfg limine/limine.sys \
-      		limine/limine-cd.bin limine/limine-eltorito-efi.bin iso_root/
-	xorriso -as mkisofs -b limine-cd.bin \
-        	-no-emul-boot -boot-load-size 4 -boot-info-table \
-        	--efi-boot limine-eltorito-efi.bin \
-        	-efi-boot-part --efi-boot-image --protective-msdos-label \
-        	iso_root -o image.iso
-	./limine/limine-install image.iso
+qemu: build
+	touch com1.log
+	qemu-system-x86_64 $(QEMUFLAGS) &
+	tail -n0 -f com1.log
 
-	qemu-system-x86_64 -vga std -no-reboot -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8 \
-				-drive file=nvme.img,if=none,id=NVME \
-				-device nvme,drive=NVME,serial=nvme  \
-				-drive id=disk,file=image.iso,if=none \
-				-device ahci,id=ahci \
-				-device ide-hd,drive=disk,bus=ahci.0 \
-				-trace "nvme*"
+console: build
+	qemu-system-x86_64 $(QEMUFLAGS) -no-reboot -monitor stdio -d int -D qemu.log -no-shutdown -vga vmware
 
-#qemu-system-x86_64 -vga std -no-reboot -monitor stdio -d int -D debug/qemu.log -no-shutdown -serial file:'debug/COM1.log' -m 8G -smp 8 \
-                        -drive file=nvme.img,if=none,id=NVME \
-                        -device nvme,drive=NVME,serial=nvme  \
-                        -drive id=disk,file=image.iso,if=none \
-                        -device ahci,id=ahci \
-                        -device ide-hd,drive=disk,bus=ahci.0 \
+debug: build
+	qemu-system-x86_64 $(QEMUFLAGS) -no-reboot -monitor stdio -d int -no-shutdown
 
 clean:
-	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) ./kernel/sched/real.o ./kernel/sched/boot.bin debug/qemu.log debug/COM1.log nvme.img
-	touch debug/qemu.log
-	touch debug/COM1.log
-	touch nvme.img
+	rm -rf $(KERNEL) $(OBJ) $(ASMOBJ) ./kernel/sched/real.o ./kernel/sched/boot.bin disk.img armos.img com1.log qemu.log
